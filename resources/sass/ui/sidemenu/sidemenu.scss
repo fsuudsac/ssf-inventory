@@ -1,0 +1,200 @@
+@use "../index" as *;
+
+.private-layout {
+    > .ant-layout-sider {
+        background-color: transparent;
+        width: 240px !important;
+        min-width: 240px !important;
+        max-width: 240px !important;
+        overflow: hidden auto;
+        position: fixed;
+        height: 100%;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 6;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
+
+        @include atSMMax {
+            background-image: url("/resources/img/login_bg.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        &.ant-layout-sider-collapsed {
+            width: 0px !important;
+            min-width: 55px !important;
+
+            @include atSMMax {
+                display: none;
+            }
+
+            @include atXSMax {
+                display: none;
+            }
+        }
+
+        @include atSMMax {
+            position: fixed;
+        }
+
+        > .ant-layout-sider-children {
+            > .ant-side-header {
+                width: 100%;
+                height: 70px;
+                display: flex;
+                justify-content: space-between;
+                padding: 0px 15px;
+                align-items: center;
+                gap: 10px;
+
+                @include atSMMax {
+                    height: 70px;
+                }
+
+                @include atXSMax {
+                    height: 70px;
+                }
+
+                .anticon {
+                    font-size: 22px;
+                    color: var(--color-cyan-400);
+
+                    &:hover {
+                        color: var(--color-cyan-400);
+                    }
+                }
+
+                .logo_wrapper {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+
+                    img {
+                        width: 150px;
+
+                        @include atSMMax {
+                            width: 105px;
+                        }
+
+                        @include atXSMax {
+                            width: 105px;
+                        }
+                    }
+                }
+            }
+
+            .ant-menu {
+                background-color: transparent;
+                height: 100%;
+
+                > .ant-menu-item {
+                    margin-block: 0px;
+                    margin-inline: 0px;
+                    width: 100%;
+                    border-radius: 0px;
+                    padding-left: 16px !important;
+                    line-height: 45px;
+
+                    &.ant-menu-item-selected,
+                    &.ant-menu-item-active {
+                        background: var(--color-blue-600);
+                    }
+
+                    a {
+                        color: var(--color-white);
+                        text-decoration: none;
+                    }
+
+                    a:hover,
+                    &.ant-menu-item-selected a,
+                    &.ant-menu-item-active a {
+                        color: var(--color-white);
+                        text-decoration: none;
+                    }
+
+                    .ant-menu-item-icon {
+                        color: var(--color-cyan-400);
+                        font-size: 18px;
+                        width: 20px;
+                    }
+                }
+
+                .ant-menu-submenu-selected {
+                    background: var(--color-blue-600);
+                }
+
+                > .ant-menu-submenu {
+                    background-color: transparent;
+                    border-radius: 0px;
+
+                    .ant-menu-submenu-title {
+                        padding-left: 16px !important;
+                        padding-inline-end: 0px !important;
+                        margin-inline: 0px;
+                        margin-block: 0px;
+                        line-height: 45px;
+                        width: 100%;
+
+                        .ant-menu-submenu-arrow,
+                        .ant-menu-item-icon {
+                            color: var(--color-cyan-400);
+                            font-size: 18px;
+                        }
+
+                        .ant-menu-item-icon {
+                            width: 20px;
+                        }
+
+                        &:active {
+                            background-color: transparent;
+                        }
+
+                        .ant-menu-title-content {
+                            color: var(--color-white);
+                        }
+                    }
+
+                    &.ant-menu-submenu-active {
+                        background: var(--color-blue-600);
+                    }
+
+                    .ant-menu.ant-menu-sub {
+                        > .ant-menu-item {
+                            // background-color: $sideBarBackground;
+                            margin-block: 0px;
+                            margin-inline: 0px;
+                            width: 100%;
+                            border-radius: 0px;
+                            padding-left: 46px !important;
+                            line-height: 45px;
+
+                            &.ant-menu-item-selected,
+                            &.ant-menu-item-active {
+                                background: var(--color-blue-600);
+                            }
+
+                            a {
+                                color: var(--color-white);
+                            }
+
+                            a:hover,
+                            &.ant-menu-item-selected a,
+                            &.ant-menu-item-active a {
+                                color: var(--color-white);
+                            }
+
+                            .ant-menu-title-content {
+                                line-height: 40px;
+                                a {
+                                    text-decoration: none !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

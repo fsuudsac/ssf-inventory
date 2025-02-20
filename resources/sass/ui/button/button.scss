@@ -1,0 +1,15 @@
+.ant-btn {
+    height: 35px;
+
+    &.ant-btn-lg {
+        height: 40px;
+    }
+
+    &.ant-btn-sm {
+        height: 30px;
+    }
+
+    span {
+        line-height: normal;
+    }
+}

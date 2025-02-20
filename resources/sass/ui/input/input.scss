@@ -1,0 +1,121 @@
+.float-wrapper {
+    position: relative;
+
+    .ant-input-number .ant-input-number-input,
+    .ant-input-password .ant-input,
+    .ant-input {
+        border-radius: 0px;
+        padding-top: 14px;
+        padding-bottom: 2px;
+        border-color: var(--color-gray-600);
+
+        &:not(textarea) {
+            height: 35px;
+
+            &.ant-input-lg {
+                height: 40px;
+            }
+
+            &.ant-input-sm {
+                height: 30px;
+            }
+        }
+    }
+
+    .ant-input-password {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border-radius: 0px;
+        border-color: var(--color-gray-600);
+    }
+
+    .ant-input-number {
+        width: 100%;
+        border-radius: 0px;
+    }
+
+    .ant-select {
+        width: 100%;
+        border-radius: 0px;
+        height: 35px;
+
+        .ant-select-selector {
+            border-radius: 0px;
+        }
+
+        &.ant-select-lg {
+            height: 40px;
+        }
+
+        &.ant-select-sm {
+            height: 30px;
+        }
+
+        .ant-select-selection-item,
+        .ant-select-selection-search-input {
+            padding-top: 14px !important;
+            padding-bottom: 2px !important;
+        }
+    }
+
+    .ant-picker {
+        width: 100%;
+        border-radius: 0px;
+        height: 35px;
+
+        .ant-picker-input {
+            input {
+                padding-top: 14px;
+                padding-bottom: 2px;
+            }
+        }
+
+        &.ant-picker-large {
+            height: 40px;
+        }
+
+        &.ant-picker-small {
+            height: 30px;
+        }
+    }
+
+    &.quill {
+        .ql-editor {
+            min-height: 120px;
+        }
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 12px;
+        top: 10px;
+        transition: 0.2s ease all;
+        color: var(--color-gray-600);
+        z-index: 1;
+        line-height: normal;
+
+        &.float-label {
+            top: 2px;
+            font-size: 11px;
+        }
+
+        &.large {
+            top: 12px;
+
+            &.float-label {
+                top: 2px;
+            }
+        }
+
+        &.small {
+            top: 8px;
+
+            &.float-label {
+                top: 2px;
+            }
+        }
+    }
+}

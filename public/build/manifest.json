@@ -1,0 +1,45 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-DTaRYEvg.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/fonts/AnnabelleJFRegular/AnnabelleJFRegular.ttf": {
+    "file": "assets/AnnabelleJFRegular-ChVhTcfw.ttf",
+    "src": "resources/fonts/AnnabelleJFRegular/AnnabelleJFRegular.ttf"
+  },
+  "resources/fonts/Montserrat/Montserrat-VariableFont_wght.ttf": {
+    "file": "assets/Montserrat-VariableFont_wght-BX21VzKy.ttf",
+    "src": "resources/fonts/Montserrat/Montserrat-VariableFont_wght.ttf"
+  },
+  "resources/fonts/Montserrat/static/Montserrat-Bold.ttf": {
+    "file": "assets/Montserrat-Bold-nPtuWU9B.ttf",
+    "src": "resources/fonts/Montserrat/static/Montserrat-Bold.ttf"
+  },
+  "resources/fonts/Montserrat/static/Montserrat-Medium.ttf": {
+    "file": "assets/Montserrat-Medium-DW6Dzcuv.ttf",
+    "src": "resources/fonts/Montserrat/static/Montserrat-Medium.ttf"
+  },
+  "resources/fonts/Montserrat/static/Montserrat-Regular.ttf": {
+    "file": "assets/Montserrat-Regular-D3UCWjz4.ttf",
+    "src": "resources/fonts/Montserrat/static/Montserrat-Regular.ttf"
+  },
+  "resources/img/login_bg.png": {
+    "file": "assets/login_bg-DVy9_nGS.png",
+    "src": "resources/img/login_bg.png"
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-C6pxkldf.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/app-D-Ncpkvi.css"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-Bs5c2Otq.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}
