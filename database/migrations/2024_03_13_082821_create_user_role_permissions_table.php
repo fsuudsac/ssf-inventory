@@ -16,8 +16,8 @@ class CreateUserRolePermissionsTable extends Migration
         Schema::create('user_role_permissions', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('user_role_id')->nullable();
-            $table->integer('mod_button_id')->nullable();
+            $table->string('role')->nullable();
+            $table->bigInteger('mod_button_id')->nullable()->index();
             $table->tinyInteger('status')->default(0)->nullable();
 
             $table->bigInteger('created_by')->nullable();

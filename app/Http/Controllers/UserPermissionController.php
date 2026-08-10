@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Models\UserPermission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserPermissionController extends Controller
 {
@@ -159,7 +159,7 @@ class UserPermissionController extends Controller
                 'status' => $request->status,
                 'user_id' => $request->user_id,
                 'mod_button_id' => $request->mod_button_id,
-                'created_by' => auth()->user()->id,
+                'created_by' => Auth::id(),
             ]);
 
             $ret = [

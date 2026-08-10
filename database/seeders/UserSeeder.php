@@ -13,34 +13,28 @@ class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        User::truncate();
-        Profile::truncate();
-
         $data = [
             [
                 'username' => 'superadmin',
                 'email' => 'superadmin@test.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('Admin123!'),
-                'user_role_id' => 1,
+                'role' => "Super Admin",
                 'status' => 'Active',
                 'remember_token' => Str::random(10),
                 'created_by' => 1,
-                'created_at' => now(),
                 'profile' => [
                     'firstname' => 'Super',
                     'lastname' => 'Admin',
-                    'created_by' => 1,
-                    'created_at' => now(),
                 ]
             ],
         ];
 
+        User::truncate();
+        Profile::truncate();
         foreach ($data as $key => $value) {
             $user = User::create(Arr::except($value, ['profile']));
             if ($user) {

@@ -9,18 +9,27 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET, POST } from "../../../providers/useAxiosQuery";
-import { apiUrl, defaultProfile, userData } from "../../../providers/appConfig";
+import {
+    apiUrl,
+    // apiUrl,
+    defaultProfile,
+    userData,
+} from "../../../providers/appConfig";
 import FloatInput from "../../../providers/FloatInput";
 import FloatSelect from "../../../providers/FloatSelect";
+import FloatInputMask from "../../../providers/FloatInputMask";
 import validateRules from "../../../providers/validateRules";
 import notificationErrors from "../../../providers/notificationErrors";
 import ModalFormEmail from "./components/ModalFormEmail";
 import ModalFormPassword from "./components/ModalFormPassword";
 import ModalUploadProfilePicture from "./components/ModalUploadProfilePicture";
 import SignaturePad from "./components/SignaturePad";
+import FloatTextArea from "../../../providers/FloatTextArea";
 
 export default function PageEditProfile() {
     const [form] = Form.useForm();
+
+    const [selectedData, setSelectedData] = useState({});
 
     const [toggleModalFormEmail, setToggleModalFormEmail] = useState({
         open: false,
@@ -54,28 +63,20 @@ export default function PageEditProfile() {
         if (res.data) {
             let data = res.data;
 
-            let username = data.username;
-            let email = data.email;
-            let firstname = data.profile.firstname;
-            let middlename = data.profile.middlename;
-            let lastname = data.profile.lastname;
-            let name_ext = data.profile.name_ext;
-            let gender = data.profile.gender;
+            console.log("data: ", data);
 
-            let profilePicture = data.profile?.attachments.filter(
-                (f) => f.file_description === "Profile Picture"
+            let profilePicture = data.attachments.filter(
+                (f) => f.file_description === "Profile Picture",
             );
-            let signature = data.profile?.attachments.filter(
-                (f) => f.file_description === "Signature"
+            let signature = data.attachments.filter(
+                (f) => f.file_description === "Signature",
             );
 
             if (profilePicture.length > 0) {
                 setToggleModalUploadProfilePicture({
                     open: false,
                     file: null,
-                    src: apiUrl(
-                        profilePicture[profilePicture.length - 1].file_path
-                    ),
+                    src: apiUrl(profilePicture[0].file_path),
                     is_camera: null,
                     fileName: null,
                 });
@@ -85,26 +86,24 @@ export default function PageEditProfile() {
                 setFileSignature({
                     file: null,
                     src: null,
-                    filePath: apiUrl(signature[signature.length - 1].file_path),
+                    filePath: apiUrl(signature[0].file_path),
                     fileName: null,
                 });
             }
 
-            form.setFieldsValue({
-                username,
-                email,
-                firstname,
-                middlename,
-                lastname,
-                name_ext,
-                gender,
-            });
+            let newData = {
+                ...data,
+                ...data.profile,
+            };
+
+            form.setFieldsValue(newData);
+            setSelectedData(newData);
         }
     });
 
     const { mutate: mutateUpdateInfo } = POST(
         `api/user_profile_info_update`,
-        "user_profile_info_update"
+        "user_profile_info_update",
     );
 
     const onFinish = (values) => {
@@ -133,13 +132,32 @@ export default function PageEditProfile() {
         });
     };
 
-    const handleTriggerDebounce = debounce(() => {
-        form.submit();
+    const handleTriggerDebounce = debounce((values) => {
+        let { field, value } = values;
+        // console.log("field: ", field, " value: ", value);
+
+        let oldData =
+            selectedData && selectedData[field] ? selectedData[field] : "";
+
+        if (field === "contact_no") {
+            let contact_no = value.replace(/[^0-9]/g, "");
+
+            if (oldData !== contact_no) {
+                form.submit();
+            }
+        } else {
+            if (oldData !== value) {
+                form.submit();
+            }
+        }
     }, 1000);
 
-    const handleDebounce = useCallback(() => {
-        handleTriggerDebounce();
-    }, [handleTriggerDebounce]);
+    const handleDebounce = useCallback(
+        (values) => {
+            handleTriggerDebounce(values);
+        },
+        [handleTriggerDebounce],
+    );
 
     return (
         <Form form={form} onFinish={onFinish}>
@@ -166,7 +184,7 @@ export default function PageEditProfile() {
                                 key: "0",
                                 label: "ACCOUNT INFORMATION",
                                 children: (
-                                    <Row gutter={[20, 0]}>
+                                    <Row gutter={[12, 0]}>
                                         <Col
                                             xs={24}
                                             sm={24}
@@ -251,7 +269,7 @@ export default function PageEditProfile() {
                                 key: "1",
                                 label: "PERSONAL INFORMATION",
                                 children: (
-                                    <Row gutter={[20, 0]}>
+                                    <Row gutter={[12, 12]}>
                                         <Col
                                             xs={24}
                                             sm={24}
@@ -269,7 +287,13 @@ export default function PageEditProfile() {
                                                     label="First Name"
                                                     placeholder="First Name"
                                                     required
-                                                    onChange={handleDebounce}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "firstname",
+                                                            value: e.target
+                                                                .value,
+                                                        });
+                                                    }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -285,7 +309,13 @@ export default function PageEditProfile() {
                                                 <FloatInput
                                                     label="Middle Name"
                                                     placeholder="Middle Name"
-                                                    onChange={handleDebounce}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "middlename",
+                                                            value: e.target
+                                                                .value,
+                                                        });
+                                                    }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -307,7 +337,13 @@ export default function PageEditProfile() {
                                                     label="Last Name"
                                                     placeholder="Last Name"
                                                     required
-                                                    onChange={handleDebounce}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "lastname",
+                                                            value: e.target
+                                                                .value,
+                                                        });
+                                                    }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -323,7 +359,13 @@ export default function PageEditProfile() {
                                                 <FloatInput
                                                     label="Name Extension"
                                                     placeholder="Name Extension"
-                                                    onChange={handleDebounce}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "name_ext",
+                                                            value: e.target
+                                                                .value,
+                                                        });
+                                                    }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -351,7 +393,45 @@ export default function PageEditProfile() {
                                                         },
                                                     ]}
                                                     allowClear
-                                                    onChange={handleDebounce}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "gender",
+                                                            value: e,
+                                                        });
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+
+                                        <Col
+                                            xs={24}
+                                            sm={24}
+                                            md={24}
+                                            lg={12}
+                                            xl={12}
+                                            xxl={12}
+                                        >
+                                            <Form.Item
+                                                name="contact_no"
+                                                rules={[validateRules.cell]}
+                                            >
+                                                <FloatInputMask
+                                                    label="Contact No."
+                                                    placeholder="Contact No."
+                                                    maskLabel="contact_no"
+                                                    maskType="999 999 9999"
+                                                    onBlur={() => {
+                                                        if (params.id) {
+                                                            form.submit();
+                                                        }
+                                                    }}
+                                                    onChange={(e) => {
+                                                        handleDebounce({
+                                                            field: "contact_no",
+                                                            value: e.target
+                                                                .value,
+                                                        });
+                                                    }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -410,20 +490,11 @@ export default function PageEditProfile() {
                                                             (ps) => ({
                                                                 ...ps,
                                                                 open: true,
-                                                            })
+                                                            }),
                                                         )
                                                     }
                                                 />
                                             </div>
-
-                                            <ModalUploadProfilePicture
-                                                toggleModalUploadProfilePicture={
-                                                    toggleModalUploadProfilePicture
-                                                }
-                                                setToggleModalUploadProfilePicture={
-                                                    setToggleModalUploadProfilePicture
-                                                }
-                                            />
                                         </Col>
                                     </Row>
                                 ),
@@ -458,6 +529,15 @@ export default function PageEditProfile() {
             <ModalFormPassword
                 toggleModalFormPassword={toggleModalFormPassword}
                 setToggleModalFormPassword={setToggleModalFormPassword}
+            />
+
+            <ModalUploadProfilePicture
+                toggleModalUploadProfilePicture={
+                    toggleModalUploadProfilePicture
+                }
+                setToggleModalUploadProfilePicture={
+                    setToggleModalUploadProfilePicture
+                }
             />
         </Form>
     );

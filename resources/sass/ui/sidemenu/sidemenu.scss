@@ -6,7 +6,7 @@
         width: 240px !important;
         min-width: 240px !important;
         max-width: 240px !important;
-        overflow: hidden auto;
+        overflow: hidden overlay;
         position: fixed;
         height: 100%;
         left: 0;
@@ -14,7 +14,6 @@
         bottom: 0;
         z-index: 6;
         scrollbar-width: thin;
-        scrollbar-gutter: stable;
 
         @include atSMMax {
             background-image: url("/resources/img/login_bg.png");
@@ -162,7 +161,7 @@
 
                     .ant-menu.ant-menu-sub {
                         > .ant-menu-item {
-                            // background-color: $sideBarBackground;
+                            // background-color: var(--sidebar-background);
                             margin-block: 0px;
                             margin-inline: 0px;
                             width: 100%;

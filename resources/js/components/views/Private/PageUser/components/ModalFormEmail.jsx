@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { Modal, Button, Form, notification } from "antd";
 
-import { useEffect } from "react";
-import FloatInput from "../../../../providers/FloatInput";
-import { POST, GET } from "../../../../providers/useAxiosQuery";
+import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
+import FloatInput from "../../../../providers/FloatInput";
 
 export default function ModalFormEmail(props) {
     const { toggleModalFormEmail, setToggleModalFormEmail } = props;
     const [form] = Form.useForm();
 
-    const { mutate: mutateEmail, loading: loadingEmail } = POST(
+    const { mutate: mutateEmail, isLoading: isLoadingEmail } = POST(
         `api/users_update_email`,
         "users_info"
     );
@@ -86,6 +86,7 @@ export default function ModalFormEmail(props) {
                         });
                         form.resetFields();
                     }}
+                    disabled={isLoadingEmail}
                 >
                     CANCEL
                 </Button>,
@@ -95,7 +96,7 @@ export default function ModalFormEmail(props) {
                     size="large"
                     key={2}
                     onClick={(values) => form.submit(values)}
-                    loading={loadingEmail}
+                    loading={isLoadingEmail}
                 >
                     SUBMIT
                 </Button>,

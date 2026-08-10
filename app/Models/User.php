@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +13,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, ModelTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -19,11 +21,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'email',
-        'email_verified_at',
         'username',
+        'email',
         'password',
-        'user_role_id',
+        'firstname',
+        'middlename',
+        'lastname',
+        'name_ext',
+        'gender',
+        'contact_no',
+        'address',
+        'role',
         'status',
         'one_time_update_info',
         'google2fa_enable',
@@ -60,26 +68,41 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne(Profile::class, "user_id");
+        return $this->hasOne(Profile::class, 'user_id');
     }
 
-    public function document_recipients()
+    public function sales_orders()
     {
-        return $this->hasMany(DocumentRecipient::class, "recipient_id");
+        return $this->hasMany(SalesOrder::class, "customer_id");
     }
 
-    public function documents()
+    public function purchases()
     {
-        return $this->hasMany(Document::class, "sent_by_id");
+        return $this->hasMany(Purchase::class, "supplier_id");
     }
 
-    public function user_role()
+    public function company()
     {
-        return $this->belongsTo(UserRole::class, "user_role_id");
+        return $this->belongsTo(Company::class, "company_id");
+    }
+
+    public function user_payments()
+    {
+        return $this->hasMany(UserPayment::class, "user_id");
     }
 
     public function attachments()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
+    }
+
+    public function historicalData()
+    {
+        return $this->morphMany(HistoricalData::class, 'historicalable');
+    }
+
+    public function scopeFilter($query, $request)
+    {
+        return $query;
     }
 }

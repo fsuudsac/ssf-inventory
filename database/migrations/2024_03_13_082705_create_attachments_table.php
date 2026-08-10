@@ -22,6 +22,9 @@ class CreateAttachmentsTable extends Migration
             $table->string('file_path')->nullable();
             $table->enum('file_type', ['image', 'document', 'video', 'audio', 'other'])->default('other');
             $table->string('file_size')->nullable();
+            $table->string('file_ext')->nullable();
+            $table->string('file_type_origin')->nullable();
+            $table->integer('order_no')->default(0);
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

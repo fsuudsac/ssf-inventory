@@ -7,8 +7,8 @@ import ESignaturePad from "signature_pad";
 import { POST } from "../../../../providers/useAxiosQuery";
 import { apiUrl, userData } from "../../../../providers/appConfig";
 import notificationErrors from "../../../../providers/notificationErrors";
-import ModalUploadSignature from "./ModalUploadSignature";
 import dataURLtoBlob from "../../../../providers/dataURLtoBlob";
+import ModalUploadSignature from "./ModalUploadSignature";
 
 export default function SignaturePad(props) {
     const { fileSignature, setFileSignature } = props;
@@ -19,8 +19,10 @@ export default function SignaturePad(props) {
     const [toggleModalUploadSignature, setToggleModalUploadSignature] =
         useState(false);
 
-    const { mutate: mutateUploadSignature, loading: loadingUploadSignature } =
-        POST(`api/upload_signature`, "upload_signature");
+    const {
+        mutate: mutateUploadSignature,
+        isLoading: isLoadingUploadSignature,
+    } = POST(`api/user_upload_signature`, "users_info");
 
     const handleSave = () => {
         let data = new FormData();
@@ -31,7 +33,7 @@ export default function SignaturePad(props) {
             data.append(
                 "signature",
                 dataURLtoBlob(signatureValue.toDataURL()),
-                "signature.png"
+                "signature.png",
             );
         }
 
@@ -46,7 +48,7 @@ export default function SignaturePad(props) {
                         description: res.message,
                     });
                     let signature = res.data.attachments.filter(
-                        (f) => f.file_description === "Signature"
+                        (f) => f.file_description === "Signature",
                     );
                     setFileSignature({
                         file: null,
@@ -127,9 +129,7 @@ export default function SignaturePad(props) {
                 </div>
             ) : (
                 <>
-                    <div className="img-wrapper">
-                        <img src={fileSignature.filePath} alt="fileSignature" />
-                    </div>
+                    <img src={fileSignature.filePath} alt="fileSignature" />
                     <div className="action">
                         <Button
                             icon={<FontAwesomeIcon icon={faEdit} />}
@@ -191,7 +191,7 @@ export default function SignaturePad(props) {
                 handleSave={handleSave}
                 fileSignature={fileSignature}
                 setFileSignature={setFileSignature}
-                loadingUploadSignature={loadingUploadSignature}
+                isLoadingUploadSignature={isLoadingUploadSignature}
             />
         </div>
     );

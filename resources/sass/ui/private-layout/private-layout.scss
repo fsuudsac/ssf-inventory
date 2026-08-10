@@ -7,7 +7,9 @@
 
     > .ant-layout {
         background-color: transparent;
-        transition: all 0.25s, background 0s;
+        transition:
+            all 0.25s,
+            background 0s;
         margin-left: 240px;
 
         @include atSMMax {

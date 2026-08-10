@@ -1,0 +1,101 @@
+.ant-modal-root {
+    .ant-modal-mask {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .ant-modal-wrap {
+        display: flex;
+        .ant-modal {
+            padding-bottom: 20px;
+
+            .ant-modal-content {
+                border-radius: 0px;
+                padding: 0px;
+
+                .ant-modal-close {
+                    top: 20px;
+                    right: 15px;
+                    color: #ffffff;
+                    background-color: transparent;
+                    width: auto;
+                    height: auto;
+                }
+
+                .ant-modal-header {
+                    margin-bottom: 0px;
+                    padding: 15px 15px;
+                    background-color: var(--main-primary);
+                    border-radius: 0px;
+
+                    .ant-modal-title {
+                        color: #ffffff;
+                    }
+                }
+
+                .ant-modal-body {
+                    padding: 15px;
+
+                    .ant-form {
+                        .ant-row {
+                            .ant-col {
+                                .ant-form-item {
+                                    .float-input-mask {
+                                        #contact_no {
+                                            background: transparent !important;
+                                            padding: 12px 0px 0px 12px !important;
+                                        }
+                                    }
+                                    &:focus-visible {
+                                        outline: 0px;
+                                        outline-offset: 0px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .ant-modal-footer {
+                    padding: 0px 15px 15px 15px;
+                    margin-top: 0px;
+
+                    .ant-btn {
+                        &.ant-btn-primary {
+                            color: var(--main-primary-text);
+                            background-color: var(--main-primary);
+                            border-color: var(--main-primary);
+
+                            &:hover {
+                                color: var(--main-primary-text-active);
+                                background-color: var(--main-primary-active);
+                                border-color: var(--main-primary);
+                            }
+
+                            &:focus {
+                                color: var(--main-primary-text-active);
+                                background-color: var(--main-primary-active);
+                                border-color: var(--main-primary);
+                            }
+                        }
+
+                        &.ant-btn-default {
+                            color: var(--main-primary-text-active);
+                            background-color: var(--main-primary-active);
+                            border-color: var(--main-secondary-active);
+
+                            &:hover {
+                                border-color: var(--main-primary);
+                            }
+
+                            &:focus {
+                                color: var(--main-primary-text);
+                                background-color: var(--main-primary);
+                                border-color: var(--main-primary);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

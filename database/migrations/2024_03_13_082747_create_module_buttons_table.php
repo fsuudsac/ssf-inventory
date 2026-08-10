@@ -16,7 +16,7 @@ class CreateModuleButtonsTable extends Migration
         Schema::create('module_buttons', function (Blueprint $table) {
             $table->id();
 
-            $table->integer("module_id")->nullable();
+            $table->bigInteger("module_id")->nullable()->index();
             $table->string("mod_button_code")->nullable();
             $table->string("mod_button_name")->nullable();
             $table->string("mod_button_description")->nullable();

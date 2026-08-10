@@ -1,1 +1,117 @@
-$body-bg: var(--color-blue-800);
+:root {
+    --body-bg: #0026a0;
+    --back-image: url("/public/images/login_bg.png");
+    --font-family-sans-serif: RobotoRegular;
+    --font-size-base: 0.9rem;
+    --line-height-base: 1.6;
+    --color-primary: #114eaf;
+    --color-primary-active: #0753a1;
+    --color-secondary: #868e96;
+    --color-secondary-active: #727b84;
+    --color-success: #23bf08;
+    --color-success-active: #1c9a06;
+    --color-warning: #f49917;
+    --color-warning-active: #da850a;
+    --color-danger: #dc3545;
+    --color-danger-active: #c82333;
+    --color-info: #5b93d3;
+    --color-info-active: #3d7fcb;
+    --color-indigo: #6610f2;
+    --color-indigo-active: #560bd0;
+    --color-purple: #6f42c1;
+    --color-purple-active: #5e37a6;
+    --color-pink: #e83e8c;
+    --color-pink-active: #e41c78;
+    --color-teal: #1caf9a;
+    --color-teal-active: #178e7d;
+    --color-dark: #343a40;
+    --color-dark-active: #23272b;
+    --color-orange: #f27510;
+    --color-orange-active: #d16a17;
+
+    // Layout
+    --layout-background: #0026a0;
+    --layout-text-color: #ffffff;
+    --layout-icon-color: #009999;
+    --layout-text-color-active: #ffffff;
+    --layout-icon-color-active: #ffffff;
+
+    // Layout Side Menu
+    --sidebar-background: #0026a0;
+    --sidebar-background-selected-menu: #0157de;
+    --sidebar-border-color: #f0e3ca;
+    --sidebar-text-color: #ffffff;
+    --sidebar-icon-color: #9ae9fd;
+    --sidebar-text-color-active: #ffffff;
+    --sidebar-icon-color-active: #9ae9fd;
+    --sidebar-thumb-color: #808285;
+    --sidebar-track-color: #bbbbbb;
+
+    // Side-Sub Menu
+    --submenu-default: #292a2a;
+    --submenu-default-hover: #9f9d9d4d;
+    --submenu-default-hover2: #a2e7e94d;
+    --submenu-default-selected: #f7f5f58c;
+
+    // Layout Header
+    --header-background: #0026a0;
+    --header-background-selected-menu: #0157de;
+    --header-text-color: #bdbec0;
+    --header-left-icon-color: #13f4f1;
+    --header-right-icon-color: #ffffff;
+    --header-text-color-active: #13f4f1;
+    --header-icon-color-active: #13f4f1;
+    --header-profile-color: #13f4f1;
+
+    // Layout Header Dropdown
+    --header-dropdown-background-selected-menu: #358e8f;
+    --header-dropdown-text-color: #58585a;
+    --header-dropdown-icon-color: #0157de;
+    --header-dropdown-text-color-active: #0157de;
+    --header-dropdown-icon-color-active: #58585a;
+    --header-dropdown-title-color: #0157de;
+    --header-dropdown-img-border-color: #13f4f1;
+    --header-dropdown-border-color: #949599;
+
+    // Breadcrumb Color
+    --breadcrumb-color: transparent;
+    --breadcrumb-text-color: #163ca6;
+    --breadcrumb-icon-color: #163ca6;
+    --breadcrumb-last-text-color: #e4151f;
+
+    // Page Header
+    --page-header-background: transparent;
+    --page-header-border-color: #58585a;
+    --page-header-color-title: #e5f1eb;
+    --page-header-color-subtitle: #e5f1eb;
+    --page-header-icon-color: #d1ebde;
+    --page-header-icon-border-color: #b3d5c4;
+
+    --main-primary: #114eaf;
+    --main-primary-text: #ffffff;
+    --main-primary-active: #ffffff;
+    --main-primary-text-active: #114eaf;
+    --main-secondary: #e4151f;
+    --main-secondary-text: #ffffff;
+    --main-secondary-active: #b0b4b4;
+    --main-secondary-text-active: #e4151f;
+
+    --tooltip-success: #d9f1d1;
+    --tooltip-primary: #e0e9f5;
+    --tooltip-warning: #faecd4;
+    --tooltip-danger: #f3d8da;
+    --tooltip-success-text: #2e611a;
+    --tooltip-primary-text: #354b6b;
+    --tooltip-warning-text: #78521e;
+    --tooltip-danger-text: #692326;
+
+    // Floating
+    --float-label: #918f8ffa;
+
+    // Collapse
+    --collapse-header: #0157de;
+
+    --table-scrollbar-thumb-color: #1e84c1;
+    --table-scrollbar-thumb-width: 8px;
+    --table-scrollbar-track-color: #bbb;
+}

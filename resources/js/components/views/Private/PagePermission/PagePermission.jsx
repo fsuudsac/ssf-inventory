@@ -1,89 +1,29 @@
 import { Row, Col, Tabs } from "antd";
+
+import TabPermissionModule from "./components/TabPermissionModule";
+import TabPermissionUserRole from "./components/TabPermissionUserRole";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrochip } from "@fortawesome/pro-regular-svg-icons";
 
-import { GET } from "../../../providers/useAxiosQuery";
-import { useState } from "react";
-import TabSystem from "./components/TabSystem";
-
 export default function PagePermission() {
-    const [tabParentActive, setTabParentActive] = useState("Module");
-    const [selectedUserRoleId, setSelectedUserRoleId] = useState("1");
-
-    const { data: dataRole } = GET(
-        "api/user_role?sort_field=id&sort_order=asc",
-        "user_role_select",
-        (res) => {},
-        false
-    );
-
     return (
-        <Row gutter={[20, 20]}>
+        <Row gutter={[12, 12]}>
             <Col xs={24} sm={24} md={24}>
                 <Tabs
                     defaultActiveKey="0"
-                    size="small"
-                    indicator={{
-                        size: (origin) => origin - 26,
-                        align: "end",
-                    }}
-                    onTabClick={(key) => {
-                        setTabParentActive(key);
-                    }}
+                    type="card"
                     items={[
                         {
-                            key: "Module",
+                            key: "0",
                             label: "Module",
                             icon: <FontAwesomeIcon icon={faMicrochip} />,
-                            children: (
-                                <TabSystem
-                                    tabParentActive={tabParentActive}
-                                    userRoleId={selectedUserRoleId}
-                                />
-                            ),
+                            children: <TabPermissionModule />,
                         },
                         {
-                            key: "UserRole",
+                            key: "1",
                             label: "User Role",
                             icon: <FontAwesomeIcon icon={faMicrochip} />,
-                            children: (
-                                <Tabs
-                                    defaultActiveKey="1"
-                                    size="small"
-                                    onTabClick={(key) =>
-                                        setSelectedUserRoleId(key)
-                                    }
-                                    items={
-                                        dataRole && dataRole.data
-                                            ? dataRole.data.map((item) => ({
-                                                  key: item.id.toString(),
-                                                  label: item.role,
-                                                  children: (
-                                                      <TabSystem
-                                                          tabParentActive={
-                                                              tabParentActive
-                                                          }
-                                                          userRoleId={
-                                                              selectedUserRoleId
-                                                          }
-                                                      />
-                                                  ),
-                                              }))
-                                            : []
-                                    }
-                                />
-                            ),
-                        },
-                        {
-                            key: "Users",
-                            label: "Users",
-                            icon: <FontAwesomeIcon icon={faMicrochip} />,
-                            children: (
-                                <TabSystem
-                                    tabParentActive={tabParentActive}
-                                    userRoleId={selectedUserRoleId}
-                                />
-                            ),
+                            children: <TabPermissionUserRole />,
                         },
                     ]}
                 />

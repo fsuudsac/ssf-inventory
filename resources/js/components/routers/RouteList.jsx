@@ -1,11 +1,18 @@
 import { Routes, Route } from "react-router-dom";
 import {
-    faBooks,
-    faCog,
+    faBoxOpen,
+    faChartMixedUpCircleDollar,
     faHome,
-    faMicrochip,
-    faPaperclip,
+    faListCheck,
+    faUserGroup,
     faUsers,
+    faWarehouseFull,
+    faChartLine,
+    faCogs,
+    faVideo,
+    faRightLeftLarge,
+    faUserShield,
+    faMoneyBillWave,
 } from "@fortawesome/pro-regular-svg-icons";
 
 import PublicRoute from "./PublicRoute";
@@ -15,19 +22,33 @@ import Page404 from "../views/errors/Page404";
 import PageRequestPermission from "../views/errors/PageRequestPermission";
 
 import PageLogin from "../views/public/PageLogin/PageLogin";
+
 import PageEditProfile from "../views/private/PageEditProfile/PageEditProfile";
 import PageDashboard from "../views/private/PageDashboard/PageDashboard";
 import PageUser from "../views/private/PageUser/PageUser";
 import PageUserForm from "../views/private/PageUser/PageUserForm";
 import PageUserPermission from "../views/private/PageUser/PageUserPermission";
-import PagePermission from "../views/private/PagePermission/PagePermission";
-import PageEmailTemplate from "../views/private/PageSystemSettings/PageEmailTemplate/PageEmailTemplate";
-import PageSettings from "../views/private/PageReferences/PageSettings/PageSettings";
-import PageComponents from "../views/private/PageComponents/PageComponents";
-import PageStudents from "../views/private/PageStudents/PageStudents";
-import PageEmployees from "../views/private/PageEmployees/PageEmployees";
-import PageEmployeeForm from "../views/private/PageEmployees/PageEmployeeForm";
-import PageSystemLink from "../views/private/PageSystemLink/PageSystemLink";
+import PageWarehouse from "../views/private/PageWarehouse/PageWarehouse";
+import PageInventory from "../views/private/PageInventory/PageInventory";
+import PagePurchase from "../views/private/PagePurchase/PagePurchase";
+import PagePurchaseForm from "../views/private/PagePurchase/PagePurchaseForm";
+import PageAdminSetting from "../views/private/PageAdminSetting/PageAdminSetting";
+import PageSalesForm from "../views/private/PageSales/PageSalesForm";
+import PageSales from "../views/private/PageSales/PageSales";
+import PageProductForm from "../views/private/PageProduct/PageProductForm";
+import PageProduct from "../views/private/PageProduct/PageProduct";
+import PageReportLedger from "../views/private/PageReport/PageReportLedger";
+import PageReportInventory from "../views/private/PageReport/PageReportInventory";
+import PagePurchaseView from "../views/private/PagePurchase/PagePurchaseView";
+import PageSalesView from "../views/private/PageSales/PageSalesView";
+import PageSalesReturnForm from "../views/private/PageSales/PageSalesReturnForm";
+import PagePurchaseReturnForm from "../views/private/PagePurchase/PagePurchaseReturnForm";
+import PageVideoFaqs from "../views/private/PageVideoFaqs/PageVideoFaqs";
+import PageTransfer from "../views/private/PageTransfer/PageTransfer";
+import PageUserPermissions from "../views/private/PageUserPermissions/PageUserPermissions";
+import PageReportSalesRevenue from "../views/private/PageReport/PageReportSalesRevenue/PageReportSalesRevenue";
+import PageReport from "../views/private/PageReport/PageReport";
+import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudgetAllocation";
 
 export default function RouteList() {
     return (
@@ -42,6 +63,18 @@ export default function RouteList() {
                     />
                 }
             />
+
+            {/* <Route
+                path="/register"
+                element={
+                    <PublicRoute
+                        title="REGISTER"
+                        pageId="PageRegister"
+                        component={PageRegister}
+                    />
+                }
+            /> */}
+
             <Route
                 path="/edit-profile"
                 element={
@@ -60,11 +93,12 @@ export default function RouteList() {
                     />
                 }
             />
+
             <Route
                 path="/dashboard"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-01"
+                        moduleCode="page_dashboard"
                         moduleName="Dashboard"
                         title="Dashboard"
                         subtitle="ADMIN"
@@ -79,198 +113,483 @@ export default function RouteList() {
                     />
                 }
             />
+
             <Route
-                path="/students"
+                path="/budget-allocation"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Students"
-                        title="Students"
-                        subtitle="VIEW / EDIT"
-                        pageId="PageStudents"
-                        pageHeaderIcon={faUsers}
+                        moduleCode="page_budget_allocation"
+                        moduleName="Budget Allocation"
+                        title="Budget Allocation"
+                        subtitle="BUDGET"
+                        pageId="PageBudgetAllocation"
+                        pageHeaderIcon={faMoneyBillWave}
                         breadcrumb={[
                             {
-                                name: "Students",
+                                name: "Budget Allocation",
                             },
                         ]}
-                        component={PageStudents}
+                        component={PageBudgetAllocation}
                     />
                 }
             />
 
+            {/* products */}
             <Route
-                path="/employees/full-time"
+                path="/product"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Full Time"
-                        title="Employees"
-                        subtitle="FULL TIME"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
+                        moduleCode="page_product"
+                        moduleName="Product"
+                        title="Product"
+                        subtitle="LIST"
+                        pageId="PageProduct"
+                        pageHeaderIcon={faBoxOpen}
                         breadcrumb={[
                             {
-                                name: "Employees",
-                            },
-                            {
-                                name: "Full Time",
+                                name: "Product",
                             },
                         ]}
-                        component={PageEmployees}
+                        component={PageProduct}
                     />
                 }
             />
-
             <Route
-                path="/employees/full-time/add"
+                path="/product/add"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Full Time"
-                        title="Full Time"
+                        moduleCode="page_product"
+                        moduleName="Add Product"
+                        title="Product"
                         subtitle="ADD"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
+                        pageId="PageProductForm"
+                        pageHeaderIcon={faBoxOpen}
                         breadcrumb={[
                             {
-                                name: "Employees",
-                                link: "/employees/full-time",
-                            },
-                            {
-                                name: "Full Time",
-                                link: "/employees/full-time",
+                                name: "Product",
+                                link: "/product",
                             },
                             {
                                 name: "Add",
                             },
                         ]}
-                        component={PageEmployeeForm}
+                        component={PageProductForm}
                     />
                 }
             />
             <Route
-                path="/employees/full-time/edit/:id"
+                path="/product/edit/:id"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Full Time"
-                        title="Full Time"
+                        moduleCode="page_product"
+                        moduleName="Edit Product"
+                        title="Product"
                         subtitle="EDIT"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
+                        pageId="PageProductForm"
+                        pageHeaderIcon={faBoxOpen}
                         breadcrumb={[
                             {
-                                name: "Employees",
-                                link: "/employees/full-time",
-                            },
-                            {
-                                name: "Full Time",
-                                link: "/employees/full-time",
+                                name: "Product",
+                                link: "/product",
                             },
                             {
                                 name: "Edit",
                             },
                         ]}
-                        component={PageEmployeeForm}
+                        component={PageProductForm}
                     />
                 }
             />
+            {/* end products */}
 
+            {/* inventory */}
             <Route
-                path="/employees/part-time"
+                path="/inventory"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Part Time"
-                        title="Employees"
-                        subtitle="PART TIME"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
+                        moduleCode="page_inventory"
+                        moduleName="Inventory"
+                        title="Inventory"
+                        subtitle="LIST"
+                        pageId="PageInventory"
+                        pageHeaderIcon={faBoxOpen}
                         breadcrumb={[
                             {
-                                name: "Employees",
-                            },
-                            {
-                                name: "Part Time",
+                                name: "Inventory",
                             },
                         ]}
-                        component={PageEmployees}
+                        component={PageInventory}
                     />
                 }
             />
 
             <Route
-                path="/employees/part-time/add"
+                path="/inventory/add"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Part Time"
-                        title="Part Time"
+                        moduleCode="page_inventory"
+                        moduleName="Add Product"
+                        title="Product"
                         subtitle="ADD"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
+                        pageId="PageProductForm"
+                        pageHeaderIcon={faBoxOpen}
                         breadcrumb={[
                             {
-                                name: "Employees",
-                                link: "/employees/part-time",
+                                name: "Inventory",
+                                link: "/inventory",
                             },
                             {
-                                name: "Part Time",
-                                link: "/employees/part-time",
+                                name: "Add Product",
+                            },
+                        ]}
+                        component={PageProductForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/inventory/edit/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_inventory"
+                        moduleName="Edit Product"
+                        title="Product"
+                        subtitle="EDIT"
+                        pageId="PageProductForm"
+                        pageHeaderIcon={faBoxOpen}
+                        breadcrumb={[
+                            {
+                                name: "Inventory",
+                                link: "/inventory",
+                            },
+                            {
+                                name: "Edit Product",
+                            },
+                        ]}
+                        component={PageProductForm}
+                    />
+                }
+            />
+            {/* end inventory */}
+
+            {/* START PURCHASE */}
+            <Route
+                path="/purchase-order"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="Purchase Order"
+                        title="Purchase Order"
+                        subtitle="LIST"
+                        pageId="PagePurchase"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                            },
+                        ]}
+                        component={PagePurchase}
+                    />
+                }
+            />
+            <Route
+                path="/purchase-order/view/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="View Purchase Order"
+                        title="Purchase Order"
+                        subtitle="VIEW"
+                        pageId="PagePurchaseView"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                            },
+                            {
+                                name: "View",
+                            },
+                        ]}
+                        component={PagePurchaseView}
+                    />
+                }
+            />
+
+            <Route
+                path="/purchase-order/add-purchase"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="Add Purchase Order"
+                        title="Purchase Order"
+                        subtitle="ADD"
+                        pageId="PagePurchaseForm"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                                link: "/purchase-order",
+                            },
+                            {
+                                name: "Add Purchase Order",
+                            },
+                        ]}
+                        component={PagePurchaseForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/purchase-order/add-purchase-order-return"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="Add Purchase Order Return"
+                        title="Purchase Order Return"
+                        subtitle="ADD"
+                        pageId="PagePurchaseReturnForm"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                                link: "/purchase-order",
+                            },
+                            {
+                                name: "Add Purchase Order Return",
+                            },
+                        ]}
+                        component={PagePurchaseReturnForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/purchase-order/edit-purchase/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="Edit Purchase Order"
+                        title="Purchase Order"
+                        subtitle="EDIT"
+                        pageId="PagePurchaseForm"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                                link: "/purchase-order",
+                            },
+                            {
+                                name: "Edit Purchase Order",
+                            },
+                        ]}
+                        component={PagePurchaseForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/purchase-order/edit-purchase-order-return/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase"
+                        moduleName="Edit Purchase Order Return"
+                        title="Purchase Order Return"
+                        subtitle="EDIT"
+                        pageId="PagePurchaseReturnForm"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Order",
+                                link: "/purchase-order",
+                            },
+                            {
+                                name: "Edit Purchase Order Return",
+                            },
+                        ]}
+                        component={PagePurchaseReturnForm}
+                    />
+                }
+            />
+
+            {/* END PURCHASE */}
+
+            {/* START SALES */}
+            <Route
+                path="/release-item"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_sales"
+                        moduleName="Release Item"
+                        title="Release Item"
+                        subtitle="LIST"
+                        pageId="PageSale"
+                        pageHeaderIcon={faChartMixedUpCircleDollar}
+                        breadcrumb={[
+                            {
+                                name: "Sale",
+                            },
+                        ]}
+                        component={PageSales}
+                    />
+                }
+            />
+
+            <Route
+                path="/release-item/view/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_sales"
+                        moduleName="Release Item View"
+                        title="Release Item"
+                        subtitle="VIEW"
+                        pageId="PageSalesView"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Release Item",
+                            },
+                            {
+                                name: "View",
+                            },
+                        ]}
+                        component={PageSalesView}
+                    />
+                }
+            />
+
+            <Route
+                path="/release-item/add-sales"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_sales"
+                        moduleName="Add Sale"
+                        title="Release Item"
+                        subtitle="ADD"
+                        pageId="PageSaleForm"
+                        pageHeaderIcon={faChartMixedUpCircleDollar}
+                        breadcrumb={[
+                            {
+                                name: "Release Item",
+                                link: "/release-item",
                             },
                             {
                                 name: "Add",
                             },
                         ]}
-                        component={PageEmployeeForm}
-                    />
-                }
-            />
-            <Route
-                path="/employees/part-time/edit/:id"
-                element={
-                    <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="Employees - Part Time"
-                        title="Part Time"
-                        subtitle="EDIT"
-                        pageId="PageEmployees"
-                        pageHeaderIcon={faUsers}
-                        breadcrumb={[
-                            {
-                                name: "Employees",
-                                link: "/employees/part-time",
-                            },
-                            {
-                                name: "Part Time",
-                                link: "/employees/part-time",
-                            },
-                            {
-                                name: "Edit",
-                            },
-                        ]}
-                        component={PageEmployeeForm}
+                        component={PageSalesForm}
                     />
                 }
             />
 
             <Route
-                path="/system-link"
+                path="/release-item/add-sales-return"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="System Link"
-                        title="System Link"
-                        subtitle="VIEW / EDIT"
-                        pageId="PageSystemLink"
-                        pageHeaderIcon={faPaperclip}
+                        moduleCode="page_sales"
+                        moduleName="Add Release Item Return"
+                        title="Release Item Return"
+                        subtitle="ADD"
+                        pageId="PageSalesReturnForm"
+                        pageHeaderIcon={faChartMixedUpCircleDollar}
                         breadcrumb={[
                             {
-                                name: "System Link",
+                                name: "Release Item",
+                                link: "/release-item",
+                            },
+                            {
+                                name: "Add Release Item Return",
                             },
                         ]}
-                        component={PageSystemLink}
+                        component={PageSalesReturnForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/release-item/edit-sales/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_sales"
+                        moduleName="Edit Sale"
+                        title="Release Item"
+                        subtitle="EDIT"
+                        pageId="PageSaleForm"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Release Item",
+                                link: "/release-item",
+                            },
+                            {
+                                name: "Edit",
+                            },
+                        ]}
+                        component={PageSalesForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/release-item/edit-sales-return/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_sales"
+                        moduleName="Edit Release Item Return"
+                        title="Release Item Return"
+                        subtitle="EDIT"
+                        pageId="PageSalesReturnForm"
+                        pageHeaderIcon={faChartMixedUpCircleDollar}
+                        breadcrumb={[
+                            {
+                                name: "Release Item",
+                                link: "/release-item",
+                            },
+                            {
+                                name: "Edit Release Item Return",
+                            },
+                        ]}
+                        component={PageSalesReturnForm}
+                    />
+                }
+            />
+            {/* END SALES */}
+
+            <Route
+                path="/warehouse"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_warehouse"
+                        moduleName="Warehouse"
+                        title="Warehouse"
+                        subtitle="LIST"
+                        pageId="PageWarehouse"
+                        pageHeaderIcon={faWarehouseFull}
+                        breadcrumb={[
+                            {
+                                name: "Warehouse",
+                            },
+                        ]}
+                        component={PageWarehouse}
+                    />
+                }
+            />
+
+            <Route
+                path="/transfer"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_transfer"
+                        moduleName="Transfer"
+                        title="Transfer"
+                        subtitle="LIST"
+                        pageId="PageUser"
+                        pageHeaderIcon={faRightLeftLarge}
+                        breadcrumb={[
+                            {
+                                name: "Transfer",
+                            },
+                        ]}
+                        component={PageTransfer}
                     />
                 }
             />
@@ -280,8 +599,8 @@ export default function RouteList() {
                 path="/users"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="User"
+                        moduleCode="page_users"
+                        moduleName="Users"
                         title="Users"
                         subtitle="VIEW / EDIT"
                         pageId="PageUser"
@@ -300,11 +619,11 @@ export default function RouteList() {
                 path="/users/add"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
-                        moduleName="User Add"
+                        moduleCode="page_users"
+                        moduleName="Add User"
                         title="Users"
                         subtitle="ADD"
-                        pageId="PageUserAdd"
+                        pageId="PageUserForm"
                         pageHeaderIcon={faUsers}
                         breadcrumb={[
                             {
@@ -312,7 +631,7 @@ export default function RouteList() {
                                 link: "/users",
                             },
                             {
-                                name: "Add User",
+                                name: "Add",
                             },
                         ]}
                         component={PageUserForm}
@@ -324,11 +643,11 @@ export default function RouteList() {
                 path="/users/edit/:id"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
+                        moduleCode="page_users"
                         moduleName="User Edit"
                         title="Users"
                         subtitle="EDIT"
-                        pageId="PageUserEdit"
+                        pageId="PageUserForm"
                         pageHeaderIcon={faUsers}
                         breadcrumb={[
                             {
@@ -336,7 +655,7 @@ export default function RouteList() {
                                 link: "/users",
                             },
                             {
-                                name: "Edit User",
+                                name: "Edit",
                             },
                         ]}
                         component={PageUserForm}
@@ -348,11 +667,11 @@ export default function RouteList() {
                 path="/users/permission/:id"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-02"
+                        moduleCode="page_users"
                         moduleName="User Edit Permission"
                         title="User's Edit Permission"
                         subtitle="EDIT"
-                        pageId="PageUserEdit"
+                        pageId="PageUserPermission"
                         pageHeaderIcon={faUsers}
                         breadcrumb={[
                             {
@@ -368,97 +687,294 @@ export default function RouteList() {
                 }
             />
 
+            <Route
+                path="/suppliers"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_suppliers"
+                        moduleName="Suppliers"
+                        title="Suppliers"
+                        subtitle="LIST"
+                        pageId="PageUser"
+                        pageHeaderIcon={faUserGroup}
+                        breadcrumb={[
+                            {
+                                name: "Suppliers",
+                            },
+                        ]}
+                        component={PageUser}
+                    />
+                }
+            />
+
+            <Route
+                path="/suppliers/add"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_suppliers"
+                        moduleName="Add Supplier"
+                        title="Supplier"
+                        subtitle="ADD"
+                        pageId="PageUserForm"
+                        pageHeaderIcon={faUserGroup}
+                        breadcrumb={[
+                            {
+                                name: "Supplier",
+                                link: "/suppliers",
+                            },
+                            {
+                                name: "Add",
+                            },
+                        ]}
+                        component={PageUserForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/suppliers/edit/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_suppliers"
+                        moduleName="Edit Supplier"
+                        title="Supplier"
+                        subtitle="EDIT"
+                        pageId="PageUserForm"
+                        pageHeaderIcon={faUserGroup}
+                        breadcrumb={[
+                            {
+                                name: "Supplier",
+                                link: "/suppliers",
+                            },
+                            {
+                                name: "Edit",
+                            },
+                        ]}
+                        component={PageUserForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/customers"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_customers"
+                        moduleName="Customers"
+                        title="Customers"
+                        subtitle="ADMIN"
+                        pageId="PageUser"
+                        pageHeaderIcon={faHome}
+                        breadcrumb={[
+                            {
+                                name: "Customers",
+                            },
+                        ]}
+                        component={PageUser}
+                    />
+                }
+            />
+
+            <Route
+                path="/customers/add"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_customers"
+                        moduleName="Add Customer"
+                        title="Customers"
+                        subtitle="ADD"
+                        pageId="PageUserForm"
+                        pageHeaderIcon={faHome}
+                        breadcrumb={[
+                            {
+                                name: "Customers",
+                                link: "/customers",
+                            },
+                            {
+                                name: "Add",
+                            },
+                        ]}
+                        component={PageUserForm}
+                    />
+                }
+            />
+
+            <Route
+                path="/customers/edit/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_customers"
+                        moduleName="Edit Customer"
+                        title="Customers"
+                        subtitle="EDIT"
+                        pageId="PageUserForm"
+                        pageHeaderIcon={faUserGroup}
+                        breadcrumb={[
+                            {
+                                name: "Customers",
+                                link: "/customers",
+                            },
+                            {
+                                name: "Edit",
+                            },
+                        ]}
+                        component={PageUserForm}
+                    />
+                }
+            />
+
             {/* end users */}
 
-            {/* permission */}
-
+            {/* reports */}
             <Route
-                path="/permission"
+                path="/reports/general"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-04"
-                        moduleName="Permission"
-                        title="Permission"
-                        subtitle="Permission"
-                        pageId="PagePermission"
-                        pageHeaderIcon={faBooks}
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="VIEW"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
                         breadcrumb={[
                             {
-                                name: "Permission",
+                                name: "Report",
+                            },
+                            {
+                                name: "General",
                             },
                         ]}
-                        component={PagePermission}
+                        component={PageReport}
                     />
                 }
             />
-
-            {/* end permission */}
-
-            {/* system settings */}
             <Route
-                path="/system-settings/email-templates"
+                path="/reports/ledger"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-04"
-                        moduleName="System Settings - Email Template"
-                        title="Templates"
-                        subtitle="EMAIL"
-                        pageId="PageSystemSettingsEmailTemplate"
-                        pageHeaderIcon={faCog}
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="VIEW"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
                         breadcrumb={[
                             {
-                                name: "System Settings",
+                                name: "Report",
                             },
                             {
-                                name: "Email Templates",
+                                name: "Ledger",
                             },
                         ]}
-                        component={PageEmailTemplate}
+                        component={PageReportLedger}
                     />
                 }
             />
-
             <Route
-                path="/system-settings/admin-settings"
+                path="/reports/inventory"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-04"
-                        moduleName="System Settings - Admin Settings"
-                        title="Settings"
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="INVENTORY"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
+                        breadcrumb={[
+                            {
+                                name: "Report",
+                            },
+                            {
+                                name: "Inventory",
+                            },
+                        ]}
+                        component={PageReportInventory}
+                    />
+                }
+            />
+            <Route
+                path="/reports/sales-revenue"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="SALES REVENUE"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
+                        breadcrumb={[
+                            {
+                                name: "Report",
+                            },
+                            {
+                                name: "Release Item Revenue",
+                            },
+                        ]}
+                        component={PageReportSalesRevenue}
+                    />
+                }
+            />
+            {/* end reports */}
+
+            {/* admin settings */}
+
+            <Route
+                path="/admin-setting"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_admin_setting"
+                        moduleName="Admin Settings"
+                        title="Setting"
                         subtitle="ADMIN"
-                        pageId="PageSystemSettingsEmailTemplate"
-                        pageHeaderIcon={faCog}
+                        pageId="PageAdminSetting"
+                        pageHeaderIcon={faCogs}
                         breadcrumb={[
                             {
-                                name: "System Settings",
-                            },
-                            {
-                                name: "Admin Settings",
+                                name: "Admin Setting",
                             },
                         ]}
-                        component={PageSettings}
+                        component={PageAdminSetting}
                     />
                 }
             />
 
-            {/* end system settings */}
+            {/* end admin settings */}
 
             <Route
-                path="/components"
+                path="/user-permissions"
                 element={
                     <PrivateRoute
-                        // moduleCode="M-04"
-                        moduleName="Components"
-                        title="Components"
-                        subtitle="LIST"
-                        pageId="PageComponents"
-                        pageHeaderIcon={faMicrochip}
+                        moduleCode="page_user_permissions"
+                        moduleName="User Permissions"
+                        title="Permissions"
+                        subtitle="USER"
+                        pageId="PageUserPermissions"
+                        pageHeaderIcon={faUserShield}
                         breadcrumb={[
                             {
-                                name: "Components",
+                                name: "User Permissions",
                             },
                         ]}
-                        component={PageComponents}
+                        component={PageUserPermissions}
+                    />
+                }
+            />
+            <Route
+                path="/video-faqs"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_video_faq"
+                        moduleName="Video FAQs"
+                        title="FAQs"
+                        subtitle="VIDEO"
+                        pageId="PageVideoFaqs"
+                        pageHeaderIcon={faVideo}
+                        breadcrumb={[
+                            {
+                                name: "Video FAQs",
+                            },
+                        ]}
+                        component={PageVideoFaqs}
                     />
                 }
             />

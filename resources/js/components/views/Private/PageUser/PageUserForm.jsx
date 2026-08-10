@@ -1,45 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Row, Col, Button, Form, Collapse, notification } from "antd";
+import { Row, Col, Button, Form, Collapse, notification, Flex } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
     faArrowLeft,
     faCamera,
+    faUserShield,
 } from "@fortawesome/pro-regular-svg-icons";
 import { debounce } from "lodash";
 
-import { GET, POST } from "../../../providers/useAxiosQuery";
+import { DELETE, GET, POST } from "../../../providers/useAxiosQuery";
 import { apiUrl, defaultProfile } from "../../../providers/appConfig";
-import FloatInput from "../../../providers/FloatInput";
-import FloatSelect from "../../../providers/FloatSelect";
-import FloatInputPassword from "../../../providers/FloatInputPassword";
-import ModalFormEmail from "./components/ModalFormEmail";
-import ModalFormPassword from "./components/ModalFormPassword";
-import validateRules from "../../../providers/validateRules";
 import notificationErrors from "../../../providers/notificationErrors";
-import optionGender from "../../../providers/optionGender";
 import ModalUploadProfilePicture from "./components/ModalUploadProfilePicture";
-
-// import Webcam from "react-webcam";
+import UserFormCollapseItemAccountInfo from "./components/UserFormCollapseItemAccountInfo";
+import UserFormCollapseItemPersonalInfo from "./components/UserFormCollapseItemPersonalInfo";
+import UserFormCollapseItemPrimaryContact from "./components/UserFormCollapseItemPrimaryContact";
+import UserFormCollapseItemAddressInfo from "./components/UserFormCollapseItemAddressInfo";
+import isEmptyObject from "../../../providers/isEmptyObject";
+import PageUserFormContext from "./components/PageUserFormContext";
 
 export default function PageUserForm() {
+    const location = useLocation();
     const navigate = useNavigate();
     const params = useParams();
 
     const [form] = Form.useForm();
     const [formDisabled, setFormDisabled] = useState(true);
-    const [userData, setUserData] = useState({});
-    const [toggleModalFormEmail, setToggleModalFormEmail] = useState({
-        open: false,
-        data: null,
-    });
-
-    const [toggleModalFormPassword, setToggleModalFormPassword] = useState({
-        open: false,
-        data: null,
-    });
 
     const [
         toggleModalUploadProfilePicture,
@@ -52,28 +41,18 @@ export default function PageUserForm() {
         fileName: null,
     });
 
-    GET(
-        `api/users/${params.id}`,
-        ["users_info", "check_user_permission"],
-        (res) => {
+    const [dataSelected, setDataSelected] = useState({});
+
+    if (params && params.id) {
+        GET(`api/users/${params.id}`, "users_info", (res) => {
             if (res.data) {
                 let data = res.data;
 
-                let user_role_id = data.user_role_id;
-                let username = data.username;
-                let email = data.email;
-                let firstname = data.profile?.firstname;
-                let lastname = data.profile?.lastname;
+                console.log("data user: ", data);
 
-                let gender = data.profile?.gender;
-
-                if (
-                    data.profile &&
-                    data.profile.attachments &&
-                    data.profile.attachments.length > 0
-                ) {
-                    let profileAttachments = data.profile.attachments.filter(
-                        (f) => f.file_description === "Profile Picture"
+                if (data && data.attachments && data.attachments.length > 0) {
+                    let profileAttachments = data.attachments.filter(
+                        (f) => f.file_description === "Profile Picture",
                     );
 
                     if (profileAttachments.length > 0) {
@@ -87,77 +66,269 @@ export default function PageUserForm() {
                     }
                 }
 
-                form.setFieldsValue({
-                    user_role_id,
-                    username,
-                    email,
-                    firstname,
-                    lastname,
-                    gender,
-                });
+                let profile = data.profile;
 
-                setUserData({
-                    user_role_id,
-                    username,
-                    email,
-                    firstname,
-                    lastname,
-                    gender,
-                });
+                let newdata = {
+                    ...data,
+                    firstname: profile.firstname,
+                    middlename: profile.middlename,
+                    lastname: profile.lastname,
+                    name_ext: profile.name_ext,
+                    salutation: profile.salutation,
+                    gender: profile.gender,
+                    contact_no: profile.contact_no,
+                    // address: profile.address,
+                    company_id: profile.company_id,
+                    customer_type: profile.customer_type,
+                    taxpayer_identification: profile.taxpayer_identification,
+                    // profile_addresses: profile.profile_addresses,
+                    contact_number: profile.contact_no,
+                };
+
+                if (
+                    ["customers", "suppliers"].includes(
+                        location.pathname.split("/")[1],
+                    )
+                ) {
+                    let profile_address_bills = profile.profile_addresses
+                        .filter((x) => x.type === "Bill")
+                        .map((item) => ({
+                            ...item,
+                            status: item.status ? true : false,
+                        }));
+                    let profile_address_ships = profile.profile_addresses
+                        .filter((x) => x.type === "Ship")
+                        .map((item) => ({
+                            ...item,
+                            status: item.status ? true : false,
+                        }));
+
+                    newdata["profile_address_bills"] =
+                        profile_address_bills.length
+                            ? profile_address_bills
+                            : [{}];
+                    newdata["profile_address_ships"] =
+                        profile_address_ships.length
+                            ? profile_address_ships
+                            : [{}];
+                    newdata["salutation"] = profile.salutation ?? "";
+                    newdata["company_id"] = profile.company_id ?? "";
+                    newdata["taxpayer_identification"] =
+                        profile.taxpayer_identification ?? "";
+                } else {
+                    let profile_address = profile.profile_addresses.find(
+                        (x) => x.type === "Bill",
+                    );
+
+                    newdata["address"] =
+                        profile_address && profile_address.address
+                            ? profile_address.address
+                            : "";
+                }
+
+                form.setFieldsValue(newdata);
+
+                setDataSelected(newdata);
             }
-        }
-    );
-
-    const { data: dataRole } = GET(
-        "api/user_role",
-        "user_role_select",
-        (res) => {},
-        false
-    );
+        });
+    }
 
     const { mutate: mutateUser, isLoading: isLoadingUser } = POST(
         `api/users`,
-        "users_info"
+        "create_users_info",
     );
 
     const onFinish = (values) => {
+        // console.log("values: ", values);
+
         let data = new FormData();
-        data.append("id", params.id ? params.id : "");
-        data.append("user_role_id", values.user_role_id);
-        data.append("username", values.username);
+
+        data.append("id", params && params.id ? params.id : "");
+
         data.append("email", values.email);
-        if (!params.id) {
-            data.append("password", values.password);
-        }
         data.append("firstname", values.firstname);
-        data.append("lastname", values.lastname);
+        data.append("middlename", values.middlename ?? "");
+        data.append("lastname", values.lastname ?? "");
+        data.append("name_ext", values.name_ext ?? "");
+        data.append("gender", values.gender ?? "");
+        data.append("contact_no", values.contact_no ?? "");
 
-        data.append("gender", values.gender);
-
-        if (params && !params.id) {
-            if (toggleModalUploadProfilePicture.file) {
-                data.append(
-                    "profile_picture",
-                    toggleModalUploadProfilePicture.file,
-                    toggleModalUploadProfilePicture.fileName
-                );
-            }
+        let profile_address_bills = [];
+        if (values.profile_address_bills) {
+            profile_address_bills = values.profile_address_bills
+                .filter((x) => !isEmptyObject(x))
+                .map((item) => ({
+                    ...item,
+                    status: item.status ? 1 : 0,
+                }));
         }
+        let profile_address_ships = [];
+        if (values.profile_address_ships) {
+            profile_address_ships = values.profile_address_ships
+                .filter((x) => !isEmptyObject(x))
+                .map((item) => ({
+                    ...item,
+                    status: item.status ? 1 : 0,
+                }));
+        }
+
+        if (location.pathname.split("/")[1] === "suppliers") {
+            data.append("role", "Supplier");
+            data.append("salutation", values.salutation ?? "");
+            data.append("company_id", values.company_id ?? "");
+            data.append(
+                "taxpayer_identification",
+                values.taxpayer_identification ?? "",
+            );
+
+            if (!params.id) {
+                data.append("status", "Active");
+            }
+
+            data.append(
+                "profile_address_bills",
+                profile_address_bills
+                    ? JSON.stringify(profile_address_bills)
+                    : [],
+            );
+            data.append(
+                "profile_address_ships",
+                profile_address_ships
+                    ? JSON.stringify(profile_address_ships)
+                    : [],
+            );
+        } else if (location.pathname.split("/")[1] === "customers") {
+            data.append("role", "Customer");
+            data.append("salutation", values.salutation ?? "");
+            data.append("customer_type", values.customer_type ?? "");
+            data.append("company_id", values.company_id ?? "");
+            data.append(
+                "taxpayer_identification",
+                values.taxpayer_identification ?? "",
+            );
+
+            if (!params.id) {
+                data.append("status", "Active");
+            }
+
+            data.append(
+                "profile_address_bills",
+                profile_address_bills
+                    ? JSON.stringify(profile_address_bills)
+                    : [],
+            );
+            data.append(
+                "profile_address_ships",
+                profile_address_ships
+                    ? JSON.stringify(profile_address_ships)
+                    : [],
+            );
+        } else {
+            data.append("role", values.role);
+            data.append("username", values.username);
+            data.append("address", values.address);
+            data.append("status", values.status);
+            data.append("password", values.password ?? "");
+        }
+
+        if (toggleModalUploadProfilePicture.file) {
+            data.append(
+                "profile_picture",
+                toggleModalUploadProfilePicture.file,
+                toggleModalUploadProfilePicture.file.name,
+            );
+        }
+
+        data.append("hostname", window.location.host);
 
         mutateUser(data, {
             onSuccess: (res) => {
                 if (res.success) {
-                    if (params.id) {
-                        notification.success({
-                            message: "User",
-                            description: res.message,
-                        });
+                    notification.success({
+                        message: "User",
+                        description: res.message,
+                    });
+
+                    if (params && !params.id) {
+                        navigate(-1);
                     } else {
-                        notification.success({
-                            message: "User",
-                            description: res.message,
-                        });
-                        navigate("/users");
+                        let newData = res.data;
+
+                        if (
+                            newData &&
+                            newData.attachments &&
+                            newData.attachments.length > 0
+                        ) {
+                            let profileAttachments = newData.attachments.filter(
+                                (f) => f.file_description === "Profile Picture",
+                            );
+
+                            if (profileAttachments.length > 0) {
+                                setToggleModalUploadProfilePicture({
+                                    open: false,
+                                    file: null,
+                                    src: apiUrl(
+                                        profileAttachments[0].file_path,
+                                    ),
+                                    is_camera: null,
+                                    fileName: null,
+                                });
+                            }
+                        }
+
+                        let profile = newData.profile;
+
+                        let newDataCopy = {
+                            ...newData,
+                            firstname: profile.firstname,
+                            middlename: profile.middlename,
+                            lastname: profile.lastname,
+                            name_ext: profile.name_ext,
+                            gender: profile.gender,
+                            contact_no: profile.contact_no,
+                        };
+
+                        if (
+                            ["customers", "suppliers"].includes(
+                                location.pathname.split("/")[1],
+                            )
+                        ) {
+                            let profile_address_bills =
+                                profile.profile_addresses.filter(
+                                    (x) => x.type === "Bill",
+                                );
+                            let profile_address_ships =
+                                profile.profile_addresses.filter(
+                                    (x) => x.type === "Ship",
+                                );
+
+                            newDataCopy["profile_address_bills"] =
+                                profile_address_bills.length
+                                    ? profile_address_bills
+                                    : [{}];
+                            newDataCopy["profile_address_ships"] =
+                                profile_address_ships.length
+                                    ? profile_address_ships
+                                    : [{}];
+                            newDataCopy["salutation"] =
+                                profile.salutation ?? "";
+                            newDataCopy["company_id"] =
+                                profile.company_id ?? "";
+                            newDataCopy["taxpayer_identification"] =
+                                profile.taxpayer_identification ?? "";
+                        } else {
+                            let profile_address =
+                                profile.profile_addresses.find(
+                                    (x) => x.type === "Current Address",
+                                );
+
+                            newDataCopy["address"] =
+                                profile_address.address ?? "";
+                        }
+
+                        form.setFieldsValue(newDataCopy);
+
+                        setDataSelected(newDataCopy);
                     }
                 } else {
                     notification.error({
@@ -172,6 +343,90 @@ export default function PageUserForm() {
         });
     };
 
+    const { mutate: mutateDeleteAddress, isLoading: isLoadingDeleteAddress } =
+        DELETE(`api/profile_address`, "users_info");
+
+    const handleDeleteAddress = (index, remove, formListName) => {
+        let dataSelectedCopy = { ...dataSelected };
+        let profile_addresses = dataSelectedCopy[formListName];
+
+        if (profile_addresses && profile_addresses.length > 0) {
+            let profile_addresse = profile_addresses[index];
+
+            if (profile_addresse && profile_addresse.id) {
+                mutateDeleteAddress(profile_addresse, {
+                    onSuccess: (res) => {
+                        if (res.success) {
+                            notification.success({
+                                message: "User",
+                                description: res.message,
+                            });
+
+                            remove(index);
+                        } else {
+                            notification.error({
+                                message: "User",
+                                description: res.message,
+                            });
+                        }
+                    },
+                    onError: (err) => {
+                        notificationErrors(err);
+                    },
+                });
+            } else {
+                remove(index);
+            }
+        } else {
+            remove(index);
+        }
+    };
+
+    const handleTriggerDebounce = debounce((values) => {
+        let { field, value, formList, index } = values;
+
+        if (params && params.id) {
+            if (
+                formList &&
+                (formList === "profile_address_ships" ||
+                    formList === "profile_address_bills")
+            ) {
+                let oldData =
+                    dataSelected && dataSelected[formList]
+                        ? dataSelected[formList][index]
+                        : "";
+
+                if (oldData !== value) {
+                    form.submit();
+                }
+            } else {
+                let oldData =
+                    dataSelected && dataSelected[field]
+                        ? dataSelected[field]
+                        : "";
+
+                if (field === "contact_no") {
+                    let contact_no = value.replace(/[^0-9]/g, "");
+
+                    if (oldData !== contact_no) {
+                        form.submit();
+                    }
+                } else {
+                    if (oldData !== value) {
+                        form.submit();
+                    }
+                }
+            }
+        }
+    }, 1000);
+
+    const handleDebounce = useCallback(
+        (values) => {
+            handleTriggerDebounce(values);
+        },
+        [handleTriggerDebounce],
+    );
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setFormDisabled(false);
@@ -182,465 +437,214 @@ export default function PageUserForm() {
         };
     }, []);
 
-    const handleTriggerDebounce = debounce((field, value) => {
-        let oldValue = userData[field];
-        if (field === "contact_number") {
-            if (!oldValue) {
-                oldValue = "";
-            }
-            if (value) {
-                value = value.split("_").join("");
-                value = value.split(" ").join("");
+    const collapseItems = [];
 
-                if (oldValue !== value) {
-                    form.submit();
-                }
-            } else {
-                if (oldValue !== value) {
-                    form.submit();
-                }
-            }
-        } else {
-            if (oldValue !== value) {
-                form.submit();
-            }
-        }
-    }, 1000);
+    if (location.pathname.split("/")[1] === "users") {
+        collapseItems.push({
+            key: "0",
+            label: "ACCOUNT INFORMATION",
+            children: <UserFormCollapseItemAccountInfo />,
+        });
+    }
 
-    const handleDebounce = useCallback(
-        (field, value) => {
-            if (params.id) {
-                handleTriggerDebounce(field, value);
-            }
-        },
-        [handleTriggerDebounce]
-    );
+    collapseItems.push({
+        key: "1",
+        label: "PERSONAL INFORMATION",
+        children: <UserFormCollapseItemPersonalInfo />,
+    });
+
+    if (
+        location.pathname.split("/")[1] === "customers" ||
+        location.pathname.split("/")[1] === "suppliers"
+    ) {
+        collapseItems.push({
+            key: "2",
+            label: "PRIMARY CONTACT",
+            children: <UserFormCollapseItemPrimaryContact />,
+        });
+
+        collapseItems.push({
+            key: "3",
+            label: "BILL ADDRESS INFORMATION",
+            children: (
+                <UserFormCollapseItemAddressInfo
+                    type="Bill"
+                    formList="profile_address_bills"
+                    handleDeleteAddress={handleDeleteAddress}
+                />
+            ),
+        });
+
+        collapseItems.push({
+            key: "4",
+            label: "SHIP ADDRESS INFORMATION",
+            children: (
+                <UserFormCollapseItemAddressInfo
+                    type="Ship"
+                    formList="profile_address_ships"
+                    handleDeleteAddress={handleDeleteAddress}
+                />
+            ),
+        });
+    }
 
     return (
-        <Row gutter={[12, 12]}>
-            <Col sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <Button
-                    icon={<FontAwesomeIcon icon={faArrowLeft} />}
-                    onClick={() => navigate(-1)}
-                >
-                    Back to list
-                </Button>
-            </Col>
+        <PageUserFormContext.Provider
+            value={{
+                form,
+                formDisabled,
+                params,
+                handleDebounce,
+                location,
+                toggleModalUploadProfilePicture,
+                setToggleModalUploadProfilePicture,
+                isLoadingDeleteAddress,
+            }}
+        >
+            <Row gutter={[20, 20]}>
+                <Col sm={24} md={24} lg={24} xl={24} xxl={24}>
+                    <Flex gap={10} align="center">
+                        <Button
+                            className="btn-main-invert-outline b-r-none"
+                            icon={<FontAwesomeIcon icon={faArrowLeft} />}
+                            onClick={() => navigate(-1)}
+                        >
+                            Back to list
+                        </Button>
+                        <Button
+                            className="btn-main-primary b-r-none"
+                            icon={<FontAwesomeIcon icon={faUserShield} />}
+                            onClick={() =>
+                                navigate("/users/permission/" + params.id)
+                            }
+                        >
+                            Back to list
+                        </Button>
+                    </Flex>
+                </Col>
 
-            <Col sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <Form form={form} onFinish={onFinish}>
-                    <Row gutter={[12, 12]}>
-                        <Col sm={24} md={24} lg={14} xl={14} xxl={14}>
-                            <Collapse
-                                className="collapse-main-primary"
-                                defaultActiveKey={["0", "1"]}
-                                size="middle"
-                                expandIcon={({ isActive }) => (
-                                    <FontAwesomeIcon
-                                        icon={
-                                            isActive ? faAngleUp : faAngleDown
-                                        }
-                                    />
-                                )}
-                                items={[
-                                    {
-                                        key: "0",
-                                        label: "ACCOUNT INFORMATION",
-                                        children: (
-                                            <Row gutter={[12, 12]}>
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item
-                                                        name="user_role_id"
-                                                        rules={[
-                                                            validateRules.required(),
-                                                        ]}
-                                                    >
-                                                        <FloatSelect
-                                                            label="Role"
-                                                            placeholder="Role"
-                                                            required={true}
-                                                            options={
-                                                                dataRole &&
-                                                                dataRole.data
-                                                                    ? dataRole.data.map(
-                                                                          (
-                                                                              item
-                                                                          ) => ({
-                                                                              value: item.id,
-                                                                              label: item.role,
-                                                                          })
-                                                                      )
-                                                                    : []
-                                                            }
-                                                            disabled={
-                                                                formDisabled
-                                                            }
-                                                            onChange={(e) => {
-                                                                handleDebounce(
-                                                                    "user_role_id",
-                                                                    e
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
+                <Col sm={24} md={24} lg={24} xl={24} xxl={24}>
+                    <Form
+                        form={form}
+                        onFinish={onFinish}
+                        initialValues={{
+                            profile_address_bills: [{}],
+                            profile_address_ships: [{}],
+                        }}
+                    >
+                        <Row gutter={[20, 20]}>
+                            <Col sm={24} md={24} lg={14} xl={14} xxl={14}>
+                                <Collapse
+                                    className="collapse-main-primary"
+                                    defaultActiveKey={["0", "1", "2", "3", "4"]}
+                                    size="middle"
+                                    expandIcon={({ isActive }) => (
+                                        <FontAwesomeIcon
+                                            icon={
+                                                isActive
+                                                    ? faAngleUp
+                                                    : faAngleDown
+                                            }
+                                        />
+                                    )}
+                                    items={collapseItems}
+                                />
+                            </Col>
 
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item
-                                                        name="username"
-                                                        rules={[
-                                                            validateRules.required(),
-                                                        ]}
-                                                    >
-                                                        <FloatInput
-                                                            label="Username"
-                                                            placeholder="Username"
-                                                            required
-                                                            disabled={
-                                                                params.id
-                                                                    ? true
-                                                                    : formDisabled
-                                                            }
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item
-                                                        name="email"
-                                                        rules={[
-                                                            validateRules.required(),
-                                                            validateRules.email,
-                                                        ]}
-                                                    >
-                                                        <FloatInput
-                                                            label="Email"
-                                                            placeholder="Email"
-                                                            required={true}
-                                                            disabled={
-                                                                params.id
-                                                                    ? true
-                                                                    : formDisabled
-                                                            }
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-
-                                                {params.id ? null : (
-                                                    <Col
-                                                        xs={24}
-                                                        sm={24}
-                                                        md={24}
-                                                        lg={12}
-                                                        xl={12}
-                                                        xxl={12}
-                                                    >
-                                                        <Form.Item
-                                                            name="password"
-                                                            rules={[
-                                                                validateRules.required(),
-                                                                validateRules.password,
-                                                            ]}
-                                                        >
-                                                            <FloatInputPassword
-                                                                label="Password"
-                                                                placeholder="Password"
-                                                                required={true}
-                                                                autoComplete="new-password"
-                                                                disabled={
-                                                                    formDisabled
-                                                                }
-                                                            />
-                                                        </Form.Item>
-                                                    </Col>
-                                                )}
-
-                                                {params.id ? (
+                            <Col sm={24} md={24} lg={10} xl={10} xxl={10}>
+                                <Collapse
+                                    className="collapse-main-primary"
+                                    defaultActiveKey={["0", "1"]}
+                                    size="middle"
+                                    expandIcon={({ isActive }) => (
+                                        <FontAwesomeIcon
+                                            icon={
+                                                isActive
+                                                    ? faAngleUp
+                                                    : faAngleDown
+                                            }
+                                        />
+                                    )}
+                                    items={[
+                                        {
+                                            key: "0",
+                                            label: "Profile Picture",
+                                            className:
+                                                "collapse-profile-picture",
+                                            children: (
+                                                <Row gutter={[12, 0]}>
                                                     <Col
                                                         xs={24}
                                                         sm={24}
                                                         md={24}
                                                         lg={24}
                                                     >
-                                                        <a
-                                                            type="link"
-                                                            className="color-1"
-                                                            onClick={() =>
-                                                                setToggleModalFormEmail(
-                                                                    {
-                                                                        open: true,
-                                                                        data: {
-                                                                            id: params.id,
-                                                                        },
-                                                                    }
-                                                                )
-                                                            }
-                                                        >
-                                                            Change Email
-                                                        </a>
+                                                        <div className="profile-picture-wrapper">
+                                                            <img
+                                                                alt=""
+                                                                src={
+                                                                    toggleModalUploadProfilePicture.src
+                                                                        ? toggleModalUploadProfilePicture.src
+                                                                        : defaultProfile
+                                                                }
+                                                            />
+
+                                                            <Button
+                                                                type="link"
+                                                                icon={
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                            faCamera
+                                                                        }
+                                                                    />
+                                                                }
+                                                                className="btn-upload"
+                                                                onClick={() =>
+                                                                    setToggleModalUploadProfilePicture(
+                                                                        (
+                                                                            ps,
+                                                                        ) => ({
+                                                                            ...ps,
+                                                                            open: true,
+                                                                        }),
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
                                                     </Col>
-                                                ) : null}
-
-                                                {params.id ? (
-                                                    <Col
-                                                        xs={24}
-                                                        sm={24}
-                                                        md={24}
-                                                        lg={12}
-                                                        xl={12}
-                                                        xxl={12}
-                                                    >
-                                                        <a
-                                                            type="link"
-                                                            className="color-1"
-                                                            onClick={() =>
-                                                                setToggleModalFormPassword(
-                                                                    {
-                                                                        open: true,
-                                                                        data: {
-                                                                            id: params.id,
-                                                                        },
-                                                                    }
-                                                                )
-                                                            }
-                                                        >
-                                                            Change Password
-                                                        </a>
-                                                    </Col>
-                                                ) : null}
-                                            </Row>
-                                        ),
-                                    },
-                                    {
-                                        key: "1",
-                                        label: "PERSONAL INFORMATION",
-                                        children: (
-                                            <Row gutter={[12, 12]}>
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item
-                                                        name="firstname"
-                                                        rules={[
-                                                            validateRules.required(),
-                                                        ]}
-                                                    >
-                                                        <FloatInput
-                                                            label="First Name"
-                                                            placeholder="First Name"
-                                                            required={true}
-                                                            disabled={
-                                                                formDisabled
-                                                            }
-                                                            onChange={(e) => {
-                                                                handleDebounce(
-                                                                    "firstname",
-                                                                    e.target
-                                                                        .value
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item
-                                                        name="lastname"
-                                                        rules={[
-                                                            validateRules.required(),
-                                                        ]}
-                                                    >
-                                                        <FloatInput
-                                                            label="Last Name"
-                                                            placeholder="Last Name"
-                                                            required={true}
-                                                            disabled={
-                                                                formDisabled
-                                                            }
-                                                            onChange={(e) => {
-                                                                handleDebounce(
-                                                                    "lastname",
-                                                                    e.target
-                                                                        .value
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={12}
-                                                    xl={12}
-                                                    xxl={12}
-                                                >
-                                                    <Form.Item name="gender">
-                                                        <FloatSelect
-                                                            label="Gender"
-                                                            placeholder="Gender"
-                                                            disabled={
-                                                                formDisabled
-                                                            }
-                                                            options={
-                                                                optionGender
-                                                            }
-                                                            onChange={(e) => {
-                                                                handleDebounce(
-                                                                    "gender",
-                                                                    e
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
-                                        ),
-                                    },
-                                ]}
-                            />
-                        </Col>
-
-                        <Col sm={24} md={24} lg={10} xl={10} xxl={10}>
-                            <Collapse
-                                className="collapse-main-primary"
-                                defaultActiveKey={["0"]}
-                                size="middle"
-                                expandIcon={({ isActive }) => (
-                                    <FontAwesomeIcon
-                                        icon={
-                                            isActive ? faAngleUp : faAngleDown
-                                        }
-                                    />
-                                )}
-                                items={[
-                                    {
-                                        key: "0",
-                                        label: "TAKE PHOTO",
-                                        className: "collapse-profile-picture",
-                                        children: (
-                                            <Row gutter={[12, 0]}>
-                                                <Col
-                                                    xs={24}
-                                                    sm={24}
-                                                    md={24}
-                                                    lg={24}
-                                                >
-                                                    <div className="profile-picture-wrapper">
-                                                        <img
-                                                            alt="profile-picture"
-                                                            src={
-                                                                toggleModalUploadProfilePicture.src
-                                                                    ? toggleModalUploadProfilePicture.src
-                                                                    : defaultProfile
-                                                            }
-                                                        />
-
-                                                        <Button
-                                                            type="link"
-                                                            icon={
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faCamera
-                                                                    }
-                                                                />
-                                                            }
-                                                            className="btn-upload"
-                                                            onClick={() =>
-                                                                setToggleModalUploadProfilePicture(
-                                                                    (ps) => ({
-                                                                        ...ps,
-                                                                        open: true,
-                                                                    })
-                                                                )
-                                                            }
-                                                        />
-                                                    </div>
-
-                                                    <ModalUploadProfilePicture
-                                                        toggleModalUploadProfilePicture={
-                                                            toggleModalUploadProfilePicture
-                                                        }
-                                                        setToggleModalUploadProfilePicture={
-                                                            setToggleModalUploadProfilePicture
-                                                        }
-                                                        params={params}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        ),
-                                    },
-                                ]}
-                            />
-                        </Col>
-
-                        {params.id ? null : (
-                            <Col
-                                xs={24}
-                                sm={24}
-                                md={24}
-                                lg={24}
-                                xl={24}
-                                xxl={24}
-                            >
-                                <Button
-                                    className="btn-main-primary"
-                                    type="primary"
-                                    size="large"
-                                    htmlType="submit"
-                                    loading={isLoadingUser}
-                                >
-                                    SUBMIT
-                                </Button>
+                                                </Row>
+                                            ),
+                                        },
+                                    ]}
+                                />
                             </Col>
-                        )}
-                    </Row>
-                </Form>
 
-                <ModalFormEmail
-                    toggleModalFormEmail={toggleModalFormEmail}
-                    setToggleModalFormEmail={setToggleModalFormEmail}
-                />
+                            {params.id ? null : (
+                                <Col
+                                    xs={24}
+                                    sm={24}
+                                    md={24}
+                                    lg={24}
+                                    xl={24}
+                                    xxl={24}
+                                >
+                                    <Button
+                                        key={4}
+                                        className="btn-main-primary"
+                                        type="primary"
+                                        onClick={() => form.submit()}
+                                        loading={isLoadingUser}
+                                    >
+                                        SUBMIT
+                                    </Button>
+                                </Col>
+                            )}
+                        </Row>
+                    </Form>
 
-                <ModalFormPassword
-                    toggleModalFormPassword={toggleModalFormPassword}
-                    setToggleModalFormPassword={setToggleModalFormPassword}
-                />
-            </Col>
-        </Row>
+                    <ModalUploadProfilePicture />
+                </Col>
+            </Row>
+        </PageUserFormContext.Provider>
     );
 }

@@ -1,25 +1,23 @@
+import { useEffect } from "react";
 import { Modal, Button, Form, notification } from "antd";
 
-import { useEffect } from "react";
 import { POST } from "../../../../providers/useAxiosQuery";
-import FloatInputPassword from "../../../../providers/FloatInputPassword";
 import validateRules from "../../../../providers/validateRules";
+import notificationErrors from "../../../../providers/notificationErrors";
+import FloatInputPassword from "../../../../providers/FloatInputPassword";
 
 export default function ModalFormPassword(props) {
     const { toggleModalFormPassword, setToggleModalFormPassword } = props;
     const [form] = Form.useForm();
 
-    const { mutate: mutatePassword, loading: loadingPassword } = POST(
+    const { mutate: mutatePassword, isLoading: isLoadingPassword } = POST(
         `api/users_update_password`,
         "users_info"
     );
 
     const onFinish = (values) => {
-        console.log("onFinish", values);
-
         let data = {
             ...values,
-
             id:
                 toggleModalFormPassword.data && toggleModalFormPassword.data.id
                     ? toggleModalFormPassword.data.id
@@ -30,28 +28,24 @@ export default function ModalFormPassword(props) {
             onSuccess: (res) => {
                 if (res.success) {
                     notification.success({
-                        message: "Password",
+                        message: "Change Password",
                         description: res.message,
                     });
 
+                    form.resetFields();
                     setToggleModalFormPassword({
                         open: false,
                         data: null,
                     });
-
-                    form.resetFields();
                 } else {
                     notification.error({
-                        message: "Something went wrong",
+                        message: "Change Password",
                         description: res.message,
                     });
                 }
             },
             onError: (err) => {
-                notification.error({
-                    message: "Password Update",
-                    description: "Something went wrong",
-                });
+                notificationErrors(err);
             },
         });
     };
@@ -82,7 +76,6 @@ export default function ModalFormPassword(props) {
             footer={[
                 <Button
                     className="btn-main-primary outlined"
-                    size="large"
                     key={1}
                     onClick={() => {
                         setToggleModalFormPassword({
@@ -91,16 +84,16 @@ export default function ModalFormPassword(props) {
                         });
                         form.resetFields();
                     }}
+                    disabled={isLoadingPassword}
                 >
                     CANCEL
                 </Button>,
                 <Button
                     className="btn-main-primary"
                     type="primary"
-                    size="large"
                     key={2}
                     onClick={(values) => form.submit(values)}
-                    loading={loadingPassword}
+                    loading={isLoadingPassword}
                 >
                     SUBMIT
                 </Button>,

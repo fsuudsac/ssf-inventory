@@ -1,0 +1,95 @@
+#PageDashboard {
+    .ant-row {
+        .ant-col {
+            .ant-card {
+                border-radius: 4px;
+                .ant-card-body {
+                    padding: 4px;
+                    background: linear-gradient(
+                        to right,
+                        rgb(60 116 175),
+                        rgb(94 128 135)
+                    );
+                    border-radius: 4px;
+                    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08),
+                        0 0 6px rgba(0, 0, 0, 0.05);
+                    transition: 0.3s transform
+                            cubic-bezier(0.155, 1.105, 0.295, 1.12),
+                        0.3s box-shadow,
+                        0.3s -webkit-transform cubic-bezier(0.155, 1.105, 0.295, 1.12);
+                    cursor: pointer;
+                }
+
+                .ant-card-body:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12),
+                        0 4px 8px rgba(0, 0, 0, 0.06);
+                }
+
+                .card-content {
+                    background-color: rgb(255, 253, 250);
+                    padding: 10px;
+
+                    .ant-flex {
+                        gap: 10px;
+                        .card-icon {
+                            font-size: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .collapse-payment-due-list {
+        .ant-collapse-item {
+            .ant-collapse-content {
+                .ant-collapse-content-box {
+                    padding: 0;
+
+                    .ant-table {
+                        .ant-table-container {
+                            .ant-table-content {
+                                table {
+                                    .ant-table-tbody {
+                                        .ant-table-row {
+                                            .ant-table-cell {
+                                                padding-block: 5px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .tr-due-date {
+        background-color: #c80202;
+
+        .ant-table-cell {
+            &:not(.ant-table-cell-row-hover) {
+                color: #fff;
+
+                .ant-flex {
+                    span {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    // .collapse-statement-profit-loss {
+    //     .ant-collapse-item {
+    //         .ant-collapse-content {
+    //             .ant-collapse-content-box {
+    //                 // padding: 0;
+    //             }
+    //         }
+    //     }
+    // }
+}

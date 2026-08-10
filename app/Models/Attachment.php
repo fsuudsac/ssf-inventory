@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attachment extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
     public function attachmentable()
     {
         return $this->morphTo();
+    }
+
+    public function historicalData()
+    {
+        return $this->morphMany(HistoricalData::class, 'historicalable');
     }
 }

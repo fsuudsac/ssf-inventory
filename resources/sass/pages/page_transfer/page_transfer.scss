@@ -1,0 +1,15 @@
+@use "../../ui/index" as *;
+
+.modal-wrap-form-transfer {
+    .ant-modal {
+        width: 40% !important;
+
+        @include atMD {
+            width: 80% !important;
+        }
+
+        @include atSM {
+            width: 90% !important;
+        }
+    }
+}

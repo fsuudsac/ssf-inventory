@@ -61,6 +61,8 @@ export default function Header(props) {
         return { items };
     };
 
+    console.log("userdata: ", userData());
+
     const menuProfile = () => {
         const items = [
             {
@@ -71,17 +73,16 @@ export default function Header(props) {
                         <Image
                             preview={false}
                             src={profilePicture}
-                            alt={userData().firstname}
+                            alt={userData().username}
                         />
 
                         <div className="info-wrapper">
                             <Typography.Text className="info-username">
-                                {`${userData().firstname} ${
-                                    userData().lastname
-                                }`}
+                                {userData().firstname} {userData().lastname}
                             </Typography.Text>
 
                             <br />
+
                             <Typography.Text className="info-role">
                                 {role()}
                             </Typography.Text>
@@ -141,7 +142,7 @@ export default function Header(props) {
                         preview={false}
                         rootClassName="menu-submenu-profile"
                         src={profilePicture}
-                        alt={userData().firstname}
+                        alt={userData().username}
                     />
                 </Dropdown>
 

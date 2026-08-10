@@ -1,0 +1,86 @@
+@use "../../ui/index" as *;
+
+#PageUserForm {
+    .ant-collapse {
+        .ant-collapse-item {
+            &.collapse-profile-picture {
+                .ant-collapse-content {
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                    height: 239px;
+
+                    .ant-collapse-content-box {
+                        position: relative;
+                        height: 250px;
+
+                        .profile-picture-wrapper {
+                            width: 200px;
+                            height: 200px;
+                            position: absolute;
+                            left: calc(50% - (200px / 2));
+
+                            img {
+                                width: 200px;
+                                height: 200px;
+                                object-fit: cover;
+                                border-radius: 50%;
+                            }
+
+                            .btn-upload {
+                                position: absolute;
+                                bottom: 8px;
+                                right: 8px;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50% !important;
+                                background-color: var(--main-secondary);
+                                color: #ffffff;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#PageUserProfile
+    .ant-layout
+    .ant-layout-content
+    .ant-card
+    .ant-card-body
+    .ant-row
+    .collapse-wrapper-photo
+    .ant-collapse
+    .ant-collapse-item.collapse-signature
+    .ant-collapse-content
+    .ant-collapse-content-box
+    .signature-pad-wrapper
+    .empty-wrapper
+    .ant-empty
+    .ant-empty-footer {
+    @include atMax(375) {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+    }
+}
+
+.contact-info {
+    .ant-form-item {
+        .float-wrapper {
+            .ant-input-mask {
+                position: relative;
+                top: 8px;
+                font-size: 15px !important;
+                background-color: transparent !important;
+                border: none !important;
+            }
+        }
+    }
+}

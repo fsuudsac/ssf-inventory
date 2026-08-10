@@ -38,29 +38,13 @@ class ModuleController extends Controller
             $data = $dataQuery->limit($request->page_size)
                 ->paginate($request->page_size, ['*'], 'page', $request->page)
                 ->toArray();
-
-            $data['data'] = collect($data['data'])->map(function ($item) use ($request) {
-                $item['module_buttons'] = collect($item['module_buttons'])->map(function ($button) use ($request) {
-                    if ($request->tab_parent_active == 'UserRole') {
-                        $userRolePermission = UserRolePermission::where('mod_button_id', $button['id'])->where('user_role_id', $request->user_role_id)->first();
-                        $button['status'] = $userRolePermission  && $userRolePermission->status ? $userRolePermission->status : 0;
-                    } else if ($request->tab_parent_active == 'Users') {
-                        $userPermission = UserPermission::where('mod_button_id', $button['id'])->where('user_id', $request->user_id)->first();
-                        $button['status'] = $userPermission  && $userPermission->status ? $userPermission->status : 0;
-                    }
-
-                    return $button;
-                });
-                return $item;
-            });
         } else {
             $data = $dataQuery->get();
         }
 
         return response()->json([
             "success" => true,
-            "data" => $data,
-            "request" => $request->all()
+            "data" => $data
         ], 200);
     }
 
@@ -88,13 +72,17 @@ class ModuleController extends Controller
         ]);
 
         if ($dataModule) {
+
             if ($request->module_buttons) {
-                foreach ($request->module_buttons as $key => $value) {
-                    if (!empty($value['id'])) {
-                        $existingButton = $dataModule->module_buttons()->findOrFail($value['id']);
-                        $existingButton->update($value);
-                    } else {
-                        $dataModule->module_buttons()->create($value);
+                if (count($request->module_buttons) > 0) {
+                    foreach ($request->module_buttons as $key => $value) {
+
+                        if (!empty($value['id'])) {
+                            $existingButton = $dataModule->module_buttons()->findOrFail($value['id']);
+                            $existingButton->update($value);
+                        } else {
+                            $dataModule->module_buttons()->create($value);
+                        }
                     }
                 }
             }

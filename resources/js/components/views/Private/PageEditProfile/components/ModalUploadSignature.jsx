@@ -11,14 +11,14 @@ export default function ModalUploadSignature(props) {
         handleSave,
         fileSignature,
         setFileSignature,
-        loadingUploadSignature,
+        isLoadingUploadSignature,
     } = props;
 
     const propsUpload = {
         action: false,
         accept: ".jpg,.png",
         maxCount: 1,
-        beforeUpload: async (file) => {
+        beforeUpload: (file) => {
             let error = false;
 
             const isJPG =
@@ -33,14 +33,14 @@ export default function ModalUploadSignature(props) {
             }
 
             if (error === false) {
-                let imageFileToBase64Res = await imageFileToBase64(file);
-
-                setFileSignature((ps) => ({
-                    ...ps,
-                    src: imageFileToBase64Res,
-                    file: file,
-                    fileName: file.name,
-                }));
+                imageFileToBase64(file).then((imageUrl) => {
+                    setFileSignature((ps) => ({
+                        ...ps,
+                        src: imageUrl,
+                        file: file,
+                        fileName: file.name,
+                    }));
+                });
             }
 
             return error;
@@ -78,7 +78,7 @@ export default function ModalUploadSignature(props) {
                             });
                         }
                     }}
-                    loading={loadingUploadSignature}
+                    loading={isLoadingUploadSignature}
                 >
                     Save
                 </Button>,

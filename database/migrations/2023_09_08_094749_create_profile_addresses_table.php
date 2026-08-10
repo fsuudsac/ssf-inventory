@@ -16,9 +16,10 @@ class CreateProfileAddressesTable extends Migration
         Schema::create('profile_addresses', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('profile_id')->nullable();
-            $table->integer('barangay_id')->nullable();
+            $table->bigInteger('profile_id')->nullable()->index();
+            $table->integer('barangay_id')->nullable()->index();
             $table->longText('address')->nullable();
+            $table->string('type')->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

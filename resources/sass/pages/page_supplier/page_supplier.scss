@@ -1,0 +1,56 @@
+#PageSupplierForm,
+#PageCustomerForm {
+    .ant-collapse {
+        .ant-collapse-item {
+            &.collapse-profile-picture {
+                .ant-collapse-content {
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+
+                    .ant-collapse-content-box {
+                        position: relative;
+                        height: 250px;
+
+                        .profile-picture-wrapper {
+                            width: 200px;
+                            height: 200px;
+                            position: absolute;
+                            left: calc(50% - (200px / 2));
+
+                            img {
+                                width: 200px;
+                                height: 200px;
+                                object-fit: cover;
+                                border-radius: 50%;
+                            }
+
+                            .btn-upload {
+                                position: absolute;
+                                bottom: 8px;
+                                right: 8px;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50% !important;
+                                background-color: var(--main-secondary);
+                                color: #ffffff;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.wrap-modal-form-supplier {
+    .ant-modal {
+        .ant-modal-content {
+            width: 800px !important;
+        }
+    }
+}

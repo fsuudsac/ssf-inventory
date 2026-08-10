@@ -1,95 +1,71 @@
 import { useState } from "react";
-import {
-    Alert,
-    Button,
-    Card,
-    Col,
-    Flex,
-    Form,
-    Layout,
-    Row,
-    Typography,
-} from "antd";
+import { Layout, Typography, Card, Alert, Form, Button } from "antd";
+import dayjs from "dayjs";
 
 import { POST } from "../../../providers/useAxiosQuery";
-import {
-    appDescription,
-    appLogo,
-    appName,
-    encrypt,
-} from "../../../providers/appConfig";
+import { encrypt, appDescription } from "../../../providers/appConfig";
 import validateRules from "../../../providers/validateRules";
 import FloatInput from "../../../providers/FloatInput";
 import FloatInputPassword from "../../../providers/FloatInputPassword";
 
 export default function PageLogin() {
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessageLogin, setErrorMessageLogin] = useState({
+        type: "",
+        message: "",
+    });
 
-    const { mutate: mutateLogin, isLoading: isLoadingLogin } =
-        POST("api/login");
+    const { mutate: mutateLogin, isLoading: isLoadingButtonLogin } = POST(
+        "api/login",
+        "login",
+    );
 
-    const onFinish = (values) => {
+    const onFinishLogin = (values) => {
         mutateLogin(values, {
             onSuccess: (res) => {
+                // console.log("res", res);
                 if (res.data) {
                     localStorage.userdata = encrypt(JSON.stringify(res.data));
                     localStorage.token = res.token;
                     window.location.reload();
                 } else {
-                    setErrorMessage(res.message);
+                    setErrorMessageLogin({
+                        type: "error",
+                        message: res.message,
+                    });
                 }
             },
-            onError: (error) => {
-                console.log("Error: ", error);
-
-                setErrorMessage(error.response.data.message);
+            onError: (err) => {
+                setErrorMessageLogin({
+                    type: "error",
+                    message: (
+                        <div>
+                            Unrecognized username or password.{" "}
+                            <b>Forgot your password?</b>
+                        </div>
+                    ),
+                });
             },
         });
     };
 
     return (
-        <Layout.Content className="flex justify-center items-center h-full">
-            <Row gutter={[20, 20]} className="w-full">
-                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <Flex
-                        justify="end"
-                        align="center"
-                        className="h-full"
-                        gap={20}
-                    >
-                        <img src={appLogo} className="w-50" />
-
-                        <Flex vertical>
-                            <Typography.Title
-                                level={1}
-                                className="mb-0! leading-normal text-white!"
-                            >
-                                {appName}
-                            </Typography.Title>
-                            <Typography.Title
-                                level={5}
-                                className="m-0! text-white!"
-                            >
-                                {appDescription}
-                            </Typography.Title>
-                        </Flex>
-                    </Flex>
-                </Col>
-                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <Card className="w-lg">
-                        <Typography.Title
-                            level={3}
-                            className="text-center mb-5!"
-                        >
-                            Account Login
-                        </Typography.Title>
-
-                        <Form layout="vertical" onFinish={onFinish}>
+        <Layout.Content>
+            <div className="main-content">
+                <div className="content-content">
+                    <div className="logo-wrapper">
+                        {/* <img src={logo} alt="" /> */}
+                        <img width={250} src="/images/logo.png" alt="" />
+                    </div>
+                    <Card className="card-login">
+                        <Form onFinish={onFinishLogin} autoComplete="off">
                             <Form.Item
                                 name="email"
                                 rules={[validateRules.required()]}
                             >
-                                <FloatInput label="Username/Email" />
+                                <FloatInput
+                                    label="Username / E-mail"
+                                    placeholder="Username / E-mail"
+                                />
                             </Form.Item>
 
                             <Form.Item
@@ -98,28 +74,36 @@ export default function PageLogin() {
                             >
                                 <FloatInputPassword
                                     label="Password"
-                                    autoComplete="new-password"
+                                    placeholder="Password"
                                 />
                             </Form.Item>
 
                             <Button
                                 type="primary"
                                 htmlType="submit"
+                                loading={isLoadingButtonLogin}
+                                className="mt-10 mb-10 btn-log-in"
                                 block
-                                shape="round"
-                                loading={isLoadingLogin}
                             >
-                                Submit
+                                Log In
                             </Button>
 
-                            {errorMessage && (
+                            {/* <Typography.Link
+                                href="login"
+                                target="_blank"
+                                italic
+                            >
+                                Forgot Password?
+                            </Typography.Link> */}
+
+                            {errorMessageLogin.message && (
                                 <Alert
-                                    className="mt-5!"
-                                    type="error"
+                                    className="mt-10"
+                                    type={errorMessageLogin.type}
                                     message={
                                         <span
                                             dangerouslySetInnerHTML={{
-                                                __html: errorMessage,
+                                                __html: errorMessageLogin.message,
                                             }}
                                         />
                                     }
@@ -127,8 +111,15 @@ export default function PageLogin() {
                             )}
                         </Form>
                     </Card>
-                </Col>
-            </Row>
+                </div>
+            </div>
+
+            <Layout.Footer>
+                <Typography.Text>
+                    {`© ${dayjs().year()} ${appDescription}. All Rights
+                        Reserved.`}
+                </Typography.Text>
+            </Layout.Footer>
         </Layout.Content>
     );
 }

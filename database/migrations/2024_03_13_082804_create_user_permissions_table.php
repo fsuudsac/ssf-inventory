@@ -16,8 +16,8 @@ class CreateUserPermissionsTable extends Migration
         Schema::create('user_permissions', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('user_id')->nullable();
-            $table->integer('mod_button_id')->nullable();
+            $table->bigInteger('user_id')->nullable()->index();
+            $table->bigInteger('mod_button_id')->nullable()->index();
             $table->tinyInteger('status')->default(0)->nullable();
 
             $table->bigInteger('created_by')->nullable();

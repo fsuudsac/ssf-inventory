@@ -16,15 +16,20 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('user_id')->nullable();
-            $table->string('firstname', 100)->nullable();
-            $table->string('middlename', 100)->nullable();
-            $table->string('lastname', 100)->nullable();
-            $table->string('name_ext', 50)->nullable();
+            $table->bigInteger('user_id')->nullable()->index();
+            $table->string('firstname')->nullable();
+            $table->string('middlename')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('name_ext')->nullable();
+            $table->string('salutation')->nullable();
             $table->string('gender')->nullable();
-            $table->date('birthdate')->nullable();
-            $table->longText('birthplace')->nullable();
-            $table->integer('age')->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('personal_email')->nullable();
+            $table->string('taxpayer_identification')->nullable();
+            $table->string('supplier_ledger')->nullable();
+            $table->integer('company_id')->nullable()->index();
+            $table->longText('address')->nullable();
+            $table->string('customer_type')->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

@@ -40,6 +40,7 @@
         "quill-image-resize-module-react": "^3.0.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "react-image-file-resizer": "^0.4.8",
         "react-input-mask": "^2.0.4",
         "react-query": "^3.39.3",
         "react-quill": "^2.0.0",

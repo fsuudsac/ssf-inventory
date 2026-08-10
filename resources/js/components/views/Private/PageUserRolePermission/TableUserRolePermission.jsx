@@ -1,4 +1,4 @@
-import { Row, Col, Table, Space, Switch, notification } from "antd";
+import { Row, Col, Table, Space, Switch, notification, Flex } from "antd";
 import {
     TableGlobalSearch,
     TablePageSize,
@@ -173,15 +173,19 @@ export default function TableUserRolePermission(props) {
             </Col>
             <Col xs={24} sm={24} md={24}>
                 <div className="tbl-bottom-filter">
-                    <TableShowingEntries />
-                    <TablePagination
-                        tableFilter={tableFilter}
-                        setTableFilter={setTableFilter}
-                        total={dataSource?.data.total}
-                        showLessItems={true}
-                        showSizeChanger={false}
-                        tblIdWrapper={`tbl_wrapper_user_role_permission_${tableFilter.user_role_id}`}
-                    />
+                    <div />
+
+                    <Flex>
+                        <TableShowingEntries />
+                        <TablePagination
+                            tableFilter={tableFilter}
+                            setTableFilter={setTableFilter}
+                            total={dataSource?.data.total}
+                            showLessItems={true}
+                            showSizeChanger={false}
+                            tblIdWrapper={`tbl_wrapper_user_role_permission_${tableFilter.user_role_id}`}
+                        />
+                    </Flex>
                 </div>
             </Col>
         </Row>

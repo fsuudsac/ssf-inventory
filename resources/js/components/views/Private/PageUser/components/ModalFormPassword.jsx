@@ -9,7 +9,7 @@ export default function ModalFormPassword(props) {
     const { toggleModalFormPassword, setToggleModalFormPassword } = props;
     const [form] = Form.useForm();
 
-    const { mutate: mutatePassword, loading: loadingPassword } = POST(
+    const { mutate: mutatePassword, isLoading: isLoadingPassword } = POST(
         `api/users_update_password`,
         "users_info"
     );
@@ -91,6 +91,7 @@ export default function ModalFormPassword(props) {
                         });
                         form.resetFields();
                     }}
+                    disabled={isLoadingPassword}
                 >
                     CANCEL
                 </Button>,
@@ -100,7 +101,7 @@ export default function ModalFormPassword(props) {
                     size="large"
                     key={2}
                     onClick={(values) => form.submit(values)}
-                    loading={loadingPassword}
+                    loading={isLoadingPassword}
                 >
                     SUBMIT
                 </Button>,

@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from "react";
-import { Modal, Row, Col, Button, Upload, notification, Flex } from "antd";
+import { useCallback, useContext, useRef, useState } from "react";
+import { Modal, Row, Col, Button, Upload, notification } from "antd";
 import {
     faCamera,
     faRefresh,
@@ -13,15 +13,17 @@ import { defaultProfile } from "../../../../providers/appConfig";
 import imageFileToBase64 from "../../../../providers/imageFileToBase64";
 import dataURLtoBlob from "../../../../providers/dataURLtoBlob";
 import notificationErrors from "../../../../providers/notificationErrors";
+import PageUserFormContext from "./PageUserFormContext";
 
-export default function ModalUploadProfilePicture(props) {
+export default function ModalUploadProfilePicture() {
     const {
         toggleModalUploadProfilePicture,
         setToggleModalUploadProfilePicture,
         params,
-    } = props;
+    } = useContext(PageUserFormContext);
 
     const webcamRef = useRef(null);
+
     const [fileImage, setFileImage] = useState({
         is_camera: false,
         status: null,
@@ -35,7 +37,7 @@ export default function ModalUploadProfilePicture(props) {
         action: false,
         accept: ".jpg,.png",
         maxCount: 1,
-        beforeUpload: async (file) => {
+        beforeUpload: (file) => {
             let error = false;
 
             const isJPG =
@@ -50,14 +52,14 @@ export default function ModalUploadProfilePicture(props) {
             }
 
             if (error === false) {
-                let imageFileToBase64Res = await imageFileToBase64(file);
-
-                setFileImage((ps) => ({
-                    ...ps,
-                    src: imageFileToBase64Res,
-                    file: file,
-                    fileName: file.name,
-                }));
+                imageFileToBase64(file).then((imageUrl) => {
+                    setFileImage((ps) => ({
+                        ...ps,
+                        src: imageUrl,
+                        file: file,
+                        fileName: file.name,
+                    }));
+                });
             }
 
             return error;
@@ -72,6 +74,8 @@ export default function ModalUploadProfilePicture(props) {
                 video: true,
             })
             .then(function (stream) {
+                console.log("stream", stream);
+                console.log("stream.getVideoTracks()", stream.getVideoTracks());
                 if (stream.getVideoTracks().length > 0) {
                     // code for when both devices are available
 
@@ -102,10 +106,12 @@ export default function ModalUploadProfilePicture(props) {
                 }));
             });
     };
+
     const handleCapture = useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
 
         const blob = dataURLtoBlob(imageSrc);
+        console.log("blob", blob);
 
         setFileImage((ps) => ({
             ...ps,
@@ -115,54 +121,6 @@ export default function ModalUploadProfilePicture(props) {
             fileName: blob.size + "-camera.png",
         }));
     }, [webcamRef]);
-
-    const { mutate: mutateImage, isLoading: isLoadingImage } = POST(
-        `api/update_profile_photo`,
-        "update_profile_photo"
-    );
-
-    const onFinish = () => {
-        let data = new FormData();
-
-        data.append("user_id", params.id);
-
-        if (fileImage.file) {
-            data.append("profile_picture", fileImage.file, fileImage.fileName);
-        }
-
-        mutateImage(data, {
-            onSuccess: (res) => {
-                if (res.success) {
-                    setToggleModalUploadProfilePicture({
-                        open: false,
-                        file: fileImage.file,
-                        src: fileImage.src,
-                        fileName: fileImage.fileName,
-                    });
-
-                    setFileImage({
-                        is_camera: false,
-                        status: null,
-                        file: null,
-                        src: null,
-                        isCapture: false,
-                    });
-                    notification.success({
-                        message: "Profile Image",
-                        description: res.message,
-                    });
-                } else {
-                    notification.error({
-                        message: "Profile Image",
-                        description: res.message,
-                    });
-                }
-            },
-            onError: (err) => {
-                notificationErrors(err);
-            },
-        });
-    };
 
     const handleRenderCamera = () => {
         if (fileImage.isCapture) {
@@ -218,6 +176,49 @@ export default function ModalUploadProfilePicture(props) {
         }
     };
 
+    const { mutate: mutateProfilePicture, isLoading: isLoadingProfilePicture } =
+        POST(`api/user_profile_picture`, "users_info");
+
+    const handleSaveProfilePicture = (data) => {
+        let formData = new FormData();
+        formData.append("user_id", params.id);
+        formData.append("profile_picture", fileImage.file);
+
+        mutateProfilePicture(formData, {
+            onSuccess: (res) => {
+                if (res.success) {
+                    notification.success({
+                        message: "Profile Picture",
+                        description: res.message,
+                    });
+
+                    setToggleModalUploadProfilePicture({
+                        open: false,
+                        file: fileImage.file,
+                        src: fileImage.src,
+                        fileName: fileImage.fileName,
+                    });
+
+                    setFileImage({
+                        is_camera: false,
+                        status: null,
+                        file: null,
+                        src: null,
+                        isCapture: false,
+                    });
+                } else {
+                    notification.error({
+                        message: "Profile Picture",
+                        description: res.message,
+                    });
+                }
+            },
+            onError: (err) => {
+                notificationErrors(err);
+            },
+        });
+    };
+
     return (
         <Modal
             title={
@@ -233,6 +234,7 @@ export default function ModalUploadProfilePicture(props) {
             footer={[
                 <Button
                     key="cancel"
+                    size="large"
                     onClick={() => {
                         setToggleModalUploadProfilePicture((ps) => ({
                             ...ps,
@@ -247,7 +249,7 @@ export default function ModalUploadProfilePicture(props) {
                             fileName: null,
                         });
                     }}
-                    disabled={isLoadingImage}
+                    disabled={isLoadingProfilePicture}
                 >
                     Cancel
                 </Button>,
@@ -255,19 +257,20 @@ export default function ModalUploadProfilePicture(props) {
                     key="save"
                     type="primary"
                     className="btn-main-primary"
+                    size="large"
                     disabled={fileImage.file ? false : true}
+                    loading={isLoadingProfilePicture}
                     onClick={() => {
-                        if (fileImage.file) {
-                            if (params.id) {
-                                onFinish();
-                            } else {
+                        if (params && params.id) {
+                            handleSaveProfilePicture();
+                        } else {
+                            if (fileImage.file) {
                                 setToggleModalUploadProfilePicture({
                                     open: false,
                                     file: fileImage.file,
                                     src: fileImage.src,
                                     fileName: fileImage.fileName,
                                 });
-
                                 setFileImage({
                                     is_camera: false,
                                     status: null,
@@ -275,16 +278,15 @@ export default function ModalUploadProfilePicture(props) {
                                     src: null,
                                     isCapture: false,
                                 });
+                            } else {
+                                notification.error({
+                                    message: "Upload Profile Picture",
+                                    description:
+                                        "Please upload your profile picture!",
+                                });
                             }
-                        } else {
-                            notification.error({
-                                message: "Upload Profile Picture",
-                                description:
-                                    "Please upload your profile picture!",
-                            });
                         }
                     }}
-                    loading={isLoadingImage}
                 >
                     Save
                 </Button>,
@@ -302,81 +304,88 @@ export default function ModalUploadProfilePicture(props) {
                         handleRenderCamera()
                     )}
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <Flex gap={10} justify="center">
-                        {!fileImage.is_camera ? (
-                            <Upload {...propsUpload}>
-                                <Button
-                                    icon={<FontAwesomeIcon icon={faUpload} />}
-                                >
-                                    Upload Picture
-                                </Button>
-                            </Upload>
-                        ) : (
+                <Col
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    xl={24}
+                    className="text-center"
+                >
+                    {!fileImage.is_camera ? (
+                        <Upload {...propsUpload}>
                             <Button
                                 icon={<FontAwesomeIcon icon={faUpload} />}
-                                onClick={() =>
-                                    setFileImage({
-                                        is_camera: false,
-                                        status: null,
-                                        file: null,
-                                        src: null,
-                                        isCapture: false,
-                                    })
-                                }
+                                size="large"
                             >
-                                Click to Upload
+                                Upload Picture
                             </Button>
-                        )}
+                        </Upload>
+                    ) : (
+                        <Button
+                            icon={<FontAwesomeIcon icon={faUpload} />}
+                            size="large"
+                            onClick={() =>
+                                setFileImage({
+                                    is_camera: false,
+                                    status: null,
+                                    file: null,
+                                    src: null,
+                                    isCapture: false,
+                                })
+                            }
+                        >
+                            Click to Upload
+                        </Button>
+                    )}
 
-                        {fileImage.is_camera ? (
-                            fileImage.status === "available" ? (
-                                fileImage.isCapture ? (
-                                    <Button
-                                        icon={
-                                            <FontAwesomeIcon icon={faCamera} />
-                                        }
-                                        className="ml-10"
-                                        onClick={() =>
-                                            setFileImage((ps) => ({
-                                                ...ps,
-                                                src: null,
-                                                file: null,
-                                                isCapture: false,
-                                            }))
-                                        }
-                                    >
-                                        Reset
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        icon={
-                                            <FontAwesomeIcon icon={faCamera} />
-                                        }
-                                        onClick={handleCapture}
-                                        className="ml-10"
-                                    >
-                                        Capture
-                                    </Button>
-                                )
+                    {fileImage.is_camera ? (
+                        fileImage.status === "available" ? (
+                            fileImage.isCapture ? (
+                                <Button
+                                    icon={<FontAwesomeIcon icon={faCamera} />}
+                                    size="large"
+                                    className="ml-10"
+                                    onClick={() =>
+                                        setFileImage((ps) => ({
+                                            ...ps,
+                                            src: null,
+                                            file: null,
+                                            isCapture: false,
+                                        }))
+                                    }
+                                >
+                                    Reset
+                                </Button>
                             ) : (
                                 <Button
-                                    icon={<FontAwesomeIcon icon={faRefresh} />}
-                                    onClick={() => window.location.reload()}
+                                    icon={<FontAwesomeIcon icon={faCamera} />}
+                                    size="large"
+                                    onClick={handleCapture}
+                                    className="ml-10"
                                 >
-                                    Refresh
+                                    Capture
                                 </Button>
                             )
                         ) : (
                             <Button
-                                icon={<FontAwesomeIcon icon={faCamera} />}
-                                onClick={handleOpenCamera}
-                                className="ml-10"
+                                icon={<FontAwesomeIcon icon={faRefresh} />}
+                                size="large"
+                                onClick={() => window.location.reload()}
                             >
-                                Click to Open Camera
+                                Refresh
                             </Button>
-                        )}
-                    </Flex>
+                        )
+                    ) : (
+                        <Button
+                            icon={<FontAwesomeIcon icon={faCamera} />}
+                            size="large"
+                            onClick={handleOpenCamera}
+                            className="ml-10"
+                        >
+                            Click to Open Camera
+                        </Button>
+                    )}
                 </Col>
             </Row>
         </Modal>

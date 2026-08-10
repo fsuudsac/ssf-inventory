@@ -1,0 +1,57 @@
+// Import mixins (breakpoints, etc.)
+@use "../index" as *;
+
+.ant-radio-group {
+    &.ant-radio-group-large {
+        .ant-radio-button-wrapper {
+            height: 45px;
+            line-height: 43px;
+        }
+    }
+    &.flex {
+        display: flex;
+        width: 100%;
+        &.wrap {
+            flex-wrap: wrap;
+        }
+        &.nowrap {
+            flex-wrap: nowrap;
+        }
+
+        @include atXS {
+            gap: 8px;
+        }
+    }
+
+    .ant-radio-button-wrapper {
+        &:first-child {
+            border-radius: 0px;
+        }
+        &:last-child {
+            border-radius: 0px;
+        }
+        width: 50%;
+        text-align: center;
+
+        @include atXS {
+            width: 100% !important;
+        }
+
+        &.ant-radio-button-wrapper-checked {
+            color: var(--main-primary);
+            border-color: var(--main-primary);
+        }
+
+        &:hover {
+            color: var(--main-primary);
+        }
+    }
+}
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+    border-color: var(--main-primary);
+    background-color: var(--main-primary);
+}
+.ant-radio-wrapper:hover .ant-radio-wrapper,
+.ant-radio-wrapper:hover .ant-radio-inner {
+    border-color: var(--main-primary);
+}

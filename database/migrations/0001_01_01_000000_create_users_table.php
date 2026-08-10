@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('role')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('Active')->nullable();
 
             $table->tinyInteger('one_time_update_info')->default(0)->nullable();
             $table->tinyInteger('google2fa_enable')->default(0)->nullable();

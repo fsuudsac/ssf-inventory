@@ -1,33 +1,33 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, notification, Popconfirm, Flex } from "antd";
+import { Table, Button, notification, Popconfirm, Flex, Tag } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faEnvelope,
     faPencil,
     faTrash,
+    faTrashUndo,
     faUserGear,
 } from "@fortawesome/pro-regular-svg-icons";
-import dayjs from "dayjs";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import notificationErrors from "../../../../providers/notificationErrors";
 
 export default function TableUser(props) {
-    const {
-        dataSource,
-        tableFilter,
-        setTableFilter,
-        selectedRowKeys,
-        setSelectedRowKeys,
-    } = props;
+    const { dataSource, onChangeTable, location, tableFilter } = props;
 
     const navigate = useNavigate();
 
-    const { mutate: mutateDeactivateUser, loading: loadingDeactivateUser } =
-        POST(`api/user_deactivate`, "users_active_list");
+    const { mutate: mutateDeactivateUser, isLoading: isLoadingDeactivateUser } =
+        POST(`api/user_archived`, "users_list");
 
     const handleDeactivate = (record) => {
-        mutateDeactivateUser(record, {
+        delete record.status;
+
+        let data = {
+            ...record,
+            status: tableFilter.status,
+        };
+        mutateDeactivateUser(data, {
             onSuccess: (res) => {
                 if (res.success) {
                     notification.success({
@@ -47,14 +47,27 @@ export default function TableUser(props) {
         });
     };
 
-    const onChangeTable = (pagination, filters, sorter) => {
-        setTableFilter((ps) => ({
-            ...ps,
-            sort_field: sorter.columnKey,
-            sort_order: sorter.order ? sorter.order.replace("end", "") : null,
-            page: 1,
-            page_size: "50",
-        }));
+    const RenderAddress = ({ record }) => {
+        const [showMore, setShowMore] = useState(false);
+        const profileAddresses = record.profile.profile_addresses;
+        const filteredAddresses = profileAddresses.filter(
+            (item) => item.status === 1,
+        );
+
+        return (
+            <Flex vertical>
+                {filteredAddresses
+                    .slice(0, showMore ? filteredAddresses.length : 1)
+                    .map((item, index) => (
+                        <Tag key={index}>{item.address}</Tag>
+                    ))}
+                {filteredAddresses.length > 1 && (
+                    <Button type="link" onClick={() => setShowMore(!showMore)}>
+                        {showMore ? "Show Less" : "Show More"}
+                    </Button>
+                )}
+            </Flex>
+        );
     };
 
     return (
@@ -74,34 +87,47 @@ export default function TableUser(props) {
                 key="action"
                 dataIndex="action"
                 align="center"
+                width={100}
                 render={(text, record) => {
                     return (
-                        <Flex gap={10} justify="center">
+                        <Flex justify="center" gap={15}>
+                            {location.pathname === "/users" ? (
+                                <Button
+                                    type="link"
+                                    className="btn-info p-0 w-auto h-auto"
+                                    onClick={() => {
+                                        navigate(
+                                            `${location.pathname}/permission/${record.id}`,
+                                        );
+                                    }}
+                                    name="btn_edit_permission"
+                                    title="Edit Permission"
+                                    icon={<FontAwesomeIcon icon={faUserGear} />}
+                                />
+                            ) : null}
+
                             <Button
                                 type="link"
-                                className="w-auto h-auto p-0 text-blue-500!"
+                                className="text-primary p-0 w-auto h-auto"
                                 onClick={() => {
                                     navigate(
-                                        `${location.pathname}/permission/${record.id}`
-                                    );
-                                }}
-                                name="btn_edit_permission"
-                                title="Edit Permission"
-                                icon={<FontAwesomeIcon icon={faUserGear} />}
-                            />
-                            <Button
-                                type="link"
-                                className="w-auto h-auto p-0 text-blue-500!"
-                                onClick={() => {
-                                    navigate(
-                                        `${location.pathname}/edit/${record.id}`
+                                        `${location.pathname}/edit/${record.id}`,
                                     );
                                 }}
                                 name="btn_edit"
                                 icon={<FontAwesomeIcon icon={faPencil} />}
                             />
                             <Popconfirm
-                                title="Are you sure to deactivate this data?"
+                                title={
+                                    <>
+                                        Are you sure you want to
+                                        <br />
+                                        {tableFilter.status === "Active"
+                                            ? "archive"
+                                            : "restore"}{" "}
+                                        this user?
+                                    </>
+                                }
                                 onConfirm={() => {
                                     handleDeactivate(record);
                                 }}
@@ -113,91 +139,117 @@ export default function TableUser(props) {
                                 }}
                                 okText="Yes"
                                 cancelText="No"
+                                name="btn_delete"
                             >
                                 <Button
                                     type="link"
-                                    className="w-auto h-auto p-0 text-red-500!"
-                                    loading={loadingDeactivateUser}
+                                    className={`p-0 w-auto h-auto ${
+                                        tableFilter.status === "Active"
+                                            ? "text-danger"
+                                            : "text-success"
+                                    }`}
+                                    loading={isLoadingDeactivateUser}
                                     name="btn_delete"
-                                    icon={<FontAwesomeIcon icon={faTrash} />}
+                                    icon={
+                                        <FontAwesomeIcon
+                                            icon={
+                                                tableFilter.status === "Active"
+                                                    ? faTrash
+                                                    : faTrashUndo
+                                            }
+                                        />
+                                    }
                                 />
                             </Popconfirm>
                         </Flex>
                     );
                 }}
-                width={150}
             />
-            <Table.Column
-                title="Start Date"
-                key="created_at"
-                dataIndex="created_at"
-                render={(text, _) =>
-                    text ? dayjs(text).format("MM/DD/YYYY") : ""
-                }
-                sorter
-                width={150}
-            />
-            <Table.Column
-                title="Full Name"
-                key="fullname"
-                dataIndex="fullname"
-                sorter={true}
-                render={(text, record) =>
-                    text ? (
-                        <Button
-                            type="link"
-                            className="p-0 w-auto h-auto"
-                            onClick={() => {
-                                navigate(
-                                    `${location.pathname}/edit/${record.id}`
-                                );
-                            }}
-                        >
-                            {text}
-                        </Button>
-                    ) : null
-                }
-                width={220}
-            />
+
             <Table.Column
                 title="Email"
                 key="email"
                 dataIndex="email"
-                sorter={true}
-                align="center"
-                render={(text, _) =>
-                    text ? (
-                        <Button
-                            type="link"
-                            className="p-0 w-auto h-auto"
-                            icon={<FontAwesomeIcon icon={faEnvelope} />}
-                            href={`mailto:${text}`}
-                        />
-                    ) : null
-                }
-                width={220}
-            />
-            <Table.Column
-                title="Type"
-                key="type"
-                dataIndex="type"
                 sorter
-                width={150}
+                width={180}
+            />
+            {location.pathname === "/users" ? (
+                <Table.Column
+                    title="Username"
+                    key="username"
+                    dataIndex="username"
+                    width={180}
+                    sorter
+                />
+            ) : null}
+
+            <Table.Column
+                title="Full Name"
+                key="fullname"
+                dataIndex="fullname"
+                width={180}
+                sorter
             />
             <Table.Column
-                title="Role"
-                key="role"
-                dataIndex="role"
-                sorter={true}
-                width={150}
+                title="Gender"
+                key="gender"
+                dataIndex="gender"
+                width={180}
+                sorter
             />
+            <Table.Column
+                title="Contact No"
+                key="contact_no"
+                dataIndex="contact_no"
+                width={180}
+                sorter
+            />
+            {location.pathname !== "/users" && (
+                <>
+                    <Table.Column
+                        title="Address"
+                        key="address"
+                        dataIndex="address"
+                        width={180}
+                        sorter
+                        render={(text, record) => {
+                            return <RenderAddress record={record} />;
+                        }}
+                    />
+                    <Table.Column
+                        title="Taxpayers Identification"
+                        key="taxpayer_identification"
+                        dataIndex="taxpayer_identification"
+                        width={250}
+                        sorter
+                    />
+                </>
+            )}
+
+            {location.pathname === "/users" ? (
+                <Table.Column
+                    title="Role"
+                    key="role"
+                    dataIndex="role"
+                    width={150}
+                    sorter
+                />
+            ) : null}
+
             <Table.Column
                 title="Status"
                 key="status"
                 dataIndex="status"
-                sorter={true}
+                width={100}
                 align="center"
+                sorter
+            />
+            <Table.Column
+                title="Date Created"
+                key="created_at_formatted"
+                dataIndex="created_at_formatted"
                 width={150}
+                sorter
             />
         </Table>
     );
