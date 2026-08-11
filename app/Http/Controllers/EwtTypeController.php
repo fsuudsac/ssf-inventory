@@ -19,7 +19,7 @@ class EwtTypeController extends Controller
 
         $data = EwtType::select([
             "*",
-            DB::raw("$date_formatted data_formatted")
+            DB::raw("$date_formatted date_formatted")
         ])
             ->search([
                 "search" => $request->search,
@@ -64,8 +64,9 @@ class EwtTypeController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = EwtType::find($request->id);
-                $ewtType = EwtType::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = EwtType::withTrashed()->find($request->id);
+                $ewtType = EwtType::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 

@@ -11,6 +11,9 @@ import ClearCache from "../../providers/ClearCache";
 import Sidemenu from "./Sidemenu";
 import Header from "./Header";
 import Footer from "./Footer";
+// Video FAQ float button and its allowed modules list
+import ModalPageVideoFaq from "./components/ModalPageVideoFaq";
+import videoFaqShowModule from "./components/videoFaqShowModule";
 
 lineSpinner.register();
 
@@ -26,6 +29,8 @@ export default function Private(props) {
         pageHeaderClass,
         pageId,
         className,
+        dataPermissions,
+        refetchPermissions,
     } = props;
 
     const location = useLocation();
@@ -34,10 +39,12 @@ export default function Private(props) {
     const [width, setWidth] = useState(window.innerWidth);
 
     const [sideMenuCollapse, setSideMenuCollapse] = useState(
-        window.innerWidth <= 768 ? true : false
+        window.innerWidth <= 768 ? true : false,
     );
 
     useEffect(() => {
+        refetchPermissions();
+
         const section = document.querySelector(".private-layout");
         section.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -114,6 +121,7 @@ export default function Private(props) {
                             sideMenuCollapse={sideMenuCollapse}
                             setSideMenuCollapse={setSideMenuCollapse}
                             width={width}
+                            dataPermissions={dataPermissions}
                         />
 
                         <Layout
@@ -131,6 +139,7 @@ export default function Private(props) {
                                 pageHeaderIcon={pageHeaderIcon}
                                 title={title}
                                 subtitle={subtitle}
+                                location={location}
                             />
 
                             <Layout.Content
@@ -175,7 +184,7 @@ export default function Private(props) {
                                                       onClick: () => {
                                                           if (item.link) {
                                                               navigate(
-                                                                  item.link
+                                                                  item.link,
                                                               );
                                                           }
                                                       },
@@ -190,6 +199,11 @@ export default function Private(props) {
 
                             <Footer />
                         </Layout>
+
+                        {/* Render video FAQ float button only for allowed modules */}
+                        {videoFaqShowModule.includes(moduleName) && (
+                            <ModalPageVideoFaq module_name={moduleName} />
+                        )}
                     </Layout>
                 </>
             )}

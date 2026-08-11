@@ -153,7 +153,7 @@ export default function ModalFormCustomer() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

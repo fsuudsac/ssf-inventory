@@ -160,13 +160,14 @@ class InventoryController extends Controller
             }
         });
 
+        // quantity_add/quantity_sub are withSum() aliases in SELECT — use HAVING not WHERE
         if ($request->inventoryStatus) {
             if ($request->inventoryStatus == 'Out of Stock') {
-                $data = $data->whereRaw("$availableStockRaw <= 0");
+                $data = $data->havingRaw("$availableStockRaw <= 0");
             } else if ($request->inventoryStatus == 'Low Inventory') {
-                $data = $data->whereRaw("$availableStockRaw > 0 && $availableStockRaw <= reorder_point");
+                $data = $data->havingRaw("$availableStockRaw > 0 AND $availableStockRaw <= reorder_point");
             } else if ($request->inventoryStatus == "Higher than 'Reorder Point'") {
-                $data = $data->whereRaw("$availableStockRaw > reorder_point");
+                $data = $data->havingRaw("$availableStockRaw > reorder_point");
             }
         }
 
@@ -233,14 +234,16 @@ class InventoryController extends Controller
             },
         ]);
 
-        if ($request->supplier_id !== null && $request->date_range !== null) {
-            $dateRange = explode(',', $request->date_range);
+        // Guard against malformed date_range (must have exactly 2 comma-separated dates)
+        $dateRange = $request->date_range ? explode(',', $request->date_range) : [];
+        $hasValidDateRange = count($dateRange) === 2;
+
+        if ($request->supplier_id !== null && $hasValidDateRange) {
             $data->where('supplier_id', $request->supplier_id)
                 ->whereBetween('date_purchased', [$dateRange[0], $dateRange[1]]);
-        } else if ($request->supplier_id === null && $request->date_range !== null) {
-            $dateRange = explode(',', $request->date_range);
+        } else if ($request->supplier_id === null && $hasValidDateRange) {
             $data->whereBetween('date_purchased', [$dateRange[0], $dateRange[1]]);
-        } else if ($request->supplier_id !== null && $request->date_range === null) {
+        } else if ($request->supplier_id !== null && !$hasValidDateRange) {
             $data->where('supplier_id', $request->supplier_id);
         } else {
             $data;
@@ -274,14 +277,16 @@ class InventoryController extends Controller
             },
         ]);
 
-        if ($request->customer_id !== null && $request->date_range !== null) {
-            $dateRange = explode(',', $request->date_range);
+        // Guard against malformed date_range (must have exactly 2 comma-separated dates)
+        $dateRange = $request->date_range ? explode(',', $request->date_range) : [];
+        $hasValidDateRange = count($dateRange) === 2;
+
+        if ($request->customer_id !== null && $hasValidDateRange) {
             $data->where('customer_id', $request->customer_id)
                 ->whereBetween('date_sold', [$dateRange[0], $dateRange[1]]);
-        } else if ($request->customer_id === null && $request->date_range !== null) {
-            $dateRange = explode(',', $request->date_range);
+        } else if ($request->customer_id === null && $hasValidDateRange) {
             $data->whereBetween('date_sold', [$dateRange[0], $dateRange[1]]);
-        } else if ($request->customer_id !== null && $request->date_range === null) {
+        } else if ($request->customer_id !== null && !$hasValidDateRange) {
             $data->where('customer_id', $request->customer_id);
         } else {
             $data;

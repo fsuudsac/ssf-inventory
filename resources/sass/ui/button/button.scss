@@ -1,535 +1,151 @@
-.ant-btn {
-    line-height: normal;
-    border-radius: 20px !important;
-    height: 35px;
+@use "../index" as *;
+@use "sass:color";
 
-    &.ant-btn-sm {
-        height: 30px;
-        padding: 0px 10px;
+.ant-btn {
+    height: var(--height-base);
+    border-radius: var(--border-radius-base);
+
+    &:focus-visible {
+        outline: none !important;
     }
 
     &.ant-btn-lg {
-        height: 40px;
+        height: var(--height-large);
     }
 
-    &.btn-main-primary {
-        color: var(--main-primary-text) !important;
-        background-color: var(--main-primary) !important;
-        border-color: var(--main-primary) !important;
+    &.ant-btn-sm {
+        height: var(--height-small);
+    }
 
-        &:hover {
-            color: var(--main-primary-text-active) !important;
-            background-color: var(--main-primary-active) !important;
-            border-color: var(--main-primary) !important;
-        }
+    span {
+        line-height: normal;
+    }
 
+    &.ant-btn-primary {
+        background-color: var(--main-primary);
+        color: var(--main-primary-text);
+        border: 1px solid var(--main-primary);
+
+        &:hover,
         &:focus {
+            background: var(--main-primary-active) !important;
             color: var(--main-primary-text-active) !important;
-            background-color: var(--main-primary-active) !important;
-            border-color: var(--main-primary) !important;
-        }
-
-        &.outlined {
-            color: var(--main-primary-text-active) !important;
-            background-color: var(--main-primary-active) !important;
-            border-color: var(--main-primary) !important;
-
-            &:hover {
-                color: var(--main-primary-text) !important;
-                background-color: var(--main-primary) !important;
-                border-color: var(--main-primary) !important;
-            }
-
-            &:focus {
-                    color: var(--main-primary-text) !important;
-                background-color: var(--main-primary) !important;
-                border-color: var(--main-primary) !important;
-            }
         }
 
         &.active {
             color: var(--main-primary-text) !important;
             background-color: var(--main-primary) !important;
-            border-color: var(--main-primary) !important;
-        }
-
-        &:disabled {
-            border-color: #d9d9d9 !important;
-            color: rgba(0, 0, 0, 0.25) !important;
-            background-color: rgba(0, 0, 0, 0.04) !important;
-        }
-    }
-
-    &.btn-main-secondary {
-        color: var(--main-secondary-text) !important;
-        background-color: var(--main-secondary) !important;
-        border-color: var(--main-secondary) !important;
-
-        &:hover {
-            color: var(--main-secondary-text-active) !important;
-            background-color: var(--main-secondary-active) !important;
-            border-color: var(--main-secondary) !important;
-        }
-
-        &:focus {
-            color: var(--main-secondary-text-active) !important;
-            background-color: var(--main-secondary-active) !important;
-            border-color: var(--main-secondary) !important;
+            border: 1px solid var(--main-primary) !important;
         }
 
         &.outlined {
-            color: var(--main-secondary-text-active) !important;
-            background-color: var(--main-secondary-active) !important;
-            border-color: var(--main-secondary) !important;
+            background-color: var(--main-primary-text) !important;
+            border-color: var(--main-primary) !important;
+            color: var(--main-primary) !important;
 
-            &:hover {
-                color: var(--main-secondary-text) !important;
-                background-color: var(--main-secondary) !important;
-                border-color: var(--main-secondary) !important;
-            }
-
+            &:hover,
             &:focus {
-                color: var(--main-secondary-text) !important;
-                background-color: var(--main-secondary) !important;
-                border-color: var(--main-secondary) !important;
+                color: var(--main-primary-text) !important;
+                background-color: var(--main-primary) !important;
             }
-        }
-
-        &.active {
-            color: var(--main-secondary-text) !important;
-            background-color: var(--main-secondary) !important;
-            border-color: var(--main-secondary) !important;
         }
 
         &:disabled {
-            border-color: #d9d9d9 !important;
+            border-color: var(--border-color-base) !important;
             color: rgba(0, 0, 0, 0.25) !important;
             background-color: rgba(0, 0, 0, 0.04) !important;
         }
     }
 
-    // primary
-    &.btn-primary {
-        color: #ffffff;
-        background-color: var(--color-primary);
-        border-color: var(--color-primary);
+    &.ant-btn-default {
+        border-color: var(--main-primary);
+        color: var(--main-primary);
 
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-primary-active);
-            border-color: var(--color-primary-active);
-        }
-
+        &:hover,
         &:focus {
-            color: #ffffff;
-            background-color: var(--color-primary-active);
-            border-color: var(--color-primary-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-        }
-    }
-
-    // secondary
-    &.btn-secondary {
-        color: #ffffff;
-        background-color: var(--color-secondary);
-        border-color: var(--color-secondary);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-secondary-active);
-            border-color: var(--color-secondary-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-secondary-active);
-            border-color: var(--color-secondary-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-secondary);
-            border-color: var(--color-secondary);
-        }
-    }
-
-    // success
-    &.btn-success {
-        color: #ffffff;
-        background-color: var(--color-success);
-        border-color: var(--color-success);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-success-active);
-            border-color: var(--color-success-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-success-active);
-            border-color: var(--color-success-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-success);
-            border-color: var(--color-success);
-        }
-    }
-
-    // warning
-    &.btn-warning {
-        color: #ffffff;
-        background-color: var(--color-warning);
-        border-color: var(--color-warning);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-warning-active);
-            border-color: var(--color-warning-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-warning-active);
-            border-color: var(--color-warning-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-warning);
-            border-color: var(--color-warning);
-        }
-    }
-
-    // danger
-    &.btn-danger {
-        color: #ffffff;
-        background-color: var(--color-danger);
-        border-color: var(--color-danger);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-danger-active);
-            border-color: var(--color-danger-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-danger-active);
-            border-color: var(--color-danger-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-danger);
-            border-color: var(--color-danger);
-        }
-    }
-
-    // info
-    &.btn-info {
-        color: #ffffff;
-        background-color: var(--color-info);
-        border-color: var(--color-info);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-info-active);
-            border-color: var(--color-info-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-info-active);
-            border-color: var(--color-info-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-info);
-            border-color: var(--color-info);
-        }
-    }
-
-    // indigo
-    &.btn-indigo {
-        color: #ffffff;
-        background-color: var(--color-indigo);
-        border-color: var(--color-indigo);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-indigo-active);
-            border-color: var(--color-indigo-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-indigo-active);
-            border-color: var(--color-indigo-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-indigo);
-            border-color: var(--color-indigo);
-        }
-    }
-
-    // purple
-    &.btn-purple {
-        color: #ffffff;
-        background-color: var(--color-purple);
-        border-color: var(--color-purple);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-purple-active);
-            border-color: var(--color-purple-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-purple-active);
-            border-color: var(--color-purple-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-purple);
-            border-color: var(--color-purple);
-        }
-    }
-
-    // pink
-    &.btn-pink {
-        color: #ffffff;
-        background-color: var(--color-pink);
-        border-color: var(--color-pink);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-pink-active);
-            border-color: var(--color-pink-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-pink-active);
-            border-color: var(--color-pink-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-pink);
-            border-color: var(--color-pink);
-        }
-    }
-
-    // teal
-    &.btn-teal {
-        color: #ffffff;
-        background-color: var(--color-teal);
-        border-color: var(--color-teal);
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-teal-active);
-            border-color: var(--color-teal-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-teal-active);
-            border-color: var(--color-teal-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: var(--color-teal);
-            border-color: var(--color-teal);
-        }
-    }
-
-    // dark
-    &.btn-dark {
-        color: #ffffff;
-        background-color: #000000;
-        border-color: #000000;
-
-        &:hover {
-            color: #ffffff;
-            background-color: var(--color-dark-active);
-            border-color: var(--color-dark-active);
-        }
-
-        &:focus {
-            color: #ffffff;
-            background-color: var(--color-dark-active);
-            border-color: var(--color-dark-active);
-        }
-
-        &.active {
-            color: #ffffff;
-            background-color: #000000;
-            border-color: #000000;
-        }
-    }
-
-    // link
-    &.ant-btn-link {
-        &.btn-main-primary {
-            color: var(--main-primary) !important;
-            background-color: transparent !important;
-            border: 0px;
-
-            &:hover {
-                color: var(--main-primary);
-            }
-
-            &:focus {
-                color: var(--main-primary);
-            }
-        }
-
-        &.btn-delete {
-            color: var(--main-secondary) !important;
-
-            &:hover {
-                color: var(--main-secondary) !important;
-            }
-
-            &:focus {
-                color: var(--main-secondary) !important;
-            }
-
-            &.success {
-                color: var(--color-success) !important;
-
-                &:hover {
-                    color: var(--color-success) !important;
-                }
-
-                &:focus {
-                    color: var(--color-success) !important;
-                }
-            }
-        }
-
-        &.btn-add {
-            color: var(--main-primary) !important;
-
-            &:hover {
-                color: var(--main-primary) !important;
-            }
-
-            &:focus {
-                color: var(--main-primary) !important;
-            }
-        }
-
-        &.btn-drag {
-            color: var(--color-secondary) !important;
-
-            &:hover {
-                color: var(--color-secondary) !important;
-            }
-
-            &:focus {
-                color: var(--color-secondary) !important;
-            }
-        }
-
-        &.btn-disabled {
-            color: #212529;
-
-            &:hover {
-                color: #212529;
-            }
-
-            &:focus {
-                color: #212529;
-            }
-        }
-
-        &.btn-info {
-            color: var(--color-info) !important;
-            background-color: transparent;
-            border: 0px;
-
-            &:hover {
-                color: var(--color-info) !important;
-            }
-
-            &:focus {
-                color: var(--color-info) !important;
-            }
+            border-color: var(--color-primary) !important;
+            color: var(--color-primary) !important;
         }
     }
     &.ant-btn-dashed {
-        &.btn-main-primary {
-            color: var(--main-primary);
-            background-color: transparent;
-            border-color: var(--main-primary);
+        border-color: var(--main-primary);
+        color: var(--main-primary-text);
 
-            &:hover {
+        &:hover,
+        &:focus {
+            border-color: var(--main-primary-active) !important;
+            color: var(--main-primary-text-active) !important;
+        }
+    }
+    &.ant-btn-text {
+        &:hover,
+        &:focus {
+            background: transparent !important;
+            color: var(--main-primary-text) !important;
+        }
+    }
+    &.ant-btn-link {
+        &.ant-btn-color-link {
+            &.ant-btn-variant-link {
                 color: var(--main-primary);
-                border-color: var(--main-primary);
-            }
 
-            &:focus {
-                color: var(--main-primary);
-                border-color: var(--main-primary);
-            }
-        }
+                &:hover,
+                &:focus {
+                    color: var(--color-primary) !important;
+                }
 
-        &.btn-delete {
-            color: var(--main-secondary) !important;
-
-            &:hover {
-                color: var(--main-secondary) !important;
-                border-color: var(--main-secondary) !important;
-            }
-
-            &:focus {
-                color: var(--main-secondary) !important;
-                border-color: var(--main-secondary) !important;
-            }
-        }
-
-        &.btn-add {
-            color: var(--main-primary) !important;
-
-            &:hover {
-                color: var(--main-primary) !important;
-                border-color: var(--main-primary) !important;
-            }
-
-            &:focus {
-                color: var(--main-primary) !important;
-                border-color: var(--main-primary) !important;
-            }
-        }
-
-        &.btn-drag {
-            color: var(--color-secondary) !important;
-
-            &:hover {
-                color: var(--color-secondary) !important;
-                border-color: var(--color-secondary) !important;
-            }
-
-            &:focus {
-                color: var(--color-secondary) !important;
-                border-color: var(--color-secondary) !important;
+                &:disabled,
+                &.ant-btn-disabled {
+                    color: var(--bs-gray-300) !important;
+                }
             }
         }
     }
+
+    &.ant-btn-dangerous {
+        &.ant-btn-color-dangerous {
+            &.ant-btn-variant-solid {
+                background-color: var(--main-secondary) !important;
+                border-color: var(--main-secondary) !important;
+                color: var(--main-secondary-text) !important;
+
+                &:hover,
+                &:focus {
+                    background-color: var(--main-secondary-text) !important;
+                    border-color: var(--main-secondary) !important;
+                    color: var(--main-secondary) !important;
+                }
+
+                &:disabled {
+                    border-color: var(--border-color-base) !important;
+                    color: rgba(0, 0, 0, 0.25) !important;
+                    background-color: rgba(0, 0, 0, 0.04) !important;
+                }
+            }
+        }
+    }
+
+    &.btn-success {
+        background-color: var(--color-success) !important;
+        color: var(--color-white) !important;
+        border: 1px solid var(--color-success) !important;
+
+        &:hover,
+        &:focus {
+            background-color: var(--color-white) !important;
+            border: 1px solid var(--color-success) !important;
+            color: var(--color-success) !important;
+        }
+
+        &:disabled {
+            border-color: var(--border-color-base) !important;
+            color: rgba(0, 0, 0, 0.25) !important;
+            background-color: rgba(0, 0, 0, 0.04) !important;
+        }
+    }
+}
+
+// Utility class to suppress Ant Design's click ripple/wave animation on a button
+.no-wave .ant-wave {
+    display: none !important;
 }

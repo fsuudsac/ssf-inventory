@@ -5,6 +5,7 @@ import { faDownload } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET, POST } from "../../../../providers/useAxiosQuery";
 import {
+    TableGlobalSearchAnimated,
     TablePageSize,
     TablePagination,
     TableShowingEntriesV2,
@@ -13,8 +14,11 @@ import formatToCurrency from "../../../../providers/formatToCurrency";
 import FloatSelect from "../../../../providers/FloatSelect";
 import ModalCustomerLedger from "./ModalCustomerLedger";
 import useTableScrollOnTop from "../../../../providers/useTableScrollOnTop";
+import FloatRangePicker from "../../../../providers/FloatRangePicker";
 
-export default function TabItemCustomer() {
+export default function TabItemCustomer(props) {
+    const { width } = props;
+
     const [form] = Form.useForm();
 
     const [toggleModalCustomerLedger, setToggleModalCustomerLedger] = useState({
@@ -64,23 +68,14 @@ export default function TabItemCustomer() {
     useTableScrollOnTop("tbl_ledger_customer", "tbl_ledger_customer");
 
     return (
-        <Row gutter={[12, 12]} id="tbl_wrapper_ledger_customer">
+        <Row gutter={[20, 20]} id="tbl_wrapper_ledger_customer">
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex className="flex-wrapper-filter">
+                <Row gutter={[12, 12]}>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                         <FloatSelect
-                            placeholder="Select Customer"
-                            className="w-100 b-0"
-                            multi="multiple"
-                            allowClear
-                            showSearch
-                            filterOption={(input, option) => {
-                                return (
-                                    option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                );
-                            }}
+                            label="Customer"
+                            placeholder="Customer"
+                            mode="multiple"
                             options={
                                 dataCustomer && dataCustomer.data
                                     ? dataCustomer.data.map((item) => ({
@@ -101,37 +96,34 @@ export default function TabItemCustomer() {
                                 }));
                             }}
                         />
-
-                        <Col>
-                            <DatePicker.RangePicker
-                                value={tableFilter.date_purchased}
-                                onChange={(date, dateString) => {
-                                    setTableFilter((ps) => ({
-                                        ...ps,
-                                        date_sales: date,
-                                        date_sales_string: dateString,
-                                    }));
-                                }}
-                            />
-                        </Col>
-                    </Flex>
-                </div>
+                    </Col>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <FloatRangePicker
+                            label="Date Sales"
+                            placeholder="Date Sales"
+                            value={tableFilter.date_purchased}
+                            onChange={(date, dateString) => {
+                                setTableFilter((ps) => ({
+                                    ...ps,
+                                    date_sales: date,
+                                    date_sales_string: dateString,
+                                }));
+                            }}
+                        />
+                    </Col>
+                </Row>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <Flex justify="end">
-                    <TablePageSize
-                        tableFilter={tableFilter}
-                        setTableFilter={setTableFilter}
-                    />
-                </Flex>
-            </Col>
-
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex gap={10}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <Flex align="center" gap={15}>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
+                            className={width < 576 ? "w-full" : "min-w-[150px]"}
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                             onClick={() => {
@@ -148,14 +140,33 @@ export default function TabItemCustomer() {
                             Export Pdf
                         </Button>
                         {/* <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                         >
                             Export Excel
                         </Button> */}
                     </Flex>
-                    <Flex gap={10}>
+
+                    <TablePageSize
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+                </Flex>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <TableGlobalSearchAnimated
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -166,7 +177,7 @@ export default function TabItemCustomer() {
                             tblIdWrapper="tbl_wrapper_ledger_customer"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -289,10 +300,14 @@ export default function TabItemCustomer() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-bottom-filter">
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-bottom-filter"
+                >
                     <div />
 
-                    <Flex>
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -303,7 +318,7 @@ export default function TabItemCustomer() {
                             tblIdWrapper="tbl_wrapper_ledger_customer"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <ModalCustomerLedger

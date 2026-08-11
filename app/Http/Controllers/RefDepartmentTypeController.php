@@ -66,11 +66,12 @@ class RefDepartmentTypeController extends Controller
                 // Capture original values before the update for history comparison
                 $originalValues = [];
                 if ($isUpdate) {
-                    $existing = RefDepartmentType::find($request->id);
+                    // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                    $existing = RefDepartmentType::withTrashed()->find($request->id);
                     $originalValues = $existing ? $existing->toArray() : [];
                 }
 
-                $departmentType = RefDepartmentType::updateOrCreate(
+                $departmentType = RefDepartmentType::withTrashed()->updateOrCreate(
                     ["id" => !empty($request->id) ? $request->id : null],
                     $dataValidate
                 );

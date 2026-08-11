@@ -1,3 +1,49 @@
+@use "../index" as *;
+
+.ant-tabs {
+    &.ant-tabs-top {
+        .ant-tabs-nav {
+            margin-bottom: 10px;
+
+            &::before {
+                position: inherit;
+            }
+
+            .ant-tabs-nav-wrap {
+                .ant-tabs-nav-list {
+                    .ant-tabs-tab {
+                        padding: 0px 0px 6px 0px;
+
+                        &.ant-tabs-tab-active,
+                        &:hover {
+                            .ant-tabs-tab-btn {
+                                color: var(--main-primary);
+                            }
+                        }
+                    }
+
+                    .ant-tabs-ink-bar {
+                        background: var(--border-color-base);
+                    }
+                }
+            }
+
+            .ant-tabs-nav-operations {
+                .ant-tabs-nav-more {
+                    transition:
+                        color 0.3s ease,
+                        background-color 0.3s ease;
+
+                    &:hover {
+                        color: var(--main-primary);
+                        background-color: rgba(0, 0, 0, 0.06);
+                    }
+                }
+            }
+        }
+    }
+}
+
 .tabs-custom {
     .ant-tabs-nav {
         &::before {

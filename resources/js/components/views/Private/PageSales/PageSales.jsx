@@ -8,9 +8,11 @@ import PageSalesTabItemSales from "./components/PageSalesTabItemSales";
 import PageSalesTabItemSalesReturn from "./components/PageSalesTabItemSalesReturn";
 import SalesFilter from "./components/SalesFilter";
 import SalesReturnFilter from "./components/SalesReturnFilter";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageSales() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const initialTab =
         new URLSearchParams(location.search).get("tab") === "sales_return"
@@ -102,6 +104,7 @@ export default function PageSales() {
                     tableColumns={tableColumns}
                     setOpenDraReleaseItemFilter={setOpenDraReleaseItemFilter}
                     onChangeTable={onChangeTable}
+                    width={width}
                 />
             ),
         },
@@ -118,6 +121,7 @@ export default function PageSales() {
                         setOpenDraReleaseItemReturnFilter
                     }
                     onChangeTable={onChangeTable}
+                    width={width}
                 />
             ),
         },

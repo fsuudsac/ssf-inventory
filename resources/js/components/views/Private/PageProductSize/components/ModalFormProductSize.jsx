@@ -15,7 +15,7 @@ export default function ModalFormProductSize() {
 
     const { mutate: mutateProducSize, isLoading: isLoadingProductSize } = POST(
         `api/product_size`,
-        "product_size_list"
+        "product_size_list",
     );
 
     const onFinish = (values) => {
@@ -100,7 +100,7 @@ export default function ModalFormProductSize() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

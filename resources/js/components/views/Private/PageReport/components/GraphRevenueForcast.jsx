@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { Collapse } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import PageReportContext from "./PageReportContext";
 import predictionDataForecast from "../../../../providers/predictionDataForecast";
+import CustomCollapse from "../../../../providers/CustomCollapse";
 
 export default function GraphRevenueForcast() {
     const { Highcharts } = useContext(PageReportContext);
+
+    const [collapseActiveKey, setCollapseActiveKey] = useState(["0", "1"]);
 
     const [filter, setFilter] = useState({
         action: "year",
@@ -24,7 +26,7 @@ export default function GraphRevenueForcast() {
         `api/graph_revenue?${new URLSearchParams(filter)}`,
         "graph_revenue_graph",
         (res) => {},
-        false
+        false,
     );
 
     useEffect(() => {
@@ -67,11 +69,11 @@ export default function GraphRevenueForcast() {
                 ) {
                     if (predictionDataForecast(item.data)[j] != null) {
                         new_data_forecast.push(
-                            predictionDataForecast(item.data)[j]
+                            predictionDataForecast(item.data)[j],
                         );
                     } else {
                         new_data_forecast_null.push(
-                            predictionDataForecast(item.data)[j]
+                            predictionDataForecast(item.data)[j],
                         );
                     }
                 }
@@ -134,7 +136,7 @@ export default function GraphRevenueForcast() {
                                         this.y,
                                         2,
                                         ".",
-                                        ","
+                                        ",",
                                     )}`;
                                 },
                             },
@@ -153,7 +155,7 @@ export default function GraphRevenueForcast() {
                                         this.y,
                                         2,
                                         ".",
-                                        ","
+                                        ",",
                                     )}`;
                                 },
                             },
@@ -161,13 +163,13 @@ export default function GraphRevenueForcast() {
                                 click: function (e) {
                                     let div_graph_wrapper =
                                         document.querySelector(
-                                            "#GraphRevenueForcast"
+                                            "#GraphRevenueForcast",
                                         );
 
                                     if (div_graph_wrapper) {
                                         let highchartsDataTable =
                                             div_graph_wrapper.querySelector(
-                                                ".highcharts-data-table"
+                                                ".highcharts-data-table",
                                             );
                                         if (highchartsDataTable) {
                                             highchartsDataTable.remove();
@@ -235,13 +237,9 @@ export default function GraphRevenueForcast() {
     }, [dataSource]);
 
     return (
-        <Collapse
-            className="collapse-main-primary"
-            defaultActiveKey={["0", "1"]}
-            size="large"
-            expandIcon={({ isActive }) => (
-                <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} />
-            )}
+        <CustomCollapse
+            activeKey={collapseActiveKey}
+            setActiveKey={setCollapseActiveKey}
             items={[
                 {
                     key: "0",

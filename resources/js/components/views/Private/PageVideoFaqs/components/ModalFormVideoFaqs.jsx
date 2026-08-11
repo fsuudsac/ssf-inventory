@@ -16,7 +16,7 @@ export default function ModalFormVideoFaqs() {
 
     const { mutate: mutateVideoFaq, isLoading: isLoadingVideoFaq } = POST(
         `api/video_faq`,
-        "video_faq_list"
+        "video_faq_list",
     );
 
     const onFinish = (values) => {
@@ -94,7 +94,7 @@ export default function ModalFormVideoFaqs() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

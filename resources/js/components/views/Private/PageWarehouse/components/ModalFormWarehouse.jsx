@@ -16,7 +16,7 @@ export default function ModalFormWarehouse() {
 
     const { mutate: mutateWarehouse, isLoading: isLoadingWarehouse } = POST(
         `api/warehouse`,
-        "warehouse_list"
+        "warehouse_list",
     );
 
     const onFinish = (values) => {
@@ -77,7 +77,7 @@ export default function ModalFormWarehouse() {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
+                    type="default"
                     key="cancel"
                     onClick={() => {
                         form.resetFields();
@@ -91,7 +91,6 @@ export default function ModalFormWarehouse() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key="submit"
                     onClick={() => form.submit()}

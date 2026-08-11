@@ -19,7 +19,7 @@ class CreditTermController extends Controller
 
         $data = CreditTerm::select([
             "*",
-            DB::raw("$date_formatted data_formatted")
+            DB::raw("$date_formatted date_formatted")
         ])
             ->search([
                 "search" => $request->search,
@@ -64,8 +64,9 @@ class CreditTermController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = CreditTerm::find($request->id);
-                $creditTerm = CreditTerm::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = CreditTerm::withTrashed()->find($request->id);
+                $creditTerm = CreditTerm::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 

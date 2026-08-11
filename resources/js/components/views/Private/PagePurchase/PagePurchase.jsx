@@ -8,9 +8,11 @@ import { faBox, faBoxesPacking } from "@fortawesome/pro-regular-svg-icons";
 import PagePurchaseTabItemPurchaseReturn from "./components/PagePurchaseTabItemPurchaseReturn";
 import PurchaseFilter from "./components/PurchaseFilter";
 import PurchaseReturnFilter from "./components/PurchaseReturnFilter";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PagePurchase() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const initialTab =
         new URLSearchParams(location.search).get("tab") === "purchase_return"
@@ -106,6 +108,7 @@ export default function PagePurchase() {
                     tableColumns={tableColumns}
                     setOpenDrawerPurchaseFilter={setOpenDrawerPurchaseFilter}
                     onChangeTable={onChangeTable}
+                    width={width}
                 />
             ),
         },
@@ -122,6 +125,7 @@ export default function PagePurchase() {
                         setOpenDrawerPurchaseReturnFilter
                     }
                     onChangeTable={onChangeTable}
+                    width={width}
                 />
             ),
         },

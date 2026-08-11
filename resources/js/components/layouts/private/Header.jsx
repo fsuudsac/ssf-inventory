@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Dropdown, Image, Layout, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPowerOff } from "@fortawesome/pro-light-svg-icons";
@@ -8,27 +8,32 @@ import { faBell } from "@fortawesome/pro-regular-svg-icons";
 
 import {
     apiUrl,
+    clearLocalStorage,
     defaultProfile,
     role,
     userData,
 } from "../../providers/appConfig";
+import NotificationPopover from "./components/NotificationPopover";
 
 export default function Header(props) {
     const { width, sideMenuCollapse, setSideMenuCollapse } = props;
 
+    const navigate = useNavigate();
+    const userdata = userData();
+
     const [profilePicture, setProfilePicture] = useState(defaultProfile);
 
     useEffect(() => {
-        if (userData().profile_picture) {
-            let profile_picture = userData().profile_picture.split("//");
+        if (userdata.profile_picture) {
+            let profile_picture = userdata.profile_picture.split("//");
 
             if (
                 profile_picture[0] === "http:" ||
                 profile_picture[0] === "https:"
             ) {
-                setProfilePicture(userData().profile_picture);
+                setProfilePicture(userdata.profile_picture);
             } else {
-                setProfilePicture(apiUrl(userData().profile_picture));
+                setProfilePicture(apiUrl(userdata.profile_picture));
             }
         }
 
@@ -36,9 +41,8 @@ export default function Header(props) {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userdata");
-        window.location.reload();
+        clearLocalStorage();
+        navigate("/", { replace: true });
     };
 
     const menuNotification = () => {
@@ -61,8 +65,6 @@ export default function Header(props) {
         return { items };
     };
 
-    console.log("userdata: ", userData());
-
     const menuProfile = () => {
         const items = [
             {
@@ -73,12 +75,12 @@ export default function Header(props) {
                         <Image
                             preview={false}
                             src={profilePicture}
-                            alt={userData().username}
+                            alt={userdata.username}
                         />
 
                         <div className="info-wrapper">
                             <Typography.Text className="info-username">
-                                {userData().firstname} {userData().lastname}
+                                {userdata.firstname} {userdata.lastname}
                             </Typography.Text>
 
                             <br />
@@ -115,23 +117,30 @@ export default function Header(props) {
         <Layout.Header>
             <div className="header-left-menu">
                 {width < 768 ? (
-                    <div className="menu-left-icon menu-left-icon-menu-collapse-on-close">
-                        {sideMenuCollapse ? (
-                            <MenuUnfoldOutlined
-                                onClick={() => setSideMenuCollapse(false)}
-                                className="menuCollapseOnClose"
-                            />
-                        ) : (
-                            <MenuFoldOutlined
-                                onClick={() => setSideMenuCollapse(true)}
-                                className="menuCollapseOnClose"
-                            />
-                        )}
+                    <div
+                        className="menu-left-icon menu-left-icon-menu-collapse-on-close"
+                        onClick={() => {
+                            setSideMenuCollapse(
+                                !sideMenuCollapse ? true : false,
+                            );
+                        }}
+                    >
+                        <div
+                            className={`menu-left-icon-collpase ${
+                                !sideMenuCollapse ? "is-collapse" : ""
+                            }`}
+                        >
+                            <span className="line1" />
+                            <span className="line2" />
+                            <span className="line3" />
+                        </div>
                     </div>
                 ) : null}
             </div>
 
             <div className="header-right-menu">
+                <NotificationPopover userdata={userdata} />
+
                 <Dropdown
                     menu={menuProfile()}
                     placement="bottomRight"
@@ -142,19 +151,7 @@ export default function Header(props) {
                         preview={false}
                         rootClassName="menu-submenu-profile"
                         src={profilePicture}
-                        alt={userData().username}
-                    />
-                </Dropdown>
-
-                <Dropdown
-                    menu={menuNotification()}
-                    placement="bottomRight"
-                    overlayClassName="menu-submenu-notification-popup"
-                    trigger={["click"]}
-                >
-                    <FontAwesomeIcon
-                        className="menu-submenu-notification"
-                        icon={faBell}
+                        alt={userdata?.firstname}
                     />
                 </Dropdown>
             </div>

@@ -16,7 +16,7 @@ export default function ModalImport(props) {
         location.pathname.includes("customers")
             ? "api/upload_customers"
             : "api/upload_suppliers",
-        "users_list"
+        "users_list",
     );
 
     const onFinish = (values) => {
@@ -30,7 +30,7 @@ export default function ModalImport(props) {
             data.append(
                 "file_excel",
                 values.file_excel[0].originFileObj,
-                values.file_excel[0].originFileObj.name
+                values.file_excel[0].originFileObj.name,
             );
         }
 
@@ -108,7 +108,7 @@ export default function ModalImport(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

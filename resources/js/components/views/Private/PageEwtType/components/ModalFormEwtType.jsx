@@ -15,7 +15,7 @@ export default function ModalFormEwtType(props) {
 
     const { mutate: mutateCreditTerm, isLoading: isLoadingCreditTerm } = POST(
         `api/ewt_type`,
-        "ewt_type_list"
+        "ewt_type_list",
     );
 
     const onFinish = (values) => {
@@ -97,7 +97,7 @@ export default function ModalFormEwtType(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

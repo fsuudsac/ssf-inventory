@@ -1,8 +1,6 @@
 import CryptoJS from "crypto-js";
 import dayjs from "dayjs";
 
-export const apiUrl = (url, api = window.location.origin) => `${api}/${url}`;
-
 export const {
     VITE_APP_NAME,
     VITE_APP_DESCRIPTION,
@@ -17,6 +15,11 @@ export const {
     VITE_APP_PUSHER_APP_CLUSTER,
     VITE_APP_PUSHER_APP_CHANNEL,
 } = import.meta.env;
+
+export const apiUrl = (url, api = window.location.origin) => `${api}/${url}`;
+
+export const system_id = 12;
+export const permissionStatus = false;
 
 export const appName = VITE_APP_NAME;
 export const appDescription = VITE_APP_DESCRIPTION;
@@ -41,7 +44,7 @@ export const encrypt = (data) =>
 export const decrypt = (data) => {
     try {
         return CryptoJS.AES.decrypt(data, encryptKey).toString(
-            CryptoJS.enc.Utf8
+            CryptoJS.enc.Utf8,
         );
     } catch (error) {
         console.error("Error decrypting data:", error);
@@ -51,7 +54,7 @@ export const decrypt = (data) => {
     }
 };
 
-const clearLocalStorage = () => {
+export const clearLocalStorage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userdata");
 };

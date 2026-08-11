@@ -22,7 +22,19 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_dashboard",
                 "module_name" => "Dashboard",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
+                "module_buttons" => [
+                    [
+                        "mod_button_code" => "view_page",
+                        "mod_button_name" => "View Page",
+                    ]
+                ]
+            ],
+            [
+                "module_code" => "page_budget_allocation",
+                "module_name" => "Budget Allocation",
+                "description" => "",
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -34,7 +46,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_purchase",
                 "module_name" => "Purchase Order",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -66,7 +78,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_sales",
                 "module_name" => "Release Item",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -98,7 +110,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_product",
                 "module_name" => "Product",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -122,7 +134,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_inventory",
                 "module_name" => "Inventory",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -146,7 +158,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_warehouse",
                 "module_name" => "Warehouse",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -174,7 +186,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_transfer",
                 "module_name" => "Transfer",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -198,7 +210,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_reports",
                 "module_name" => "Reports",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -210,7 +222,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_suppliers",
                 "module_name" => "Suppliers",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -238,7 +250,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_customers",
                 "module_name" => "Customers",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -266,7 +278,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_users",
                 "module_name" => "Users",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -294,7 +306,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_admin_setting",
                 "module_name" => "Admin Settings",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -318,7 +330,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_user_permissions",
                 "module_name" => "User Permissions",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",
@@ -330,7 +342,7 @@ class ModuleAndPermissionSeeder extends Seeder
                 "module_code" => "page_video_faq",
                 "module_name" => "Video FAQ",
                 "description" => "",
-                "system_id" => 1,
+                "system_id" => 12,
                 "module_buttons" => [
                     [
                         "mod_button_code" => "view_page",

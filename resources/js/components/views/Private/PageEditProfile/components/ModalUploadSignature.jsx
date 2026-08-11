@@ -66,7 +66,7 @@ export default function ModalUploadSignature(props) {
                 <Button
                     key="save"
                     type="primary"
-                    className="btn-main-primary"
+                    type="primary"
                     size="large"
                     onClick={() => {
                         if (fileSignature.file) {

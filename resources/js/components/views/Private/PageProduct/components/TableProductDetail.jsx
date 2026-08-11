@@ -86,7 +86,7 @@ export default function TableProductDetail() {
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Flex justify="space-between" align="center">
                     <Button
-                        className="btn-main-primary"
+                        type="primary"
                         icon={<FontAwesomeIcon icon={faPlus} />}
                         onClick={() =>
                             setToggleModalFormProductDetail({

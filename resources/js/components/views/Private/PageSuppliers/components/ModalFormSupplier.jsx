@@ -38,12 +38,12 @@ export default function ModalFormSupplier(props) {
                 setDataCompany(res.data);
             }
         },
-        false
+        false,
     );
 
     const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
         `api/company`,
-        "company_create"
+        "company_create",
     );
 
     const handleAddCompany = () => {
@@ -170,7 +170,7 @@ export default function ModalFormSupplier(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}
@@ -234,7 +234,7 @@ export default function ModalFormSupplier(props) {
                                         label: item.company,
                                     }))
                                     .sort((a, b) =>
-                                        a.label.localeCompare(b.label)
+                                        a.label.localeCompare(b.label),
                                     )}
                                 dropdownRender={(menu) => (
                                     <>
@@ -250,12 +250,12 @@ export default function ModalFormSupplier(props) {
                                                 placeholder="Add Company"
                                                 onChange={(e) =>
                                                     setCompanyValue(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 onBlur={(e) =>
                                                     setCompanyValue(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 onPressEnter={() =>
@@ -395,7 +395,7 @@ export default function ModalFormSupplier(props) {
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
-                                        )
+                                        ),
                                     )}
 
                                     <Button

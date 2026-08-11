@@ -224,7 +224,7 @@ export default function ModalFormPayment() {
 
                                             <Button
                                                 htmlType="submit"
-                                                className="btn-main-primary"
+                                                type="primary"
                                                 size="large"
                                             >
                                                 Submit

@@ -64,8 +64,9 @@ class ProductCategoryController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = ProductCategory::find($request->id);
-                $productCategory = ProductCategory::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = ProductCategory::withTrashed()->find($request->id);
+                $productCategory = ProductCategory::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 

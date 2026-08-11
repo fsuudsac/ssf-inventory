@@ -77,7 +77,7 @@ export default function ModalFormProfileAddress() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key="submit"
                     onClick={() => form.submit()}

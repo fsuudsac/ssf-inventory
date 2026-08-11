@@ -77,8 +77,9 @@ class WarehouseController extends Controller
                     Warehouse::where("status", 1)->update(["status" => 0]);
                 }
 
-                $originalValue = Warehouse::find($request->id);
-                $warehouse = Warehouse::updateOrCreate(
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = Warehouse::withTrashed()->find($request->id);
+                $warehouse = Warehouse::withTrashed()->updateOrCreate(
                     ["id" => $request->id ?? null],
                     $dataValidate
                 );

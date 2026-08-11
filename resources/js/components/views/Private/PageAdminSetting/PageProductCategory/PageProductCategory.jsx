@@ -16,9 +16,11 @@ import ModalFormProductCategory from "./components/ModalFormProductCategory";
 import TableProductCategory from "./components/TableProductCategory";
 import PageProductCategoryContext from "./components/PageProductCategoryContext";
 import useTableScrollOnTop from "../../../../providers/useTableScrollOnTop";
+import useWindowDimensions from "../../../../providers/useWindowDimensions";
 
 export default function PageProductCategory() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [toggleModalFormProductCategory, setToggleModalFormProductCategory] =
         useState({
@@ -107,8 +109,9 @@ export default function PageProductCategory() {
             <Row gutter={[20, 20]} id="tbl_wrapper_product_category">
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Button
+                        type="primary"
+                        className={width < 576 ? "w-full" : "min-w-[150px]"}
                         icon={<FontAwesomeIcon icon={faPlus} />}
-                        className="btn-main-primary"
                         onClick={() =>
                             setToggleModalFormProductCategory({
                                 open: true,
@@ -117,15 +120,20 @@ export default function PageProductCategory() {
                         }
                         name="btn_add"
                     >
-                        Add Product Category
+                        Product Category
                     </Button>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={12}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <Button
-                                className={`btn-main-primary min-w-150 ${
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                     !tableFilter.isTrash ? "active" : "outlined"
                                 }`}
                                 onClick={() => {
@@ -140,7 +148,8 @@ export default function PageProductCategory() {
                             </Button>
 
                             <Button
-                                className={`btn-main-primary min-w-150 ${
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                     tableFilter.isTrash ? "active" : "outlined"
                                 }`}
                                 onClick={() => {
@@ -155,62 +164,95 @@ export default function PageProductCategory() {
                             </Button>
                         </Flex>
 
-                        <TablePageSize
-                            tableFilter={tableFilter}
-                            setTableFilter={setTableFilter}
-                        />
-                    </div>
-                </Col>
-
-                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
-                            <TableGlobalSearchAnimated
+                        {width >= 576 && (
+                            <TablePageSize
                                 tableFilter={tableFilter}
                                 setTableFilter={setTableFilter}
                             />
-                            {selectedRowKeys.length > 0 && (
-                                <Popconfirm
-                                    title={
-                                        <>
-                                            Are you sure you want to
-                                            <br />
-                                            {!tableFilter.isTrash
-                                                ? "archive"
-                                                : "restore"}{" "}
-                                            the selected{" "}
-                                            {selectedRowKeys.length > 1
-                                                ? "product categories"
-                                                : "product category"}
-                                            ?
-                                        </>
-                                    }
-                                    okText="Yes"
-                                    cancelText="No"
-                                    onConfirm={() => {
-                                        handleSelectedArchived();
-                                    }}
-                                    name="btn_delete"
-                                >
-                                    <Button
-                                        className={`${
-                                            tableFilter.isTrash
-                                                ? "btn-success"
-                                                : "btn-main-secondary"
-                                        } `}
-                                        name="btn_delete"
-                                        loading={isLoadingDeleteProductCategory}
-                                    >
-                                        {!tableFilter.isTrash
-                                            ? "ARCHIVE"
-                                            : "ACTIVATE"}{" "}
-                                        SELECTED
-                                    </Button>
-                                </Popconfirm>
+                        )}
+                    </Flex>
+                </Col>
+
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex
+                            justify={
+                                selectedRowKeys.length > 0
+                                    ? "space-between"
+                                    : "end"
+                            }
+                            align="center"
+                            gap={15}
+                            className={width < 576 ? "w-full" : ""}
+                        >
+                            {width >= 576 ? (
+                                <TableGlobalSearchAnimated
+                                    tableFilter={tableFilter}
+                                    setTableFilter={setTableFilter}
+                                />
+                            ) : (
+                                <>
+                                    {width < 576 &&
+                                        selectedRowKeys.length > 0 && (
+                                            <Popconfirm
+                                                title={
+                                                    <>
+                                                        Are you sure you want to
+                                                        <br />
+                                                        {!tableFilter.isTrash
+                                                            ? "archive"
+                                                            : "restore"}{" "}
+                                                        the selected{" "}
+                                                        {selectedRowKeys.length >
+                                                        1
+                                                            ? "product categories"
+                                                            : "product category"}
+                                                        ?
+                                                    </>
+                                                }
+                                                okText="Yes"
+                                                cancelText="No"
+                                                onConfirm={() => {
+                                                    handleSelectedArchived();
+                                                }}
+                                                name="btn_delete"
+                                            >
+                                                <Button
+                                                    type="primary"
+                                                    className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
+                                                        tableFilter.isTrash
+                                                            ? "btn-success"
+                                                            : ""
+                                                    } `}
+                                                    danger={
+                                                        !tableFilter.isTrash
+                                                    }
+                                                    name="btn_delete"
+                                                    loading={
+                                                        isLoadingDeleteProductCategory
+                                                    }
+                                                >
+                                                    {!tableFilter.isTrash
+                                                        ? "ARCHIVE"
+                                                        : "ACTIVATE"}{" "}
+                                                    SELECTED
+                                                </Button>
+                                            </Popconfirm>
+                                        )}
+
+                                    <TablePageSize
+                                        tableFilter={tableFilter}
+                                        setTableFilter={setTableFilter}
+                                    />
+                                </>
                             )}
                         </Flex>
 
-                        <Flex gap={10}>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
 
                             <TablePagination
@@ -222,18 +264,60 @@ export default function PageProductCategory() {
                                 tblIdWrapper="tbl_wrapper_product_category"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
+
+                {width >= 576 && selectedRowKeys.length > 0 && (
+                    <Popconfirm
+                        title={
+                            <>
+                                Are you sure you want to
+                                <br />
+                                {!tableFilter.isTrash
+                                    ? "archive"
+                                    : "restore"}{" "}
+                                the selected{" "}
+                                {selectedRowKeys.length > 1
+                                    ? "product categories"
+                                    : "product category"}
+                                ?
+                            </>
+                        }
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => {
+                            handleSelectedArchived();
+                        }}
+                        name="btn_delete"
+                    >
+                        <Button
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
+                                tableFilter.isTrash ? "btn-success" : ""
+                            } `}
+                            danger={!tableFilter.isTrash}
+                            name="btn_delete"
+                            loading={isLoadingDeleteProductCategory}
+                        >
+                            {!tableFilter.isTrash ? "ARCHIVE" : "ACTIVATE"}{" "}
+                            SELECTED
+                        </Button>
+                    </Popconfirm>
+                )}
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <TableProductCategory />
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -244,7 +328,7 @@ export default function PageProductCategory() {
                                 tblIdWrapper="tbl_wrapper_product_category"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <ModalFormProductCategory />

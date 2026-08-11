@@ -128,7 +128,7 @@ export default function ModalPurchase(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

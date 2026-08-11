@@ -40,7 +40,7 @@ export default function PageFormSalesReturnContent() {
                                                   (item) => ({
                                                       value: item.id,
                                                       label: item.fullname,
-                                                  })
+                                                  }),
                                               )
                                             : []
                                     }
@@ -67,7 +67,7 @@ export default function PageFormSalesReturnContent() {
                                                   (item) => ({
                                                       value: item.id,
                                                       label: item.invoice_no,
-                                                  })
+                                                  }),
                                               )
                                             : []
                                     }
@@ -98,7 +98,7 @@ export default function PageFormSalesReturnContent() {
                                 {() => {
                                     let sales_order_return_details =
                                         form.getFieldValue(
-                                            "sales_order_return_details"
+                                            "sales_order_return_details",
                                         );
 
                                     let total_selling_price = 0;
@@ -114,13 +114,13 @@ export default function PageFormSalesReturnContent() {
                                                 if (return_quantity && price) {
                                                     total_price =
                                                         Number(
-                                                            return_quantity
+                                                            return_quantity,
                                                         ) * Number(price);
                                                 }
 
                                                 total_selling_price +=
                                                     total_price;
-                                            }
+                                            },
                                         );
                                     }
 
@@ -165,7 +165,7 @@ export default function PageFormSalesReturnContent() {
 
                                                                 console.log(
                                                                     "product_info: ",
-                                                                    product_info
+                                                                    product_info,
                                                                 );
 
                                                                 if (
@@ -174,10 +174,10 @@ export default function PageFormSalesReturnContent() {
                                                                 ) {
                                                                     total_price =
                                                                         Number(
-                                                                            return_quantity
+                                                                            return_quantity,
                                                                         ) *
                                                                         Number(
-                                                                            price
+                                                                            price,
                                                                         );
                                                                 }
 
@@ -245,16 +245,16 @@ export default function PageFormSalesReturnContent() {
                                                                                         validator:
                                                                                             (
                                                                                                 _,
-                                                                                                value
+                                                                                                value,
                                                                                             ) => {
                                                                                                 if (
                                                                                                     value >
                                                                                                     Number(
-                                                                                                        quantity
+                                                                                                        quantity,
                                                                                                     )
                                                                                                 ) {
                                                                                                     return Promise.reject(
-                                                                                                        `Total quantity: ${quantity}`
+                                                                                                        `Total quantity: ${quantity}`,
                                                                                                     );
                                                                                                 }
                                                                                                 return Promise.resolve();
@@ -275,7 +275,7 @@ export default function PageFormSalesReturnContent() {
                                                                                 }}
                                                                             >
                                                                                 {formatToCurrency(
-                                                                                    price
+                                                                                    price,
                                                                                 )}
                                                                             </div>
                                                                         </td>
@@ -286,13 +286,13 @@ export default function PageFormSalesReturnContent() {
                                                                                 }}
                                                                             >
                                                                                 {formatToCurrency(
-                                                                                    total_price
+                                                                                    total_price,
                                                                                 )}
                                                                             </div>
                                                                         </td>
                                                                     </tr>
                                                                 );
-                                                            }
+                                                            },
                                                         )}
 
                                                         <tr>
@@ -309,7 +309,7 @@ export default function PageFormSalesReturnContent() {
                                                                     }}
                                                                 >
                                                                     {formatToCurrency(
-                                                                        total_selling_price
+                                                                        total_selling_price,
                                                                     )}
                                                                 </div>
                                                             </td>
@@ -375,7 +375,7 @@ export default function PageFormSalesReturnContent() {
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     loading={isLoadingSalesOrderReturn}
                     htmlType="submit"
                 >

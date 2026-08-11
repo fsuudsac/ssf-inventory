@@ -10,12 +10,16 @@
             padding: 0px 20px 0px 0px;
             z-index: 1;
 
-            box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
-            -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: rgb(105 107 112 / 20%) 0px 5px 7px 0px;
 
             @include atSMMax {
+                padding-left: 15px;
                 padding-right: 15px;
+            }
+
+            @include atXSMax {
+                padding-left: 10px;
+                padding-right: 10px;
             }
 
             .header-left-menu {
@@ -55,33 +59,72 @@
                         align-items: center;
                         padding: 0px 20px;
 
-                        svg {
-                            font-size: 28px;
-                            color: var(--color-cyan-600);
-                        }
-
                         @include atSMMax {
                             padding: 0px 15px;
+                        }
+
+                        .menu-left-icon-collpase {
+                            position: relative;
+                            width: 24px;
+                            height: 24px;
+
+                            span {
+                                background-color: var(--color-menu-icon);
+                                width: 100%;
+                                height: 2px;
+                                border-radius: var(--border-radius-base);
+                                display: block;
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                transition:
+                                    0.5s,
+                                    width 0.5s;
+
+                                &.line1 {
+                                    transform: translate(-50%, -10px);
+                                }
+                                &.line3 {
+                                    transform: translate(-50%, 8px);
+                                }
+                            }
+
+                            &.is-collapse {
+                                span {
+                                    &.line1 {
+                                        transform: translate(-50%, -50%)
+                                            rotate(-45deg);
+                                    }
+                                    &.line3 {
+                                        transform: translate(-50%, -50%)
+                                            rotate(45deg);
+                                    }
+                                    &.line2 {
+                                        width: 0;
+                                    }
+                                }
+                            }
                         }
                     }
 
                     a {
                         .anticon {
-                            color: var(--color-cyan-600);
+                            color: var(--color-header-icon);
                         }
 
                         svg {
-                            color: var(--color-cyan-600);
+                            color: var(--color-header-icon);
                             font-size: 42px;
-                            stroke: var(--color-cyan-600);
+                            stroke: var(--color-header-icon);
 
                             @include atMDMax {
                                 font-size: 32px;
                             }
 
                             path {
-                                color: var(--color-cyan-600);
-                                stroke: var(--color-cyan-600);
+                                color: var(--color-header-icon);
+                                stroke: var(--color-header-icon);
                             }
                         }
 
@@ -114,10 +157,10 @@
                                 align-items: center;
 
                                 .ant-page-header-icon {
-                                    border: 3px solid var(--color-cyan-600);
+                                    border: 2px solid var(--color-primary);
                                     border-radius: 100%;
-                                    width: 70px !important;
-                                    height: 70px !important;
+                                    width: 60px !important;
+                                    height: 60px !important;
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
@@ -129,19 +172,23 @@
                                     }
 
                                     .anticon {
-                                        font-size: 32px;
-                                        color: var(--color-cyan-600) !important;
+                                        font-size: 28px;
+                                        color: var(--color-primary) !important;
+
+                                        @include atXSMax {
+                                            font-size: 26px;
+                                        }
                                     }
 
                                     svg {
-                                        font-size: 32px;
+                                        font-size: 28px;
 
                                         @include atXSMax {
-                                            font-size: 28px;
+                                            font-size: 26px;
                                         }
 
                                         path {
-                                            color: var(--color-cyan-600);
+                                            color: var(--color-primary);
                                         }
                                     }
                                 }
@@ -152,20 +199,24 @@
                                     align-items: flex-start;
 
                                     .sub-title {
-                                        color: var(--color-gray-800);
+                                        color: var(--color-black);
                                         text-transform: none;
                                         font-size: 14px;
                                         font-weight: 500;
                                         line-height: 1em;
+
+                                        white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
 
                                         @include atXSMax {
                                             font-size: 12px;
                                         }
                                     }
                                     .title {
-                                        color: var(--color-gray-600);
+                                        color: var(--color-black);
                                         font-size: 32px;
-                                        font-weight: normal;
+                                        font-weight: 600;
 
                                         @include atXSMax {
                                             font-size: 25px;
@@ -177,9 +228,9 @@
                     }
                 }
             }
+
             .header-right-menu {
                 display: flex;
-                flex-direction: row-reverse;
                 align-items: center;
                 gap: 20px;
 
@@ -187,57 +238,93 @@
                     gap: 15px;
                 }
 
-                .ant-image.menu-submenu-profile {
-                    transition: transform 0.2s;
+                .menu-submenu-message-alert {
+                    cursor: pointer;
 
                     &:hover {
-                        transform: scale(1.1);
+                        transform: scale(1.2);
                     }
 
-                    img {
-                        object-fit: cover;
-                        -o-object-fit: cover;
-                        width: 55px;
-                        height: 50px;
+                    svg {
+                        color: var(--color-primary);
+                        font-size: 28px;
+
+                        @include atXSMax {
+                            font-size: 26px;
+                        }
+                    }
+
+                    .ant-badge-count {
+                        right: -2px;
+                        top: 10px;
+                        width: 18px;
+                        height: 18px;
+                        font-size: 10px;
                         border-radius: 50%;
-                        border: 2px solid var(--color-cyan-600);
-                        cursor: pointer;
-                        overflow: hidden;
-                        background: #fff;
+                        padding: 0px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
 
                         @include atMDMax {
-                            width: 60px;
-                            height: 40px;
+                            top: 12px;
+                        }
+
+                        @include atSMMax {
+                            right: 0px;
+                            min-width: 15px;
+                            width: 15px;
+                            height: 15px;
+                            font-size: 8px;
+                            line-height: 15px;
+                        }
+
+                        .ant-scroll-number-only {
+                            height: auto;
+                            @include atSMMax {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
                         }
                     }
                 }
 
+                // Bell icon rendered inside NotificationPopover
                 .menu-submenu-notification {
                     cursor: pointer;
-                    color: var(--color-cyan-400);
-                    width: 35px;
-                    height: 35px;
-                    justify-content: center;
-                    align-items: center;
+                    color: var(--color-menu-icon);
+                    font-size: 28px;
+                    transition: transform 0.2s;
+
+                    @include atXSMax {
+                        font-size: 24px;
+                    }
 
                     &:hover {
-                        transform: scale(1.1);
+                        transform: scale(1.2);
+                    }
+                }
 
-                        svg {
-                            color: var(--color-cyan-400);
-                        }
+                // Legacy dropdown-based notification badge (kept for reference)
+                .menu-submenu-notification-alert {
+                    cursor: pointer;
+                    color: var(--color-primary);
+                    font-size: 28px;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 400;
+
+                    &:hover {
+                        transform: scale(1.2);
                     }
 
                     svg {
-                        color: var(--color-cyan-400);
-                        font-size: 42px;
+                        color: var(--color-primary);
+                        font-size: 28px;
 
-                        @include atMDMax {
-                            font-size: 32px;
-                        }
-
-                        @include atSMMax {
-                            font-size: 28px;
+                        @include atXSMax {
+                            font-size: 26px;
                         }
                     }
 
@@ -272,60 +359,35 @@
                     }
                 }
 
-                .menu-submenu-message-alert {
-                    cursor: pointer;
-                    margin-top: 2px;
+                .ant-image.menu-submenu-profile {
+                    transition: transform 0.2s;
+                    width: 60px;
+                    height: 60px;
+
+                    @include atMDMax {
+                        width: 55px;
+                        height: 55px;
+                    }
 
                     &:hover {
-                        svg {
-                            color: var(--color-cyan-600);
-                        }
+                        transform: scale(1.2);
                     }
 
-                    svg {
-                        color: var(--color-cyan-600);
-                        font-size: 45px;
-
-                        @include atMDMax {
-                            font-size: 32px;
-                        }
-
-                        @include atSMMax {
-                            font-size: 30px;
-                        }
-                    }
-
-                    .ant-badge-count {
-                        right: -2px;
-                        top: 10px;
-                        width: 18px;
-                        height: 18px;
-                        font-size: 10px;
+                    img {
+                        object-fit: cover;
+                        -o-object-fit: cover;
+                        width: 60px;
+                        height: 60px;
+                        border: 2px solid var(--color-menu-icon);
                         border-radius: 50%;
-                        padding: 0px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
+                        cursor: pointer;
+                        overflow: hidden;
+                        background: var(--color-white);
+                        box-shadow: rgb(105 107 112 / 20%) 0px 5px 7px 0px;
 
                         @include atMDMax {
-                            top: 12px;
-                        }
-
-                        @include atSMMax {
-                            right: 0px;
-                            min-width: 15px;
-                            width: 15px;
-                            height: 15px;
-                            font-size: 8px;
-                            line-height: 15px;
-                        }
-
-                        .ant-scroll-number-only {
-                            @include atSMMax {
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            }
+                            width: 55px;
+                            height: 55px;
                         }
                     }
                 }
@@ -370,6 +432,8 @@
 
                     .ant-image {
                         transition: transform 0.2s;
+                        min-width: 60px;
+                        height: 60px;
 
                         img {
                             object-fit: cover;
@@ -377,10 +441,11 @@
                             width: 60px;
                             height: 60px;
                             border-radius: 50%;
-                            border: 2px solid var(--color-cyan-600);
+                            border: 2px solid var(--color-header-icon);
                             cursor: pointer;
                             overflow: hidden;
-                            background: #fff;
+                            background: var(--color-white);
+                            padding: 2px;
                         }
                     }
 
@@ -390,7 +455,7 @@
                         }
 
                         .info-username {
-                            color: var(--color-gray-600);
+                            color: var(--color-primary);
                             font-weight: 600;
                             font-size: 17px;
                         }
@@ -399,32 +464,23 @@
             }
 
             svg {
-                color: var(--color-cyan-400);
-                stroke: var(--color-cyan-400);
-
-                path {
-                    color: var(--color-cyan-400);
-                    stroke: var(--color-cyan-400);
-                }
-            }
-
-            &.ant-dropdown-menu-item-active {
-                a {
-                    color: var(--color-gray-600);
-                }
-                svg {
-                    color: var(--color-cyan-400);
-                    stroke: var(--color-cyan-400);
-                    path {
-                        color: var(--color-cyan-400);
-                        stroke: var(--color-cyan-400);
-                    }
-                }
+                color: var(--color-primary);
             }
 
             .ant-dropdown-menu-title-content {
                 a {
                     text-decoration: none;
+                    color: var(--color-black);
+                }
+            }
+
+            &:hover,
+            &.ant-dropdown-menu-item-active {
+                a {
+                    color: var(--color-primary);
+                }
+                svg {
+                    color: var(--color-black);
                 }
             }
         }
@@ -432,12 +488,8 @@
 }
 
 .menu-submenu-notification-popup {
-    width: 300px;
+    width: 320px;
     top: 70px !important;
-
-    @include atSMMax {
-        position: fixed;
-    }
 
     @include atXSMax {
         width: 100%;
@@ -449,13 +501,27 @@
         border-radius: 0px;
 
         .ant-dropdown-menu-item {
-            &:first-child {
-                color: var(--color-gray-600);
-                font-size: 16px;
-                font-weight: 600;
-            }
-            &:last-child {
-                color: rgb(0, 60, 128);
+            &.menu-item-title {
+                padding: 10px 12px 8px 12px;
+
+                &:hover {
+                    background-color: transparent;
+                }
+
+                .ant-dropdown-menu-title-content {
+                    text-align: right;
+
+                    .ant-btn {
+                        width: auto;
+                        height: auto;
+                        padding: 0px;
+                        color: var(--color-black);
+
+                        .ant-btn-icon {
+                            color: var(--color-primary);
+                        }
+                    }
+                }
             }
 
             .ant-dropdown-menu-title-content {
@@ -463,14 +529,105 @@
                     text-decoration: none;
                 }
             }
+
+            &.menu-item-no {
+                text-align: center;
+                color: var(--color-gray-600);
+            }
         }
 
         .ant-dropdown-menu-item-divider {
-            height: 1px;
-            margin: 4px 0;
-            overflow: hidden;
-            line-height: 0;
-            background-color: rgb(54 50 50 / 19%);
+            margin: 0px;
+        }
+    }
+}
+
+.menu-submenu-messages-popup {
+    width: 320px;
+    top: 100px !important;
+
+    @include atXSMax {
+        width: 100%;
+        left: 0px !important;
+    }
+
+    .ant-dropdown-menu {
+        padding: 0px;
+        border-radius: 0px;
+
+        .ant-dropdown-menu-item {
+            gap: 5px;
+            &.menu-item-title {
+                padding: 10px 12px 8px 12px;
+
+                &:hover {
+                    background-color: transparent;
+                }
+
+                .ant-dropdown-menu-title-content {
+                    text-align: right;
+
+                    .ant-btn {
+                        width: auto;
+                        height: auto;
+                        padding: 0px;
+                        color: var(--color-black);
+
+                        .ant-btn-icon {
+                            color: var(--color-primary);
+                        }
+                    }
+                }
+            }
+
+            .ant-dropdown-menu-title-content {
+                a {
+                    text-decoration: none;
+                }
+            }
+
+            &.menu-item-no {
+                text-align: center;
+                color: var(--color-gray-600);
+            }
+
+            // new csss
+            &:not(:first-child) {
+                .message-user-logo {
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 0px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 2px solid var(--color-primary);
+                }
+
+                .message-wrapper {
+                    display: flex;
+
+                    .content-wrapper {
+                        width: calc(100% - 20px);
+
+                        .user-info {
+                            font-weight: 600;
+                        }
+                    }
+
+                    .status {
+                        width: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        color: #e1492a;
+                        font-size: 30px;
+                        line-height: 30px;
+                    }
+                }
+            }
+        }
+
+        .ant-dropdown-menu-item-divider {
+            margin: 0px;
         }
     }
 }

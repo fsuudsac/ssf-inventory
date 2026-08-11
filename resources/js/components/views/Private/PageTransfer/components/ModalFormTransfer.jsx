@@ -39,7 +39,7 @@ export default function ModalFormTransfer() {
 
     const { mutate: mutateTransfer, isLoading: isLoadingTransfer } = POST(
         `api/transfers`,
-        "transfer_list"
+        "transfer_list",
     );
 
     const generateReferenceNo = () => {
@@ -110,7 +110,7 @@ export default function ModalFormTransfer() {
                               product_category_id: productCategoryIds.find(
                                   (category) =>
                                       category.product_detail_id ===
-                                      detail.product_detail_id
+                                      detail.product_detail_id,
                               )?.product_category_id,
                           }))
                         : [],
@@ -121,7 +121,7 @@ export default function ModalFormTransfer() {
                 ...new Set(
                     productCategoryIds
                         .map((item) => item.product_category_id)
-                        .filter(Boolean) // Remove null/undefined
+                        .filter(Boolean), // Remove null/undefined
                 ),
             ];
 
@@ -161,7 +161,7 @@ export default function ModalFormTransfer() {
                 </Button>,
                 !toggleModalFormTransfer.disabled && (
                     <Button
-                        className="btn-main-primary"
+                        type="primary"
                         type="primary"
                         key="submit"
                         onClick={() => form.submit()}
@@ -248,7 +248,7 @@ export default function ModalFormTransfer() {
                                 if (dataOptions) {
                                     dataOptions = dataOptions.filter(
                                         (x) =>
-                                            x.id !== Number(from_warehouse_id)
+                                            x.id !== Number(from_warehouse_id),
                                     );
                                 }
 
@@ -267,7 +267,7 @@ export default function ModalFormTransfer() {
                                                           (item) => ({
                                                               label: item.warehouse_name,
                                                               value: item.id,
-                                                          })
+                                                          }),
                                                       )
                                                     : []
                                             }
@@ -362,51 +362,51 @@ export default function ModalFormTransfer() {
                                                                                         ? dataProductCategory.data
                                                                                               .map(
                                                                                                   (
-                                                                                                      item
+                                                                                                      item,
                                                                                                   ) => {
                                                                                                       // Count only products with available stock in the selected warehouse
                                                                                                       const count =
                                                                                                           productDetails.filter(
                                                                                                               (
-                                                                                                                  detail
+                                                                                                                  detail,
                                                                                                               ) =>
                                                                                                                   detail.product_category ===
                                                                                                                       item.product_category &&
                                                                                                                   (detail.total_stock ??
                                                                                                                       0) >
-                                                                                                                      0
+                                                                                                                      0,
                                                                                                           ).length;
                                                                                                       return {
                                                                                                           label: `${item.product_category} (${count})`,
                                                                                                           value: item.id,
                                                                                                           count,
                                                                                                       };
-                                                                                                  }
+                                                                                                  },
                                                                                               )
                                                                                               // Only show categories that have at least 1 product with available stock
                                                                                               .filter(
                                                                                                   (
-                                                                                                      item
+                                                                                                      item,
                                                                                                   ) =>
                                                                                                       item.count >
-                                                                                                      0
+                                                                                                      0,
                                                                                               )
                                                                                         : []
                                                                                 }
                                                                                 onChange={(
-                                                                                    value
+                                                                                    value,
                                                                                 ) => {
                                                                                     setProductCategoryFilter(
                                                                                         {
                                                                                             product_category:
                                                                                                 value,
-                                                                                        }
+                                                                                        },
                                                                                     );
                                                                                 }}
                                                                                 disabled={
                                                                                     toggleModalFormTransfer.disabled ||
                                                                                     !form.getFieldValue(
-                                                                                        "from_warehouse_id"
+                                                                                        "from_warehouse_id",
                                                                                     )
                                                                                 }
                                                                             />
@@ -437,25 +437,25 @@ export default function ModalFormTransfer() {
                                                                                     // Filter by selected category
                                                                                     .filter(
                                                                                         (
-                                                                                            item
+                                                                                            item,
                                                                                         ) =>
                                                                                             productCategoryFilter?.product_category
                                                                                                 ? item.product_category_id ===
                                                                                                   productCategoryFilter.product_category
-                                                                                                : true
+                                                                                                : true,
                                                                                     )
                                                                                     // Only show products with available stock in the selected warehouse
                                                                                     .filter(
                                                                                         (
-                                                                                            item
+                                                                                            item,
                                                                                         ) =>
                                                                                             (item.total_stock ??
                                                                                                 0) >
-                                                                                            0
+                                                                                            0,
                                                                                     )
                                                                                     .map(
                                                                                         (
-                                                                                            item
+                                                                                            item,
                                                                                         ) => ({
                                                                                             value: item.id,
                                                                                             // Show product name with warehouse stock quantity
@@ -473,14 +473,14 @@ export default function ModalFormTransfer() {
                                                                                             }]`,
                                                                                             disabled:
                                                                                                 transfer_detail_ids.includes(
-                                                                                                    item.id
+                                                                                                    item.id,
                                                                                                 ),
-                                                                                        })
+                                                                                        }),
                                                                                     )}
                                                                                 disabled={
                                                                                     toggleModalFormTransfer.disabled ||
                                                                                     !form.getFieldValue(
-                                                                                        "from_warehouse_id"
+                                                                                        "from_warehouse_id",
                                                                                     )
                                                                                 }
                                                                             />
@@ -504,7 +504,7 @@ export default function ModalFormTransfer() {
                                                                                     validator:
                                                                                         (
                                                                                             _,
-                                                                                            value
+                                                                                            value,
                                                                                         ) => {
                                                                                             let product_detail_id =
                                                                                                 transfer_details[
@@ -515,10 +515,10 @@ export default function ModalFormTransfer() {
                                                                                             let productDetail =
                                                                                                 productDetails.find(
                                                                                                     (
-                                                                                                        item
+                                                                                                        item,
                                                                                                     ) =>
                                                                                                         item.id ===
-                                                                                                        product_detail_id
+                                                                                                        product_detail_id,
                                                                                                 );
 
                                                                                             if (
@@ -528,7 +528,7 @@ export default function ModalFormTransfer() {
                                                                                                 return Promise.resolve();
                                                                                             } else {
                                                                                                 return Promise.reject(
-                                                                                                    `Total stock: ${productDetail.total_stock}`
+                                                                                                    `Total stock: ${productDetail.total_stock}`,
                                                                                                 );
                                                                                             }
                                                                                         },
@@ -543,7 +543,7 @@ export default function ModalFormTransfer() {
                                                                                 disabled={
                                                                                     toggleModalFormTransfer.disabled ||
                                                                                     !form.getFieldValue(
-                                                                                        "from_warehouse_id"
+                                                                                        "from_warehouse_id",
                                                                                     )
                                                                                 }
                                                                             />
@@ -565,7 +565,7 @@ export default function ModalFormTransfer() {
                                                                             title="Are you sure you want to remove this product?"
                                                                             onConfirm={() =>
                                                                                 remove(
-                                                                                    name
+                                                                                    name,
                                                                                 )
                                                                             }
                                                                             okText="Yes"
@@ -589,7 +589,7 @@ export default function ModalFormTransfer() {
                                                                 )}
                                                             </Flex>
                                                         );
-                                                    }
+                                                    },
                                                 )}
 
                                                 {!toggleModalFormTransfer.disabled && (

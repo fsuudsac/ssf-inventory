@@ -1,6 +1,7 @@
 import { Button, Col, DatePicker, Flex, Row, Select, Table } from "antd";
 import { useEffect, useState } from "react";
 import {
+    TableGlobalSearchAnimated,
     TablePageSize,
     TablePagination,
     TableShowingEntriesV2,
@@ -11,8 +12,11 @@ import { faDownload } from "@fortawesome/pro-regular-svg-icons";
 import ModalInventoryLedger from "./components/ModalInventoryLedger";
 import FloatSelect from "../../../providers/FloatSelect";
 import useTableScrollOnTop from "../../../providers/useTableScrollOnTop";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageReportInventory() {
+    const { width } = useWindowDimensions();
+
     const [toggleModalInventoryLedger, setToggleModalInventoryLedger] =
         useState({
             open: false,
@@ -60,15 +64,13 @@ export default function PageReportInventory() {
     useTableScrollOnTop("tbl_inventory", "tbl_inventory");
 
     return (
-        <Row gutter={[12, 12]} id="tbl_wrapper_inventory">
+        <Row gutter={[20, 20]} id="tbl_wrapper_inventory">
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex className="flex-wrapper-filter">
-                        <Select
-                            className="w-100"
-                            placeholder="Select Status"
-                            showSearch
-                            allowClear
+                <Row gutter={[12, 12]}>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <FloatSelect
+                            label="Status"
+                            placeholder="Status"
                             options={[
                                 {
                                     value: "Low Inventory",
@@ -91,18 +93,14 @@ export default function PageReportInventory() {
                                 }));
                             }}
                         />
+                    </Col>
 
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                         <FloatSelect
-                            placeholder="Select Warehouse"
-                            className="w-100 b-0"
-                            multi="multiple"
+                            label="Warehouse"
+                            placeholder="Warehouse"
+                            mode="multiple"
                             allowClear
-                            showSearch
-                            filterOption={(input, option) => {
-                                return option.label
-                                    .toLowerCase()
-                                    .includes(input.toLowerCase());
-                            }}
                             options={
                                 dataWarehouse && dataWarehouse.data
                                     ? dataWarehouse.data.map((item) => ({
@@ -119,24 +117,19 @@ export default function PageReportInventory() {
                                 }));
                             }}
                         />
-                    </Flex>
-                </div>
+                    </Col>
+                </Row>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <Flex justify="end">
-                    <TablePageSize
-                        tableFilter={tableFilter}
-                        setTableFilter={setTableFilter}
-                    />
-                </Flex>
-            </Col>
-
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex gap={10}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <Flex align="center" gap={10}>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                             onClick={() => {
@@ -152,14 +145,33 @@ export default function PageReportInventory() {
                             Export Pdf
                         </Button>
                         {/* <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                         >
                             Export Excel
                         </Button> */}
                     </Flex>
-                    <Flex gap={10}>
+
+                    <TablePageSize
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+                </Flex>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <TableGlobalSearchAnimated
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+
+                    <Flex align="center" gap={10}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -170,7 +182,7 @@ export default function PageReportInventory() {
                             tblIdWrapper="tbl_wrapper_inventory"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -254,10 +266,14 @@ export default function PageReportInventory() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-bottom-filter">
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-bottom-filter"
+                >
                     <div />
 
-                    <Flex>
+                    <Flex align="center" gap={10}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -268,7 +284,7 @@ export default function PageReportInventory() {
                             tblIdWrapper="tbl_wrapper_inventory"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <ModalInventoryLedger

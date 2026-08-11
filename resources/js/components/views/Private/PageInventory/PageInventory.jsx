@@ -12,9 +12,12 @@ import {
     TablePagination,
     TableShowingEntriesV2,
 } from "../../../providers/CustomTableFilter";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
+import FloatSelect from "../../../providers/FloatSelect";
 
 export default function PageInventory() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -33,12 +36,12 @@ export default function PageInventory() {
         `api/warehouse`,
         "warehouse_dropdown_list",
         (res) => {},
-        false
+        false,
     );
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/product_inventory?${new URLSearchParams(tableFilter)}`,
-        "product_inventory_list"
+        "product_inventory_list",
     );
 
     useEffect(() => {
@@ -100,52 +103,13 @@ export default function PageInventory() {
                 location,
             }}
         >
-            <Row gutter={[12, 12]}>
+            <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={15}>
-                            <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    !tableFilter.isTrash ? "active" : "outlined"
-                                }`}
-                                onClick={() =>
-                                    setTableFilter((ps) => ({
-                                        ...ps,
-                                        isTrash: 0,
-                                    }))
-                                }
-                            >
-                                Active
-                            </Button>
-
-                            <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    tableFilter.isTrash ? "active" : "outlined"
-                                }`}
-                                onClick={() =>
-                                    setTableFilter((ps) => ({
-                                        ...ps,
-                                        isTrash: 1,
-                                    }))
-                                }
-                            >
-                                Archived
-                            </Button>
-                        </Flex>
-
-                        <TablePageSize
-                            tableFilter={tableFilter}
-                            setTableFilter={setTableFilter}
-                        />
-                    </div>
-                </Col>
-
-                <Col xs={24} sm={24} md={24}>
-                    <Flex justify="space-between" className="tbl-top-filter">
-                        <Flex gap={15}>
-                            <Select
-                                className="w-100"
-                                placeholder="Filter by Warehouse"
+                    <Row gutter={[12, 12]}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                            <FloatSelect
+                                label="Warehouse"
+                                placeholder="Warehouse"
                                 allowClear
                                 value={
                                     tableFilter.warehouse_ids
@@ -168,6 +132,58 @@ export default function PageInventory() {
                                     }));
                                 }}
                             />
+                        </Col>
+                    </Row>
+                </Col>
+
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
+                            <Button
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "outlined" : "active"}`}
+                                onClick={() =>
+                                    setTableFilter((ps) => ({
+                                        ...ps,
+                                        isTrash: 0,
+                                    }))
+                                }
+                            >
+                                Active
+                            </Button>
+
+                            <Button
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "active" : "outlined"}`}
+                                onClick={() =>
+                                    setTableFilter((ps) => ({
+                                        ...ps,
+                                        isTrash: 1,
+                                    }))
+                                }
+                            >
+                                Archived
+                            </Button>
+                        </Flex>
+
+                        <TablePageSize
+                            tableFilter={tableFilter}
+                            setTableFilter={setTableFilter}
+                        />
+                    </Flex>
+                </Col>
+
+                <Col xs={24} sm={24} md={24}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <TableGlobalSearchAnimated
                                 tableFilter={tableFilter}
                                 setTableFilter={setTableFilter}
@@ -198,7 +214,9 @@ export default function PageInventory() {
                                 name="btn_delete"
                             >
                                 <Button
-                                    className="btn-main-secondary"
+                                    type="primary"
+                                    className={`${width < 576 ? "w-full" : ""} ${tableFilter.isTrash ? "btn-success" : ""}`}
+                                    danger={tableFilter.isTrash}
                                     name="btn_delete"
                                     loading={isLoadingArchivedTransfer}
                                 >
@@ -210,7 +228,7 @@ export default function PageInventory() {
                             </Popconfirm>
                         )}
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -229,10 +247,14 @@ export default function PageInventory() {
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -243,7 +265,7 @@ export default function PageInventory() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
             </Row>
         </PageInventoryContext.Provider>

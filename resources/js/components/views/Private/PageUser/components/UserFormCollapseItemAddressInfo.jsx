@@ -35,8 +35,12 @@ export default function UserFormCollapseItemAddressInfo(props) {
                             {fields.map(({ key, name, ...restField }) => {
                                 return (
                                     <Row key={key} gutter={[12, 0]}>
-                                        <Col xs={24}>
-                                            <Flex justify="space-between">
+                                        <Col xs={24} className="mb-3!">
+                                            <Flex
+                                                justify="space-between"
+                                                align="center"
+                                                gap={10}
+                                            >
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "status"]}
@@ -50,12 +54,12 @@ export default function UserFormCollapseItemAddressInfo(props) {
                                                             const newValues =
                                                                 form
                                                                     .getFieldValue(
-                                                                        formList
+                                                                        formList,
                                                                     )
                                                                     .map(
                                                                         (
                                                                             item,
-                                                                            idx
+                                                                            idx,
                                                                         ) =>
                                                                             idx ===
                                                                             name
@@ -68,13 +72,13 @@ export default function UserFormCollapseItemAddressInfo(props) {
                                                                                 : {
                                                                                       ...item,
                                                                                       status: false,
-                                                                                  }
+                                                                                  },
                                                                     );
                                                             form.setFieldsValue(
                                                                 {
                                                                     [formList]:
                                                                         newValues,
-                                                                }
+                                                                },
                                                             );
 
                                                             handleDebounce({
@@ -96,7 +100,7 @@ export default function UserFormCollapseItemAddressInfo(props) {
                                                         handleDeleteAddress(
                                                             name,
                                                             remove,
-                                                            formList
+                                                            formList,
                                                         )
                                                     }
                                                     onCancel={() => {

@@ -64,8 +64,9 @@ class ProductSizeController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = ProductSize::find($request->id);
-                $productSize = ProductSize::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = ProductSize::withTrashed()->find($request->id);
+                $productSize = ProductSize::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 

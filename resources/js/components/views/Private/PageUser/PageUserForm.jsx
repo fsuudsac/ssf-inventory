@@ -21,14 +21,24 @@ import UserFormCollapseItemPrimaryContact from "./components/UserFormCollapseIte
 import UserFormCollapseItemAddressInfo from "./components/UserFormCollapseItemAddressInfo";
 import isEmptyObject from "../../../providers/isEmptyObject";
 import PageUserFormContext from "./components/PageUserFormContext";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
+import CustomCollapse from "../../../providers/CustomCollapse";
 
 export default function PageUserForm() {
     const location = useLocation();
     const navigate = useNavigate();
     const params = useParams();
+    const { width } = useWindowDimensions();
 
     const [form] = Form.useForm();
     const [formDisabled, setFormDisabled] = useState(true);
+    const [collapseActiveKey, setCollapseActiveKey] = useState([
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+    ]);
 
     const [
         toggleModalUploadProfilePicture,
@@ -503,16 +513,16 @@ export default function PageUserForm() {
         >
             <Row gutter={[20, 20]}>
                 <Col sm={24} md={24} lg={24} xl={24} xxl={24}>
-                    <Flex gap={10} align="center">
+                    <Flex align="center" gap={15}>
                         <Button
-                            className="btn-main-invert-outline b-r-none"
+                            type="default"
                             icon={<FontAwesomeIcon icon={faArrowLeft} />}
                             onClick={() => navigate(-1)}
                         >
                             Back to list
                         </Button>
                         <Button
-                            className="btn-main-primary b-r-none"
+                            type="default"
                             icon={<FontAwesomeIcon icon={faUserShield} />}
                             onClick={() =>
                                 navigate("/users/permission/" + params.id)
@@ -534,41 +544,25 @@ export default function PageUserForm() {
                     >
                         <Row gutter={[20, 20]}>
                             <Col sm={24} md={24} lg={14} xl={14} xxl={14}>
-                                <Collapse
-                                    className="collapse-main-primary"
-                                    defaultActiveKey={["0", "1", "2", "3", "4"]}
-                                    size="middle"
-                                    expandIcon={({ isActive }) => (
-                                        <FontAwesomeIcon
-                                            icon={
-                                                isActive
-                                                    ? faAngleUp
-                                                    : faAngleDown
-                                            }
-                                        />
-                                    )}
+                                <CustomCollapse
+                                    activeKey={collapseActiveKey}
+                                    onChange={(key) =>
+                                        setCollapseActiveKey(key)
+                                    }
                                     items={collapseItems}
                                 />
                             </Col>
 
                             <Col sm={24} md={24} lg={10} xl={10} xxl={10}>
-                                <Collapse
-                                    className="collapse-main-primary"
-                                    defaultActiveKey={["0", "1"]}
-                                    size="middle"
-                                    expandIcon={({ isActive }) => (
-                                        <FontAwesomeIcon
-                                            icon={
-                                                isActive
-                                                    ? faAngleUp
-                                                    : faAngleDown
-                                            }
-                                        />
-                                    )}
+                                <CustomCollapse
+                                    activeKey={["0", "1"]}
+                                    onChange={(key) =>
+                                        setCollapseActiveKey(key)
+                                    }
                                     items={[
                                         {
                                             key: "0",
-                                            label: "Profile Picture",
+                                            label: "PROFILE PICTURE",
                                             className:
                                                 "collapse-profile-picture",
                                             children: (
@@ -630,7 +624,7 @@ export default function PageUserForm() {
                                 >
                                     <Button
                                         key={4}
-                                        className="btn-main-primary"
+                                        type="primary"
                                         type="primary"
                                         onClick={() => form.submit()}
                                         loading={isLoadingUser}

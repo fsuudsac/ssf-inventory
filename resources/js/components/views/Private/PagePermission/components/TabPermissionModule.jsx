@@ -32,7 +32,7 @@ export default function TabPermissionModule() {
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/module?${new URLSearchParams(tableFilter)}`,
-        "module_list"
+        "module_list",
     );
 
     const onChangeTable = (pagination, filters, sorter) => {
@@ -56,7 +56,7 @@ export default function TabPermissionModule() {
 
     const { mutate: mutateModule, loading: loadingModule } = POST(
         `api/module`,
-        "module_list"
+        "module_list",
     );
 
     const onFinishModule = (values) => {
@@ -105,7 +105,7 @@ export default function TabPermissionModule() {
             <Row gutter={[12, 12]} id="tbl_wrapper_permission_module_opis">
                 <Col xs={24} sm={24} md={24}>
                     <Button
-                        className="btn-main-primary"
+                        type="primary"
                         onClick={() =>
                             setToggleModalModule({
                                 open: true,
@@ -204,7 +204,7 @@ export default function TabPermissionModule() {
                                                         </div>
                                                     ) : null}
                                                 </Space>
-                                            )
+                                            ),
                                         )}
                                     </Space>
                                 ) : null;

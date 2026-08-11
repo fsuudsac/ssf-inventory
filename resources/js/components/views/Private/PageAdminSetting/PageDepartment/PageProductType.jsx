@@ -40,7 +40,7 @@ export default function PageProductType() {
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/product_type?${new URLSearchParams(tableFilter)}`,
-        "product_type_list"
+        "product_type_list",
     );
 
     useEffect(() => {
@@ -109,7 +109,7 @@ export default function PageProductType() {
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Button
                         icon={<FontAwesomeIcon icon={faPlus} />}
-                        className="btn-main-primary"
+                        type="primary"
                         onClick={() =>
                             setToggleModalFormProductType({
                                 open: true,

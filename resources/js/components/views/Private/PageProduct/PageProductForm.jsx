@@ -11,7 +11,7 @@ import {
     Row,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/pro-regular-svg-icons";
+import { faArrowLeft, faQrcode } from "@fortawesome/pro-regular-svg-icons";
 import axios from "axios";
 
 import { DELETE, GET, POST } from "../../../providers/useAxiosQuery";
@@ -296,6 +296,16 @@ export default function PageProductForm() {
             }}
         >
             <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <Button
+                        type="default"
+                        onClick={() => navigate(-1)}
+                        icon={<FontAwesomeIcon icon={faArrowLeft} />}
+                    >
+                        Back
+                    </Button>
+                </Col>
+
                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                     <Form
                         form={form}
@@ -447,7 +457,7 @@ export default function PageProductForm() {
                             ) : (
                                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                     <Button
-                                        className="btn-main-primary"
+                                        type="primary"
                                         htmlType="submit"
                                         loading={isLoadingProduct}
                                     >

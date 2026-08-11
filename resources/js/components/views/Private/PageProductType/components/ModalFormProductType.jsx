@@ -15,7 +15,7 @@ export default function ModalFormProductType() {
 
     const { mutate: mutateProductType, isLoading: isLoadingProductType } = POST(
         `api/product_type`,
-        "product_type_list"
+        "product_type_list",
     );
 
     const onFinish = (values) => {
@@ -100,7 +100,7 @@ export default function ModalFormProductType() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

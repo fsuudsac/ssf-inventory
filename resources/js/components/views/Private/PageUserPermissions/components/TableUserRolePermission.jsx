@@ -69,27 +69,44 @@ export default function TableUserRolePermission(props) {
 
     return (
         <Row
-            gutter={[12, 12]}
+            gutter={[20, 20]}
             id={`tbl_wrapper_user_role_permission_${user_role_id}`}
         >
             <Col xs={24} sm={24} md={24}>
-                <div className="tbl-top-filter">
-                    <Flex gap={10} align="center">
+                <Flex justify="space-between" align="center" gap={15}>
+                    <div />
+
+                    <TablePageSize
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+                </Flex>
+            </Col>
+            <Col xs={24} sm={24} md={24}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <Flex align="center" gap={15}>
                         <TableGlobalSearchAnimated
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
                     </Flex>
 
-                    <Flex gap={10} align="center">
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
-
-                        <TablePageSize
+                        <TablePagination
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
+                            total={dataSource?.data.total}
+                            showLessItems={true}
+                            showSizeChanger={false}
+                            tblIdWrapper={`tbl_wrapper_user_role_permission_${user_role_id}`}
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
             <Col xs={24} sm={24} md={24}>
                 <Table
@@ -178,17 +195,25 @@ export default function TableUserRolePermission(props) {
                 </Table>
             </Col>
             <Col xs={24} sm={24} md={24}>
-                <div className="tbl-bottom-filter">
-                    <TableShowingEntriesV2 />
-                    <TablePagination
-                        tableFilter={tableFilter}
-                        setTableFilter={setTableFilter}
-                        total={dataSource?.data.total}
-                        showLessItems={true}
-                        showSizeChanger={false}
-                        tblIdWrapper={`tbl_wrapper_user_role_permission_${user_role_id}`}
-                    />
-                </div>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-bottom-filter"
+                >
+                    <div />
+
+                    <Flex align="center" gap={15}>
+                        <TableShowingEntriesV2 />
+                        <TablePagination
+                            tableFilter={tableFilter}
+                            setTableFilter={setTableFilter}
+                            total={dataSource?.data.total}
+                            showLessItems={true}
+                            showSizeChanger={false}
+                            tblIdWrapper={`tbl_wrapper_user_role_permission_${user_role_id}`}
+                        />
+                    </Flex>
+                </Flex>
             </Col>
         </Row>
     );

@@ -31,7 +31,7 @@ export default function TableProductDetail(props) {
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/product_details?${new URLSearchParams(tableFilter)}`,
-        "product_details_list"
+        "product_details_list",
     );
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function TableProductDetail(props) {
         <Row gutter={[20, 20]}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     icon={<FontAwesomeIcon icon={faPlus} />}
                     onClick={() =>
                         setToggleModalFormProductDetail({
@@ -85,7 +85,7 @@ export default function TableProductDetail(props) {
                                                     {
                                                         open: true,
                                                         data: record,
-                                                    }
+                                                    },
                                                 )
                                             }
                                             icon={

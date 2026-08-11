@@ -176,8 +176,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource("graph_product", App\Http\Controllers\Graph\GraphProductController::class);
     Route::get("graph_revenue", [App\Http\Controllers\Graph\RevenueController::class, "graph_revenue"]);
 
-    Route::get("user_notifications", [App\Http\Controllers\UserNotificationController::class, "index"]);
-    Route::post("update_notification", [App\Http\Controllers\UserNotificationController::class, "update_notification"]);
+    Route::apiResource("user_notifications", App\Http\Controllers\NotificationUserController::class);
+    Route::post("update_notification", [App\Http\Controllers\NotificationUserController::class, "update_notification"]);
 
     Route::get("product_sales_and_purchase", [App\Http\Controllers\DashboardController::class, "product_sales_and_purchase"]);
 

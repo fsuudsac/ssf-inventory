@@ -62,8 +62,9 @@ class VideoFaqController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = VideoFaq::find($request->id);
-                $videoFaq = VideoFaq::updateOrCreate(
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = VideoFaq::withTrashed()->find($request->id);
+                $videoFaq = VideoFaq::withTrashed()->updateOrCreate(
                     ["id" => $request->id ?? null],
                     $dataValidate
                 );

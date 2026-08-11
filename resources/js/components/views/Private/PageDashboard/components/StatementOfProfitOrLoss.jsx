@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Col, Collapse, DatePicker, Flex, Row, Typography } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faAngleUp } from "@fortawesome/pro-regular-svg-icons";
+import { Col, DatePicker, Flex, Row, Typography } from "antd";
 import dayjs from "dayjs";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import formatToCurrency from "../../../../providers/formatToCurrency";
+import CustomCollapse from "../../../../providers/CustomCollapse";
 
 export default function StatementOfProfitOrLoss() {
+    const [collapseActiveKey, setCollapseActiveKey] = useState(["0", "1"]);
+
     const [filter, setFilter] = useState({
         start_date: "",
         end_date: "",
@@ -59,7 +60,7 @@ export default function StatementOfProfitOrLoss() {
                     gross_margin: gross_margin,
                 });
             }
-        }
+        },
     );
 
     useEffect(() => {
@@ -81,13 +82,10 @@ export default function StatementOfProfitOrLoss() {
     };
 
     return (
-        <Collapse
-            className="collapse-main-primary collapse-statement-profit-loss"
-            defaultActiveKey={["0", "1"]}
-            size="large"
-            expandIcon={({ isActive }) => (
-                <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} />
-            )}
+        <CustomCollapse
+            className="custom-collapse collapse-statement-profit-loss"
+            activeKey={collapseActiveKey}
+            onChange={(key) => setCollapseActiveKey(key)}
             items={[
                 {
                     key: "0",
@@ -165,7 +163,7 @@ export default function StatementOfProfitOrLoss() {
                                         >
                                             ₱{" "}
                                             {formatToCurrency(
-                                                total.cost_of_goods_sold
+                                                total.cost_of_goods_sold,
                                             )}
                                         </span>
                                     </Typography.Text>
@@ -183,7 +181,7 @@ export default function StatementOfProfitOrLoss() {
                                         >
                                             ₱{" "}
                                             {formatToCurrency(
-                                                total.gross_margin
+                                                total.gross_margin,
                                             )}
                                         </span>
                                     </Typography.Text>
