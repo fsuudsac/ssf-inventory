@@ -10,7 +10,7 @@ import PageProductFormContext from "./PageProductFormContext";
 import notificationErrors from "../../../../providers/notificationErrors";
 
 export default function TableProductDetail() {
-    const { params } = useContext(PageProductFormContext);
+    const { params, width } = useContext(PageProductFormContext);
 
     const [toggleModalFormProductDetail, setToggleModalFormProductDetail] =
         useState({
@@ -98,9 +98,10 @@ export default function TableProductDetail() {
                         Add Product Details
                     </Button>
 
-                    <Flex gap={10}>
+                    <Flex align="center" gap={15}>
                         <Button
-                            className={`btn-main-primary ${
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                 tableFilter.isTrash === 0
                                     ? "active"
                                     : "outlined"
@@ -116,7 +117,8 @@ export default function TableProductDetail() {
                         </Button>
 
                         <Button
-                            className={`btn-main-primary ${
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                 tableFilter.isTrash === 1
                                     ? "active"
                                     : "outlined"
@@ -294,6 +296,7 @@ export default function TableProductDetail() {
                         setToggleModalFormProductDetail
                     }
                     productId={params && params.id ? params.id : ""}
+                    width={width}
                 />
             </Col>
         </Row>

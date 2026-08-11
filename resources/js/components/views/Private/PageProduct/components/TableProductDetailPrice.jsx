@@ -7,13 +7,14 @@ import { GET, POST } from "../../../../providers/useAxiosQuery";
 import notificationErrors from "../../../../providers/notificationErrors";
 
 export default function TableProductDetailPrice(props) {
-    const { product_detail_id, setToggleModalProductDetailPrice } = props;
+    const { product_detail_id, setToggleModalProductDetailPrice, width } =
+        props;
 
     const [isTrash, setIsTrash] = useState(0);
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/product_detail_prices?from=ModalProductDetail&product_detail_id=${product_detail_id}&isTrash=${isTrash}`,
-        `product_detail_prices_${product_detail_id}`
+        `product_detail_prices_${product_detail_id}`,
     );
 
     useEffect(() => {
@@ -28,7 +29,7 @@ export default function TableProductDetailPrice(props) {
         isLoading: isLoadingArchivedProductDetailPrice,
     } = POST(
         `api/product_detail_price_archived`,
-        "product_detail_price_archived"
+        "product_detail_price_archived",
     );
 
     const handleSelectedArchived = (record) => {
@@ -59,11 +60,12 @@ export default function TableProductDetailPrice(props) {
     };
 
     return (
-        <Row>
+        <Row gutter={[12, 12]}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <Flex gap={15}>
+                <Flex align="center" gap={15}>
                     <Button
-                        className={`btn-main-primary ${
+                        type="primary"
+                        className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                             !isTrash ? "active" : "outlined"
                         }`}
                         onClick={() => setIsTrash(0)}
@@ -72,7 +74,8 @@ export default function TableProductDetailPrice(props) {
                     </Button>
 
                     <Button
-                        className={`btn-main-primary ${
+                        type="primary"
+                        className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                             isTrash ? "active" : "outlined"
                         }`}
                         onClick={() => setIsTrash(1)}
@@ -101,7 +104,7 @@ export default function TableProductDetailPrice(props) {
                                         justify="center"
                                     >
                                         <Button
-                                            type="text"
+                                            type="link"
                                             className="text-primary"
                                             icon={
                                                 <FontAwesomeIcon
@@ -113,7 +116,7 @@ export default function TableProductDetailPrice(props) {
                                                     {
                                                         open: true,
                                                         data: record,
-                                                    }
+                                                    },
                                                 )
                                             }
                                         />
@@ -141,11 +144,12 @@ export default function TableProductDetailPrice(props) {
                                             <Button
                                                 name="btn_delete"
                                                 type="link"
-                                                className={`btn-delete ${
+                                                className={`${
                                                     isTrash === 1
                                                         ? "success"
                                                         : ""
                                                 } w-auto h-auto`}
+                                                danger
                                                 icon={
                                                     <FontAwesomeIcon
                                                         icon={faTrash}

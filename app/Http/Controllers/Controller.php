@@ -608,7 +608,8 @@ abstract class Controller
                         $description = $subject . ' updated by ' . $fullname;
                     }
 
-                    $old_value = $originalValue[$key];
+                    // $originalValue is null on create (no existing record), so guard against it
+                    $old_value = $originalValue ? $originalValue[$key] : null;
                     $new_value = $value;
 
                     $data_historical[] = [

@@ -52,6 +52,8 @@ export default function UserFormCollapseItemPersonalInfo() {
         false,
     );
 
+    console.log("dataCompany: ", dataCompany);
+
     const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
         `api/company`,
         "company_create",

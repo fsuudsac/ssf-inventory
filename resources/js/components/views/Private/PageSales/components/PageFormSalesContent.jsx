@@ -226,7 +226,8 @@ export default function PageFormSalesContent() {
                                                         justify="flex-end"
                                                     >
                                                         <Button
-                                                            className="btn-main-primary btn-main-invert-outline b-r-none mb-10 mr-10"
+                                                            type="primary"
+                                                            className="b-r-none mb-10 mr-10"
                                                             icon={
                                                                 <FontAwesomeIcon
                                                                     icon={

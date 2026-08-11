@@ -13,6 +13,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faQrcode } from "@fortawesome/pro-regular-svg-icons";
 import axios from "axios";
+import { debounce } from "lodash";
 
 import { DELETE, GET, POST } from "../../../providers/useAxiosQuery";
 import { apiUrl } from "../../../providers/appConfig";
@@ -27,12 +28,13 @@ import TableProductDetail from "./components/TableProductDetail";
 import ModalProductPreviewQr from "./components/ModalProductPreviewQr";
 import ProductPhotoUpload from "./components/ProductPhotoUpload";
 import FloatSelect from "../../../providers/FloatSelect";
-import { debounce } from "lodash";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageProductForm() {
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [form] = Form.useForm();
     const [disabledForm, setDisabledForm] = useState(true);
@@ -293,6 +295,7 @@ export default function PageProductForm() {
                 location,
                 handleUploadDebounce,
                 dataProductCategories,
+                width,
             }}
         >
             <Row gutter={[20, 20]}>
