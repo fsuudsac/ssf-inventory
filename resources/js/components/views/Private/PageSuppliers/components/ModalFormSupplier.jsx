@@ -38,12 +38,12 @@ export default function ModalFormSupplier(props) {
                 setDataCompany(res.data);
             }
         },
-        false
+        false,
     );
 
     const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
         `api/company`,
-        "company_create"
+        "company_create",
     );
 
     const handleAddCompany = () => {
@@ -228,14 +228,20 @@ export default function ModalFormSupplier(props) {
                                 placeholder="Company"
                                 allowClear
                                 required
-                                options={dataCompany
-                                    .map((item) => ({
-                                        value: item.id,
-                                        label: item.company,
-                                    }))
-                                    .sort((a, b) =>
-                                        a.label.localeCompare(b.label)
-                                    )}
+                                options={
+                                    dataCompany && dataCompany.length > 0
+                                        ? dataCompany
+                                              .map((item) => ({
+                                                  value: item.id,
+                                                  label: item.company,
+                                              }))
+                                              .sort((a, b) =>
+                                                  a.label.localeCompare(
+                                                      b.label,
+                                                  ),
+                                              )
+                                        : []
+                                }
                                 dropdownRender={(menu) => (
                                     <>
                                         {menu}
@@ -250,12 +256,12 @@ export default function ModalFormSupplier(props) {
                                                 placeholder="Add Company"
                                                 onChange={(e) =>
                                                     setCompanyValue(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 onBlur={(e) =>
                                                     setCompanyValue(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 onPressEnter={() =>
@@ -395,7 +401,7 @@ export default function ModalFormSupplier(props) {
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
-                                        )
+                                        ),
                                     )}
 
                                     <Button

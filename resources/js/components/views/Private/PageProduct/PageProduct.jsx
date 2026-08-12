@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Col, Flex, notification, Popconfirm, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/pro-regular-svg-icons";
+import { faInboxArrowDown, faPlus } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET, POST } from "../../../providers/useAxiosQuery";
 import notificationErrors from "../../../providers/notificationErrors";
@@ -120,18 +120,18 @@ export default function PageProduct() {
                             Add Product Canvas
                         </Button>
 
-                        {/* <Button
-                        icon={<FontAwesomeIcon icon={faInboxArrowDown} />}
-                        className="btn-main-primary"
-                        onClick={() =>
-                            setToggleModalImportProduct({
-                                open: true,
-                                data: null,
-                            })
-                        }
-                    >
-                        Import File
-                    </Button> */}
+                        <Button
+                            icon={<FontAwesomeIcon icon={faInboxArrowDown} />}
+                            className="btn-main-primary"
+                            onClick={() =>
+                                setToggleModalImportProduct({
+                                    open: true,
+                                    data: null,
+                                })
+                            }
+                        >
+                            Import File
+                        </Button>
                     </Flex>
                 </Col>
 

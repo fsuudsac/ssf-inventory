@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'email' => 'superadmin@test.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('Admin123!'),
-                'role' => "Super Admin",
+                'user_role_id' => 1,
                 'status' => 'Active',
                 'remember_token' => Str::random(10),
                 'created_by' => 1,

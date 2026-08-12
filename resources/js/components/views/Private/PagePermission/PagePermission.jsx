@@ -1,29 +1,29 @@
 import { Row, Col, Tabs } from "antd";
 
-import TabPermissionModule from "./components/TabPermissionModule";
 import TabPermissionUserRole from "./components/TabPermissionUserRole";
+import TabPermissionUser from "./components/TabPermissionUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMicrochip } from "@fortawesome/pro-regular-svg-icons";
+import { faShieldCheck, faUser } from "@fortawesome/pro-regular-svg-icons";
 
 export default function PagePermission() {
     return (
         <Row gutter={[12, 12]}>
             <Col xs={24} sm={24} md={24}>
                 <Tabs
-                    defaultActiveKey="0"
+                    defaultActiveKey="user_role"
                     type="card"
                     items={[
                         {
-                            key: "0",
-                            label: "Module",
-                            icon: <FontAwesomeIcon icon={faMicrochip} />,
-                            children: <TabPermissionModule />,
+                            key: "user_role",
+                            label: "User Role",
+                            icon: <FontAwesomeIcon icon={faShieldCheck} />,
+                            children: <TabPermissionUserRole />,
                         },
                         {
-                            key: "1",
-                            label: "User Role",
-                            icon: <FontAwesomeIcon icon={faMicrochip} />,
-                            children: <TabPermissionUserRole />,
+                            key: "users",
+                            label: "Users",
+                            icon: <FontAwesomeIcon icon={faUser} />,
+                            children: <TabPermissionUser />,
                         },
                     ]}
                 />

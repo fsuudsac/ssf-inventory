@@ -133,6 +133,13 @@ export default function PageUserForm() {
         });
     }
 
+    const { data: dataUserRole, refetch: refetchSource } = GET(
+        `api/user_role`,
+        "user_role_list",
+    );
+
+    console.log("dataUserRole::: ", dataUserRole);
+
     const { mutate: mutateUser, isLoading: isLoadingUser } = POST(
         `api/users`,
         "create_users_info",
@@ -173,7 +180,8 @@ export default function PageUserForm() {
         }
 
         if (location.pathname.split("/")[1] === "suppliers") {
-            data.append("role", "Supplier");
+            let role = dataUserRole?.data?.find((x) => x.role === "Supplier");
+            data.append("user_role_id", role.id);
             data.append("salutation", values.salutation ?? "");
             data.append("company_id", values.company_id ?? "");
             data.append(
@@ -198,7 +206,8 @@ export default function PageUserForm() {
                     : [],
             );
         } else if (location.pathname.split("/")[1] === "customers") {
-            data.append("role", "Customer");
+            let role = dataUserRole?.data?.find((x) => x.role === "Customer");
+            data.append("user_role_id", role.id);
             data.append("salutation", values.salutation ?? "");
             data.append("customer_type", values.customer_type ?? "");
             data.append("company_id", values.company_id ?? "");
@@ -224,7 +233,8 @@ export default function PageUserForm() {
                     : [],
             );
         } else {
-            data.append("role", values.role);
+            // Form.Item is named "user_role_id", so use values.user_role_id (not values.role)
+            data.append("user_role_id", values.user_role_id);
             data.append("username", values.username);
             data.append("address", values.address);
             data.append("status", values.status);
@@ -443,7 +453,9 @@ export default function PageUserForm() {
         collapseItems.push({
             key: "0",
             label: "ACCOUNT INFORMATION",
-            children: <UserFormCollapseItemAccountInfo />,
+            children: (
+                <UserFormCollapseItemAccountInfo dataUserRole={dataUserRole} />
+            ),
         });
     }
 

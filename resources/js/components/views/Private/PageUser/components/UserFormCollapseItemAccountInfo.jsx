@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "antd";
 
 import validateRules from "../../../../providers/validateRules";
-import optionUserType from "../../../../providers/optionUserType";
 import FloatSelect from "../../../../providers/FloatSelect";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatInputPassword from "../../../../providers/FloatInputPassword";
@@ -10,7 +9,7 @@ import ModalFormPassword from "./ModalFormPassword";
 import ModalFormEmail from "./ModalFormEmail";
 import PageUserFormContext from "./PageUserFormContext";
 
-export default function UserFormCollapseItemAccountInfo() {
+export default function UserFormCollapseItemAccountInfo({ dataUserRole }) {
     const { handleDebounce, formDisabled, params } =
         useContext(PageUserFormContext);
 
@@ -27,12 +26,26 @@ export default function UserFormCollapseItemAccountInfo() {
     return (
         <Row gutter={[20, 0]}>
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                <Form.Item name="role" rules={[validateRules.required()]}>
+                <Form.Item
+                    name="user_role_id"
+                    rules={[validateRules.required()]}
+                >
                     <FloatSelect
                         label="Role"
                         placeholder="Role"
                         required={true}
-                        options={optionUserType}
+                        options={
+                            dataUserRole?.data?.length > 0
+                                ? dataUserRole.data
+                                      .sort((a, b) =>
+                                          a.role.localeCompare(b.role),
+                                      )
+                                      .map((item) => ({
+                                          value: item.id,
+                                          label: item.role,
+                                      }))
+                                : []
+                        }
                         disabled={formDisabled}
                         onChange={(e) => {
                             handleDebounce({

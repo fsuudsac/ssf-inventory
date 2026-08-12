@@ -41,7 +41,7 @@ export default function PageFormSales() {
         });
 
     const { data: dataCustomers } = GET(
-        `api/users?roles=Customer`,
+        `api/users`,
         "users_customer_dropdown",
         (res) => {},
         false,

@@ -20,4 +20,9 @@ class ModuleButton extends Model
     {
         return $this->hasMany(UserRolePermission::class, "mod_button_id");
     }
+
+    public function user_permissions()
+    {
+        return $this->hasMany(UserPermission::class, "mod_button_id");
+    }
 }

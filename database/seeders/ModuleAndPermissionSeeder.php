@@ -354,18 +354,18 @@ class ModuleAndPermissionSeeder extends Seeder
                     $createModuleButton = ModuleButton::create($module_button + ["module_id" => $moduleCreate->id]);
 
                     if ($createModuleButton) {
-                        $dataUserRoles = ['Super Admin', 'Admin', 'Staff', 'Manager'];
+                        $dataUserRoles = [1, 2, 3];
 
                         foreach ($dataUserRoles as $role_key => $role) {
                             UserRolePermission::create([
-                                "role" => $role,
+                                "user_role_id" => $role,
                                 "mod_button_id" => $createModuleButton->id,
                                 "status" => 1,
                                 "created_by" => 1
                             ]);
                         }
 
-                        $dataUsers = User::whereNotIn('role', ['Supplier', 'Customer'])->get();
+                        $dataUsers = User::whereNotIn('user_role_id', ['Supplier', 'Customer'])->get();
 
                         foreach ($dataUsers as $user_key => $user) {
                             UserPermission::create([

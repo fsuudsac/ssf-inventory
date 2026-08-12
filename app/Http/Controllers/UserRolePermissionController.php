@@ -20,7 +20,7 @@ class UserRolePermissionController extends Controller
             'module_buttons' => function ($query) use ($request) {
                 $query->with([
                     "user_role_permissions" => function ($query) use ($request) {
-                        $query->where("user_role_id", $request->user_role_id);
+                        $query->where("user_role_id", $request->role);
                     }
                 ]);
             }
@@ -68,33 +68,22 @@ class UserRolePermissionController extends Controller
             "message" => "Data not update"
         ];
 
-        $findUserRolePermission = UserRolePermission::where("user_role_id", $request->user_role_id)
-            ->where("mod_button_id", $request->mod_button_id)
-            ->first();
 
-        if ($findUserRolePermission) {
-            $findUserRolePermissionUpdate = $findUserRolePermission->fill([
-                "status" => $request->status,
-            ])->save();
-
-            if ($findUserRolePermissionUpdate) {
-                $ret  = [
-                    "success" => true,
-                    "message" => "Data updated successfully"
-                ];
-            }
-        } else {
-            $createUserRolePermission = UserRolePermission::create([
-                "user_role_id" => $request->user_role_id,
+        $result = UserRolePermission::updateOrCreate(
+            [
+                "user_role_id"  => $request->role,
                 "mod_button_id" => $request->mod_button_id,
+            ],
+            [
                 "status" => $request->status,
-            ]);
-            if ($createUserRolePermission) {
-                $ret  = [
-                    "success" => true,
-                    "message" => "Data updated successfully"
-                ];
-            }
+            ]
+        );
+
+        if ($result) {
+            $ret = [
+                "success" => true,
+                "message" => "Data updated successfully"
+            ];
         }
 
         return response()->json($ret, 200);

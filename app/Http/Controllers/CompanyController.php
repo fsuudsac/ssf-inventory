@@ -81,6 +81,7 @@ class CompanyController extends Controller
                     $ret = [
                         "success" => true,
                         "message" => "Company " . ($request->id ? "updated" : "created") . " successfully.",
+                        "data"    => $company,
                     ];
                 }
             });

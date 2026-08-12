@@ -44,7 +44,7 @@ class UserPermissionController extends Controller
         });
 
         $ret = [
-            "success" => false,
+            "success" => true,
             "data" => $data
         ];
 
@@ -106,7 +106,7 @@ class UserPermissionController extends Controller
         });
 
         $ret = [
-            "success" => false,
+            "success" => true,
             "data" => $data
         ];
 
@@ -140,28 +140,22 @@ class UserPermissionController extends Controller
     {
         $ret = [
             "success" => false,
-            "message" => "Status not change"
+            "message" => "Status not changed"
         ];
 
-        $find = UserPermission::find($request->user_permission_id);
 
-        if ($find) {
-            $findUpdate = $find->fill(['status' => $request->status]);
-
-            if ($findUpdate->save()) {
-                $ret = [
-                    "success" => true,
-                    "message" => "Status changed successfully"
-                ];
-            }
-        } else {
-            UserPermission::create([
-                'status' => $request->status,
-                'user_id' => $request->user_id,
+        $result = UserPermission::updateOrCreate(
+            [
+                'user_id'       => $request->user_id,
                 'mod_button_id' => $request->mod_button_id,
+            ],
+            [
+                'status'     => $request->status,
                 'created_by' => Auth::id(),
-            ]);
+            ]
+        );
 
+        if ($result) {
             $ret = [
                 "success" => true,
                 "message" => "Status changed successfully"

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserRole;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleController extends Controller
 {
@@ -15,45 +16,24 @@ class UserRoleController extends Controller
      */
     public function index(Request $request)
     {
-        $data = UserRole::where(function ($query) use ($request) {
-            if ($request->type == 'Employee') {
-                $query->where('type', 'Employee');
-            }
+        $created_at_format = "DATE_FORMAT(user_roles.created_at, '%m/%d/%Y')";
 
-            if ($request->search) {
-                $query->orWhere('type', 'LIKE', "%$request->search%");
-                $query->orWhere('role', 'LIKE', "%$request->search%");
-            }
-        });
-
-        if ($request->isTrash) {
-            $data = $data->onlyTrashed();
-        }
-
-        if ($request->sort_field && $request->sort_order) {
-            if (
-                $request->sort_field != '' && $request->sort_field != 'undefined' && $request->sort_field != 'null'  &&
-                $request->sort_order != ''  && $request->sort_order != 'undefined' && $request->sort_order != 'null'
-            ) {
-                $data = $data->orderBy(isset($request->sort_field) ? $request->sort_field : 'id', isset($request->sort_order)  ? $request->sort_order : 'desc');
-            }
-        } else {
-            $data = $data->orderBy('id', 'desc');
-        }
-
-        if ($request->page_size) {
-            $data = $data->limit($request->page_size)
-                ->paginate($request->page_size, ['*'], 'page', $request->page)
-                ->toArray();
-        } else {
-            $data = $data->get();
-        }
+        $data = UserRole::select([
+            "*",
+            DB::raw("$created_at_format as created_at_format")
+        ])
+            ->search([
+                'search' => $request->search,
+                'fields' => ['role', 'type'],
+                'rawFields' => [$created_at_format]
+            ])
+            ->filter($request) // put your filter logic here
+            ->sortable($request)
+            ->pagination($request);
 
         return response()->json([
-            'success'   => true,
-            'data'      => $data,
-            'from' => $request->from,
-            'request' => $request->all(),
+            'success' => true,
+            'data' => $data,
         ], 200);
     }
 
@@ -139,22 +119,93 @@ class UserRoleController extends Controller
      */
     public function destroy($id)
     {
-        $ret  = [
-            "success" => false,
-            "message" => "Data not delete"
+        //
+    }
+
+    public function user_role_status(Request $request)
+    {
+        $ret = [
+            'success' => false,
+            'message' => 'Failed to update status',
         ];
 
-        $find = UserRole::find($id);
+        $request->validate([
+            'id' => 'required|exists:user_roles,id',
+            'status' => 'required|in:Active,Inactive',
+        ]);
 
-        if ($find) {
-            if ($find->delete()) {
-                $ret  = [
-                    "success" => true,
-                    "message" => "Data deleted successfully"
-                ];
-            }
+        try {
+            DB::transaction(function () use ($request, &$ret) {
+                $originalValue = UserRole::withTrashed()->find($request->id);
+                $createUpdate = UserRole::withTrashed()->find($request->id);
+
+                if ($createUpdate) {
+                    $createUpdate->update([
+                        'updated_by' => auth()->user()->id,
+                        'deleted_by' => $request->status == 'Inactive' ? auth()->user()->id : null,
+                        'deleted_at' => $request->status == 'Inactive' ? now() : null,
+                    ]);
+
+                    $changes = $createUpdate->getChanges(); // Get the changes that were made
+                    $original = $createUpdate->getOriginal();
+
+                    $historical_data = [
+                        [
+                            "historicalable_type" => UserRole::class,
+                            "historicalable_id" => $createUpdate->id,
+                            "subject" => "Users & Permissions / User Roles",
+                            "description" => 'User Role ' . $request->role . ' status has been updated',
+                            "field_name" => "Status",
+                            'old_value' => $originalValue->deleted_at ? 'Inactive' : 'Active',
+                            'new_value' => $createUpdate->deleted_at ? 'Inactive' : 'Active',
+                            'action' => 'Update',
+                            'status' => 'Success',
+                        ]
+                    ];
+                    $this->historical_data($historical_data);
+
+                    $ret = [
+                        'success' => true,
+                        'message' => 'Status updated successfully',
+                        'data' => $createUpdate
+                    ];
+                }
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+            $ret['message'] = 'An error occurred: ' . $th->getMessage();
         }
 
-        return response()->json($ret, 200);
+        return response()->json($ret, 201);
+    }
+
+    public function user_role_order_no(Request $request)
+    {
+        $ret = [
+            'success' => false,
+            'message' => 'Failed to update order number',
+        ];
+
+        $request->validate([
+            'newOrder' => 'required',
+        ]);
+
+        try {
+            DB::transaction(function () use ($request, &$ret) {
+                foreach ($request->newOrder as $key => $value) {
+                    UserRole::withTrashed()->where('id', $value['id'])->update(['order_no' => $key]);
+                }
+
+                $ret = [
+                    'success' => true,
+                    'message' => 'Order number updated successfully',
+                ];
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+            $ret['message'] = 'An error occurred: ' . $th->getMessage();
+        }
+
+        return response()->json($ret, 201);
     }
 }
