@@ -93,7 +93,6 @@ export default function ModalImportBrand(props) {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}
                     loading={isLoadingCategory}

@@ -43,7 +43,7 @@
         "react-image-file-resizer": "^0.4.8",
         "react-input-mask": "^2.0.4",
         "react-phone-number-input": "^3.4.12",
-        "react-player": "^2.16.0",
+        "react-player": "^2.16.1",
         "react-query": "^3.39.3",
         "react-quill": "^2.0.0",
         "react-router-dom": "^6.29.0",

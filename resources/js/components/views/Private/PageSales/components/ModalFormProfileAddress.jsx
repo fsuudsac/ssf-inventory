@@ -78,7 +78,6 @@ export default function ModalFormProfileAddress() {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key="submit"
                     onClick={() => form.submit()}
                     loading={isLoadingProfileAddress}

@@ -171,7 +171,6 @@ export default function ModalFormSupplier(props) {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={() => form.submit()}
                     loading={isLoadingImportSuppliers}

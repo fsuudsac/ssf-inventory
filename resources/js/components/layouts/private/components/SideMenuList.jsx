@@ -3,11 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHome,
     faUsers,
-    faShieldKeyhole,
     faCogs,
-    faEnvelope,
     faWarehouseFull,
-    faBoxOpen,
     faListCheck,
     faChartMixedUpCircleDollar,
     faUserGroup,
@@ -17,7 +14,6 @@ import {
     faVideo,
     faRightLeftLarge,
     faUserShield,
-    faMoneyBillWave,
 } from "@fortawesome/pro-regular-svg-icons";
 
 export const adminHeaderMenuLeft = (
@@ -90,29 +86,6 @@ export const adminSideMenu = [
         moduleCode: "page_transfer",
     },
     {
-        title: "Reports",
-        path: "/reports",
-        icon: <FontAwesomeIcon icon={faChartPie} />,
-        moduleCode: "page_reports",
-        children: [
-            {
-                title: "General",
-                path: "/reports/general",
-                moduleCode: "page_reports",
-            },
-            {
-                title: "Ledger",
-                path: "/reports/ledger",
-                moduleCode: "page_reports",
-            },
-            {
-                title: "Inventory",
-                path: "/reports/inventory",
-                moduleCode: "page_reports",
-            },
-        ],
-    },
-    {
         title: "Warehouse",
         path: "/warehouse",
         icon: <FontAwesomeIcon icon={faWarehouseFull} />,
@@ -135,6 +108,29 @@ export const adminSideMenu = [
         path: "/users",
         icon: <FontAwesomeIcon icon={faUsers} />,
         moduleCode: "page_users",
+    },
+    {
+        title: "Reports",
+        path: "/reports",
+        icon: <FontAwesomeIcon icon={faChartPie} />,
+        moduleCode: "page_reports",
+        children: [
+            {
+                title: "General",
+                path: "/reports/general",
+                moduleCode: "page_reports",
+            },
+            {
+                title: "Ledger",
+                path: "/reports/ledger",
+                moduleCode: "page_reports",
+            },
+            {
+                title: "Inventory",
+                path: "/reports/inventory",
+                moduleCode: "page_reports",
+            },
+        ],
     },
     {
         title: "Admin Settings",

@@ -95,7 +95,6 @@ export default function ModalFormVideoFaqs() {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={() => form.submit()}
                     loading={isLoadingVideoFaq}

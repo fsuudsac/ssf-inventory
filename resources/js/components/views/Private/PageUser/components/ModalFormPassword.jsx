@@ -97,7 +97,6 @@ export default function ModalFormPassword(props) {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     size="large"
                     key={2}
                     onClick={(values) => form.submit(values)}

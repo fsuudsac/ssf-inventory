@@ -105,7 +105,6 @@ export default function ModalFormDepartment() {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={() => form.submit()}
                     loading={isLoadingDepartment}

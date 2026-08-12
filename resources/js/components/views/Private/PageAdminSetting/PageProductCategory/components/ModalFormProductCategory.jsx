@@ -106,7 +106,6 @@ export default function ModalFormProductCategory() {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={() => form.submit()}
                     loading={isLoadingProductCategory}

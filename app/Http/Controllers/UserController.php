@@ -10,6 +10,7 @@ use App\Models\ProfileDepartment;
 use App\Models\Purchase;
 use App\Models\SalesOrder;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -127,7 +128,9 @@ class UserController extends Controller
 
         $email = null;
 
-        if (!in_array($request->user_role_id, ['Customer', 'Supplier'])) {
+        $role = UserRole::where("id", $request->user_role_id)->first();
+
+        if (!in_array($role->role, ["Customer", "Supplier"])) {
             $email = $request->email;
 
             $request->validate([

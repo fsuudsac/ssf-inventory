@@ -343,7 +343,6 @@ export default function ModalProductDetail(props) {
                     </Button>,
                     <Button
                         type="primary"
-                        type="primary"
                         key={2}
                         onClick={() => form.submit()}
                         loading={isLoadingProductDetail}

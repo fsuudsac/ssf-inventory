@@ -302,7 +302,6 @@ export default function ModalUploadProfilePicture(props) {
                 <Button
                     key="save"
                     type="primary"
-                    type="primary"
                     loading={isLoadingProfilePicture}
                     onClick={() => {
                         onFinish();

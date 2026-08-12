@@ -637,7 +637,6 @@ export default function PageUserForm() {
                                     <Button
                                         key={4}
                                         type="primary"
-                                        type="primary"
                                         onClick={() => form.submit()}
                                         loading={isLoadingUser}
                                     >

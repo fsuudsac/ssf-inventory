@@ -101,7 +101,6 @@ export default function ModalFormCreditTerms() {
                 </Button>,
                 <Button
                     type="primary"
-                    type="primary"
                     key={2}
                     onClick={() => form.submit()}
                     loading={isLoadingCreditTerm}

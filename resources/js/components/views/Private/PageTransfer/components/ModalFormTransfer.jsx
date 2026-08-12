@@ -162,7 +162,6 @@ export default function ModalFormTransfer() {
                 !toggleModalFormTransfer.disabled && (
                     <Button
                         type="primary"
-                        type="primary"
                         key="submit"
                         onClick={() => form.submit()}
                         loading={isLoadingTransfer}
