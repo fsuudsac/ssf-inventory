@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Button, Dropdown, Input, Pagination, Select, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,7 +46,6 @@ export function TablePagination(props) {
                 if (tbl_wrapper) {
                     let span_page_from =
                         tbl_wrapper.querySelectorAll(".span_page_from");
-
                     let span_page_to =
                         tbl_wrapper.querySelectorAll(".span_page_to");
                     let span_page_total =
@@ -228,6 +228,7 @@ export function TableGlobalSearchAnimated(props) {
     const [searchTextTimeout, setSearchTextTimeout] = useState(0);
     const inputRef = useRef(null);
     const [toggleShow, setToggleShow] = useState(false);
+    const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         if (toggleShow && inputRef.current) {
@@ -235,11 +236,20 @@ export function TableGlobalSearchAnimated(props) {
         }
     }, [toggleShow]);
 
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     return (
         <div
             className={`tbl-search-wrapper animated${
                 wrapClassName ? " " + wrapClassName : ""
-            }${toggleShow ? " show" : ""}`}
+            }${width <= 767 ? " show" : toggleShow ? " show" : ""}`}
         >
             <Input
                 ref={inputRef}
@@ -330,3 +340,52 @@ export const TableDropdownFilter = ({ items }) => {
         </Dropdown>
     );
 };
+
+TablePagination.propTypes = {
+    showLessItems: PropTypes.bool,
+    showSizeChanger: PropTypes.bool,
+    tableFilter: PropTypes.object,
+    setTableFilter: PropTypes.func,
+    total: PropTypes.number,
+    tblIdWrapper: PropTypes.string,
+};
+
+TablePageSize.propTypes = {
+    tableFilter: PropTypes.object,
+    setTableFilter: PropTypes.func,
+    className: PropTypes.string,
+    option: PropTypes.array,
+    size: PropTypes.string,
+};
+
+TableGlobalSearch.propTypes = {
+    tableFilter: PropTypes.object,
+    setTableFilter: PropTypes.func,
+    placeholder: PropTypes.string,
+    size: PropTypes.string,
+    className: PropTypes.string,
+};
+
+TableGlobalSearchAnimated.propTypes = {
+    tableFilter: PropTypes.object,
+    setTableFilter: PropTypes.func,
+    placeholder: PropTypes.string,
+    size: PropTypes.string,
+    className: PropTypes.string,
+    wrapClassName: PropTypes.string,
+};
+
+TableGlobalAlphaSearch.propTypes = {
+    tableFilter: PropTypes.object,
+    setTableFilter: PropTypes.func,
+    size: PropTypes.string,
+    className: PropTypes.string,
+};
+
+TableDropdownFilter.propTypes = {
+    items: PropTypes.array,
+};
+
+TableShowingEntries.propTypes = {};
+
+TableShowingEntriesV2.propTypes = {};

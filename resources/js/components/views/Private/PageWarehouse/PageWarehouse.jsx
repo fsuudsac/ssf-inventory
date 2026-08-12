@@ -15,9 +15,12 @@ import PageWarehouseContext from "./components/PageWarehouseContext";
 import TableWarehouse from "./components/TableWarehouse";
 import ModalFormWarehouse from "./components/ModalFormWarehouse";
 import notificationErrors from "../../../providers/notificationErrors";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageWarehouse() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
+
     const [form] = Form.useForm();
 
     const [toggleModalFormWarehouse, setToggleModalFormWarehouse] = useState({
@@ -131,10 +134,11 @@ export default function PageWarehouse() {
                 setToggleModalFormWarehouse,
             }}
         >
-            <Row gutter={[12, 12]} id="tbl_wrapper">
+            <Row gutter={[20, 20]} id="tbl_wrapper">
                 <Col xs={24} sm={24} md={24}>
                     <Button
-                        className="btn-main-primary btn-main-invert-outline b-r-none"
+                        type="primary"
+                        className={width < 576 ? "w-full" : "min-w-[150px]"}
                         icon={<FontAwesomeIcon icon={faPlus} />}
                         onClick={() =>
                             setToggleModalFormWarehouse({
@@ -143,17 +147,20 @@ export default function PageWarehouse() {
                         }
                         name="btn_add"
                     >
-                        Add Warehouse
+                        Warehouse
                     </Button>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    !tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${!tableFilter.isTrash ? "active" : "outlined"}`}
                                 onClick={() => {
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -166,9 +173,8 @@ export default function PageWarehouse() {
                             </Button>
 
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "active" : "outlined"}`}
                                 onClick={() => {
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -204,10 +210,11 @@ export default function PageWarehouse() {
                                     name="btn_delete"
                                 >
                                     <Button
-                                        className={`${
+                                        type="primary"
+                                        className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                             tableFilter.isTrash
                                                 ? "btn-success"
-                                                : "btn-main-secondary"
+                                                : ""
                                         } `}
                                         loading={isLoadingArchivedSchedule}
                                         name="btn_delete"
@@ -225,29 +232,21 @@ export default function PageWarehouse() {
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
                         <TableGlobalSearchAnimated
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
 
-                        <TableShowingEntriesV2 />
-                    </div>
-                </Col>
-
-                <Col xs={24} sm={24} md={24}>
-                    <TableWarehouse />
-                </Col>
-
-                <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
-                        <div />
-
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -258,7 +257,33 @@ export default function PageWarehouse() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
+                </Col>
+
+                <Col xs={24} sm={24} md={24}>
+                    <TableWarehouse />
+                </Col>
+
+                <Col xs={24} sm={24} md={24}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
+                        <div />
+
+                        <Flex align="center" gap={15}>
+                            <TableShowingEntriesV2 />
+                            <TablePagination
+                                tableFilter={tableFilter}
+                                setTableFilter={setTableFilter}
+                                total={dataSource?.data.total}
+                                showLessItems={true}
+                                showSizeChanger={false}
+                                tblIdWrapper="tbl_wrapper"
+                            />
+                        </Flex>
+                    </Flex>
                 </Col>
 
                 <ModalFormWarehouse />

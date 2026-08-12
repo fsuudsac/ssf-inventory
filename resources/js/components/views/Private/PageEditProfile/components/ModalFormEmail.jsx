@@ -12,7 +12,7 @@ export default function ModalFormEmail(props) {
 
     const { mutate: mutateEmail, isLoading: isLoadingEmail } = POST(
         `api/users_update_email`,
-        "users_info"
+        "users_info",
     );
 
     const onFinish = (values) => {
@@ -84,7 +84,6 @@ export default function ModalFormEmail(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

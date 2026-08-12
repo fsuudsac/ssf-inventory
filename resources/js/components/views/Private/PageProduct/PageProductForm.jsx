@@ -11,8 +11,9 @@ import {
     Row,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/pro-regular-svg-icons";
+import { faArrowLeft, faQrcode } from "@fortawesome/pro-regular-svg-icons";
 import axios from "axios";
+import { debounce } from "lodash";
 
 import { DELETE, GET, POST } from "../../../providers/useAxiosQuery";
 import { apiUrl } from "../../../providers/appConfig";
@@ -27,12 +28,13 @@ import TableProductDetail from "./components/TableProductDetail";
 import ModalProductPreviewQr from "./components/ModalProductPreviewQr";
 import ProductPhotoUpload from "./components/ProductPhotoUpload";
 import FloatSelect from "../../../providers/FloatSelect";
-import { debounce } from "lodash";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageProductForm() {
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [form] = Form.useForm();
     const [disabledForm, setDisabledForm] = useState(true);
@@ -293,9 +295,20 @@ export default function PageProductForm() {
                 location,
                 handleUploadDebounce,
                 dataProductCategories,
+                width,
             }}
         >
             <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <Button
+                        type="default"
+                        onClick={() => navigate(-1)}
+                        icon={<FontAwesomeIcon icon={faArrowLeft} />}
+                    >
+                        Back
+                    </Button>
+                </Col>
+
                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                     <Form
                         form={form}
@@ -447,7 +460,7 @@ export default function PageProductForm() {
                             ) : (
                                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                     <Button
-                                        className="btn-main-primary"
+                                        type="primary"
                                         htmlType="submit"
                                         loading={isLoadingProduct}
                                     >

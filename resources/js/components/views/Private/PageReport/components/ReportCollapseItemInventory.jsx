@@ -29,18 +29,18 @@ export default function ReportCollapseItemInventory() {
         `api/warehouse`,
         "warehouse_dropdown_list",
         () => {},
-        false
+        false,
     );
     const { data: dataProduct } = GET(
         `api/products`,
         "products_dropdown_list",
         () => {},
-        false
+        false,
     );
 
     const { data: dataInventory, refetch: refetchInventory } = GET(
         `api/inventory`,
-        "inventory_product_list"
+        "inventory_product_list",
     );
 
     useEffect(() => {
@@ -121,12 +121,12 @@ export default function ReportCollapseItemInventory() {
                                                                 .warehouse_id
                                                                 .length === 0 ||
                                                             (tableFilter.warehouse_id.includes(
-                                                                inventory.warehouse_id
+                                                                inventory.warehouse_id,
                                                             ) &&
                                                                 inventory.product_detail_id ===
-                                                                    product.id)
+                                                                    product.id),
                                                     )
-                                                  : true
+                                                  : true,
                                           )
                                           .map((item) => ({
                                               value: item.id,
@@ -165,14 +165,14 @@ export default function ReportCollapseItemInventory() {
                 <div className="tbl-top-filter">
                     <Flex gap={10}>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                         >
                             Export Pdf
                         </Button>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                         >
@@ -205,26 +205,28 @@ export default function ReportCollapseItemInventory() {
                                   const matchesWarehouse =
                                       tableFilter.warehouse_id.length > 0
                                           ? tableFilter.warehouse_id.includes(
-                                                item.warehouse_id
+                                                item.warehouse_id,
                                             )
                                           : true;
                                   const matchesProduct =
                                       tableFilter.product_id.length > 0
                                           ? tableFilter.product_id.includes(
-                                                item.product_detail_id
+                                                item.product_detail_id,
                                             )
                                           : true;
                                   const matchesDateInventory =
                                       Array.isArray(
-                                          tableFilter.date_inventory
+                                          tableFilter.date_inventory,
                                       ) && tableFilter.date_inventory.length
                                           ? new Date(item.date_inventory) >=
                                                 new Date(
-                                                    tableFilter.date_inventory[0]
+                                                    tableFilter
+                                                        .date_inventory[0],
                                                 ) &&
                                             new Date(item.date_inventory) <=
                                                 new Date(
-                                                    tableFilter.date_inventory[1]
+                                                    tableFilter
+                                                        .date_inventory[1],
                                                 )
                                           : true;
                                   return (

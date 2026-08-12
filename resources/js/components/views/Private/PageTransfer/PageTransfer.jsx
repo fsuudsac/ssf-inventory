@@ -15,9 +15,11 @@ import {
 import TableTransfer from "./components/TableTransfer";
 import notificationErrors from "../../../providers/notificationErrors";
 import ModalFormTransfer from "./components/ModalFormTransfer";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageTransfer() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [toggleModalFormTransfer, setToggleModalFormTransfer] = useState({
         open: false,
@@ -169,10 +171,11 @@ export default function PageTransfer() {
                 isLoadingChangeStatus,
             }}
         >
-            <Row gutter={[12, 12]} id="tbl_wrapper">
+            <Row gutter={[20, 20]} id="tbl_wrapper">
                 <Col xs={24} sm={24} md={24}>
                     <Button
-                        className="btn-main-primary btn-main-invert-outline b-r-none"
+                        type="primary"
+                        className={`${width < 576 ? "w-full" : "min-w-[150px]"}`}
                         icon={<FontAwesomeIcon icon={faPlus} />}
                         onClick={() =>
                             setToggleModalFormTransfer({
@@ -181,17 +184,20 @@ export default function PageTransfer() {
                         }
                         name="btn_add"
                     >
-                        Add Transfer
+                        Transfer
                     </Button>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    !tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "outlined" : "active"}`}
                                 onClick={() => {
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -204,9 +210,8 @@ export default function PageTransfer() {
                             </Button>
 
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "active" : "outlined"}`}
                                 onClick={() => {
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -242,11 +247,9 @@ export default function PageTransfer() {
                                     name="btn_delete"
                                 >
                                     <Button
-                                        className={`${
-                                            tableFilter.isTrash
-                                                ? "btn-success"
-                                                : "btn-main-secondary"
-                                        } `}
+                                        type="primary"
+                                        className={`${width < 576 ? "w-full" : ""} ${tableFilter.isTrash ? "btn-success" : ""}`}
+                                        danger={tableFilter.isTrash}
                                         name="btn_delete"
                                         loading={isLoadingArchivedTransfer}
                                     >
@@ -263,29 +266,21 @@ export default function PageTransfer() {
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
                         <TableGlobalSearchAnimated
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
 
-                        <TableShowingEntriesV2 />
-                    </div>
-                </Col>
-
-                <Col xs={24} sm={24} md={24}>
-                    <TableTransfer />
-                </Col>
-
-                <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
-                        <div />
-
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -296,7 +291,33 @@ export default function PageTransfer() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
+                </Col>
+
+                <Col xs={24} sm={24} md={24}>
+                    <TableTransfer />
+                </Col>
+
+                <Col xs={24} sm={24} md={24}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
+                        <div />
+
+                        <Flex align="center" gap={15}>
+                            <TableShowingEntriesV2 />
+                            <TablePagination
+                                tableFilter={tableFilter}
+                                setTableFilter={setTableFilter}
+                                total={dataSource?.data.total}
+                                showLessItems={true}
+                                showSizeChanger={false}
+                                tblIdWrapper="tbl_wrapper"
+                            />
+                        </Flex>
+                    </Flex>
                 </Col>
 
                 <ModalFormTransfer />

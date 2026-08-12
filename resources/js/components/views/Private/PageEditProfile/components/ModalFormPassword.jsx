@@ -12,7 +12,7 @@ export default function ModalFormPassword(props) {
 
     const { mutate: mutatePassword, isLoading: isLoadingPassword } = POST(
         `api/users_update_password`,
-        "users_info"
+        "users_info",
     );
 
     const onFinish = (values) => {
@@ -89,7 +89,6 @@ export default function ModalFormPassword(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

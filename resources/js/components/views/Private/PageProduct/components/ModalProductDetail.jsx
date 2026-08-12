@@ -29,6 +29,7 @@ export default function ModalProductDetail(props) {
         toggleModalFormProductDetail,
         setToggleModalFormProductDetail,
         productId,
+        width,
     } = props;
 
     const [form] = Form.useForm();
@@ -341,7 +342,6 @@ export default function ModalProductDetail(props) {
                         CLOSE
                     </Button>,
                     <Button
-                        className="btn-main-primary"
                         type="primary"
                         key={2}
                         onClick={() => form.submit()}
@@ -353,7 +353,6 @@ export default function ModalProductDetail(props) {
             >
                 <Row gutter={[20, 20]}>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                        {" "}
                         <Form form={form} onFinish={onFinish}>
                             <Row gutter={[12, 0]}>
                                 <Col
@@ -559,6 +558,7 @@ export default function ModalProductDetail(props) {
                                 xxl={24}
                             >
                                 <TableProductDetailPrice
+                                    width={width}
                                     product_detail_id={
                                         toggleModalFormProductDetail &&
                                         toggleModalFormProductDetail.data &&

@@ -24,12 +24,12 @@ export default function ModalFormProfileAddress() {
         const data = new FormData();
         console.log(
             "toggleModalFormProfileAddress: ",
-            toggleModalFormProfileAddress
+            toggleModalFormProfileAddress,
         );
 
         data.append(
             "profile_id",
-            toggleModalFormProfileAddress.data.profile.id
+            toggleModalFormProfileAddress.data.profile.id,
         );
         data.append("type", values.type);
         data.append("address", values.address);
@@ -85,7 +85,6 @@ export default function ModalFormProfileAddress() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key="submit"
                     onClick={() => form.submit()}

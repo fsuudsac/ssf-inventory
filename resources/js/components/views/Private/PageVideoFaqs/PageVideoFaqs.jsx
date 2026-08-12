@@ -16,9 +16,11 @@ import TableVideoFaqs from "./components/TableVideoFaqs";
 import notificationErrors from "../../../providers/notificationErrors";
 import PageVideoFaqContext from "./components/PageVideoFaqContext";
 import useTableScrollOnTop from "../../../providers/useTableScrollOnTop";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageVideoFaqs() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [toggleModalFormVideoFaq, setToggleModalFormVideoFaq] = useState({
         open: false,
@@ -100,11 +102,12 @@ export default function PageVideoFaqs() {
                 onChangeTable,
             }}
         >
-            <Row gutter={[12, 12]} id="tbl_wrapper_video_faq">
+            <Row gutter={[20, 20]} id="tbl_wrapper_video_faq">
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Button
+                        type="primary"
+                        className={width < 576 ? "w-full" : "min-w-[150px]"}
                         icon={<FontAwesomeIcon icon={faPlus} />}
-                        className="btn-main-primary"
                         onClick={() =>
                             setToggleModalFormVideoFaq({
                                 open: true,
@@ -112,15 +115,20 @@ export default function PageVideoFaqs() {
                             })
                         }
                     >
-                        Add Video FAQ
+                        Video FAQ
                     </Button>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <Button
-                                className={`btn-main-primary min-w-150 ${
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                     !tableFilter.isTrash ? "active" : "outlined"
                                 }`}
                                 onClick={() => {
@@ -135,7 +143,8 @@ export default function PageVideoFaqs() {
                             </Button>
 
                             <Button
-                                className={`btn-main-primary min-w-150 ${
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                     tableFilter.isTrash ? "active" : "outlined"
                                 }`}
                                 onClick={() => {
@@ -154,12 +163,16 @@ export default function PageVideoFaqs() {
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <TableGlobalSearchAnimated
                                 tableFilter={tableFilter}
                                 setTableFilter={setTableFilter}
@@ -187,11 +200,13 @@ export default function PageVideoFaqs() {
                                     }}
                                 >
                                     <Button
-                                        className={`${
+                                        type="primary"
+                                        className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                             tableFilter.isTrash
                                                 ? "btn-success"
-                                                : "btn-main-secondary"
+                                                : ""
                                         } `}
+                                        danger={!tableFilter.isTrash}
                                         name="btn_active_archive"
                                         loading={isLoadingDeleteVideoFaq}
                                     >
@@ -204,7 +219,7 @@ export default function PageVideoFaqs() {
                             )}
                         </Flex>
 
-                        <Flex gap={10}>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
 
                             <TablePagination
@@ -216,7 +231,7 @@ export default function PageVideoFaqs() {
                                 tblIdWrapper="tbl_wrapper_product_type"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
@@ -224,10 +239,14 @@ export default function PageVideoFaqs() {
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -238,7 +257,7 @@ export default function PageVideoFaqs() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <ModalFormVideoFaqs />

@@ -109,7 +109,7 @@ export default function PageEmailTemplate(props) {
                 setItems(data);
             }
             // refetchPermissions();
-        }
+        },
     );
 
     useEffect(() => {
@@ -123,7 +123,7 @@ export default function PageEmailTemplate(props) {
         <Row gutter={[12, 12]}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Button
-                    className="btn-main-primary"
+                    type="primary"
                     icon={<FontAwesomeIcon icon={faPlus} />}
                     onClick={() =>
                         setToggleModalFormEmailTemplate({

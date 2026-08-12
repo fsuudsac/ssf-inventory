@@ -256,7 +256,6 @@ export default function ModalUploadProfilePicture() {
                 <Button
                     key="save"
                     type="primary"
-                    className="btn-main-primary"
                     size="large"
                     disabled={fileImage.file ? false : true}
                     loading={isLoadingProfilePicture}

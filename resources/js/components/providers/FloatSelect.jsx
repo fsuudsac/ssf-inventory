@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Select } from "antd";
 
@@ -12,6 +12,8 @@ export default function FloatSelect(props) {
         showSearch = true,
         size = "large",
         className,
+        mode,
+        allowClear = true,
         ...rest
     } = props;
 
@@ -37,6 +39,8 @@ export default function FloatSelect(props) {
             <Select
                 value={value}
                 size={size}
+                mode={mode}
+                allowClear={allowClear}
                 showSearch={showSearch}
                 filterOption={(input, option) => {
                     return (
@@ -56,11 +60,18 @@ export default function FloatSelect(props) {
 
 FloatSelect.propTypes = {
     id: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.array,
+    ]),
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     required: PropTypes.bool,
     popupClassName: PropTypes.string,
     size: PropTypes.oneOf(["small", "middle", "large"]),
     className: PropTypes.string,
+    showSearch: PropTypes.bool,
+    mode: PropTypes.string,
+    allowClear: PropTypes.bool,
 };

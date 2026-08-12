@@ -86,8 +86,9 @@ class RefDepartmentController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = RefDepartment::find($request->id);
-                $department = RefDepartment::updateOrCreate(
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = RefDepartment::withTrashed()->find($request->id);
+                $department = RefDepartment::withTrashed()->updateOrCreate(
                     ["id" => $request->id ?? null],
                     $dataValidate
                 );

@@ -170,7 +170,6 @@ export default function ModalFormSupplier(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

@@ -39,7 +39,7 @@ export default function PageBrand() {
 
     const { data: dataSourceBrand, refetch: refetchSource } = GET(
         `api/brand?${new URLSearchParams(tableFilter)}`,
-        "brand_list"
+        "brand_list",
     );
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export default function PageBrand() {
 
     const { mutate: mutateDeleteBrand, isLoading: isLoadingDeleteBrand } = POST(
         `api/brand_archived`,
-        "brand_list"
+        "brand_list",
     );
 
     const handleSelectedArchived = (status) => {
@@ -108,7 +108,7 @@ export default function PageBrand() {
 
                 <Button
                     icon={<FontAwesomeIcon icon={faPlus} />}
-                    className="btn-main-primary"
+                    type="primary"
                     onClick={() =>
                         setToggleModalFormBrand({
                             open: true,

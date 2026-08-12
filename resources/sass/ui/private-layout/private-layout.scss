@@ -11,6 +11,10 @@
             all 0.25s,
             background 0s;
         margin-left: 240px;
+        box-shadow: rgba(105 107 112 / 17%) -5px 0px 7px 0px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
 
         @include atSMMax {
             margin-left: 0px;
@@ -39,10 +43,9 @@
 
         > .ant-layout-content {
             background-color: var(--color-white);
-
-            @include atSMMax {
-                margin-top: 70px;
-            }
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
 
             > .ant-breadcrumb {
                 padding: 12px 10px 12px 20px;
@@ -51,29 +54,40 @@
                     padding-left: 10px;
                 }
 
+                .ant-breadcrumb-link,
                 .ant-breadcrumb-link a,
                 .breadcrumb-item-text {
                     font-size: 14px !important;
-                    color: var(--color-blue-600);
+                    cursor: pointer;
                 }
+
+                .ant-breadcrumb-link a {
+                    color: var(--breadcrumb-text-color);
+                    background-color: transparent;
+                }
+
+                .breadcrumb-item-text {
+                    color: var(--breadcrumb-text-color);
+                }
+
                 .ant-breadcrumb-link a svg {
                     font-size: 16px !important;
                 }
                 .ant-breadcrumb-link svg {
-                    color: var(--color-blue-600);
+                    color: var(--breadcrumb-icon-color);
                 }
                 .ant-breadcrumb-separator {
                     position: relative;
 
                     svg {
-                        color: var(--color-blue-600);
+                        color: var(--breadcrumb-icon-color);
                     }
 
                     .arrow {
                         position: absolute;
                         left: -4px;
                         top: 10px;
-                        color: var(--color-blue-600);
+                        color: var(--breadcrumb-icon-color);
 
                         &::before,
                         &::after {
@@ -107,31 +121,206 @@
                 }
 
                 .breadcrumb-item-last {
-                    color: var(--color-red-900) !important;
+                    color: var(--breadcrumb-last-text-color) !important;
                 }
             }
 
             > .ant-card {
                 background-color: transparent;
-                border-top: 1px solid var(--color-gray-600);
+                // border-top: 1px solid var(--color-gray-600);
                 border-radius: 0px;
-                height: 100%;
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
 
                 > .ant-card-body {
                     background-color: transparent;
                     border-radius: 0px;
                     padding: 20px;
+                    flex: 1 1 auto;
 
                     @include atXSMax {
                         padding: 10px;
+                        padding-bottom: 20px;
+                    }
+
+                    .page-content-tips {
+                        margin-top: 15px;
                     }
                 }
             }
         }
 
         > .ant-layout-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--color-gray-600);
+            padding: 10px 20px;
+            background-color: var(--color-gray-50);
+            // border-top: 1px solid var(--color-gray-600);
+            z-index: 1;
+            color: var(--color-gray-500);
+
+            @include atXSMax {
+                padding: 10px 10px;
+            }
+
+            .footer_links {
+                color: var(--color-primary);
+                a {
+                    text-decoration: none;
+                    color: var(--color-primary);
+                }
+            }
+
+            .ant-flex {
+                @include atXSMax {
+                    flex-direction: column;
+                    gap: 5px;
+                    align-items: center;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .page-content-tips {
+        font-family: MontserratRegular, sans-serif !important;
+    }
+}
+
+.notification-notice {
+    background: var(--color-white);
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 390px;
+    z-index: 9999999;
+    padding: 14px 17px;
+    border-radius: var(--border-radius-base);
+    -webkit-box-shadow: 0px 0px 18px -3px rgba(0, 0, 0, 0.47);
+    -moz-box-shadow: 0px 0px 18px -3px rgba(0, 0, 0, 0.47);
+    box-shadow: 0px 0px 18px -3px rgba(0, 0, 0, 0.47);
+
+    .notification-notice-content {
+        display: flex;
+        gap: 8px;
+
+        .notification-notice-message {
+            display: flex;
+            flex-direction: column;
+
+            .title {
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .description {
+                font-size: 14px;
+            }
+
+            .action {
+                margin-top: 10px;
+
+                .ant-btn {
+                    border: 2px solid var(--color-danger) !important;
+                    background-color: var(--color-danger) !important;
+                    color: var(--color-white);
+                    font-weight: 600;
+
+                    &:hover {
+                        border: 2px solid var(--color-danger) !important;
+                        background-color: var(--color-white) !important;
+                        color: var(--color-danger) !important;
+                    }
+
+                    svg {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        .notification-notice-icon {
+            margin-right: 10px;
+            svg {
+                font-size: 104px;
+                color: var(--color-danger) !important;
+            }
+        }
+
+        .notification-notice-drag {
+            position: absolute;
+            right: 8px;
+            top: 5px;
+            font-size: 18px;
+        }
+    }
+
+    &.react-draggable {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+}
+
+// fixes on division
+.custom-width-dsk {
+    width: 942px;
+    .ant-row-custom {
+        width: 942px;
+    }
+
+    @include atMax(1226) {
+        width: 100%;
+
+        .ant-row-custom {
+            width: 100%;
+
+            .ant-col {
+                padding-right: 0px !important;
+            }
+        }
+    }
+}
+.auto-login-float-group {
+    .btn-float-menu {
+        height: 30px;
+        min-height: 30px;
+        width: 30px;
+        border-radius: 0;
+        transition: all 0.3s ease;
+
+        &:hover {
+            width: 187px;
+
+            .ant-float-btn-body {
+                .ant-float-btn-content {
+                    .ant-float-btn-description {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .ant-float-btn-body {
+            border-radius: 0;
+            justify-content: flex-start;
+            padding-left: 6px;
+            height: 30px;
+
+            .ant-float-btn-content {
+                padding: 0;
+                min-height: 30px;
+                height: 30px;
+                flex-direction: row;
+                gap: 5px;
+
+                .ant-float-btn-icon {
+                    font-size: 15px;
+                }
+
+                .ant-float-btn-description {
+                    display: none;
+                    white-space: nowrap;
+                }
+            }
         }
     }
 }

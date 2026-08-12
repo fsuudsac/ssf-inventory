@@ -25,6 +25,7 @@ export default function PagePurchaseTabItemPurchase(props) {
         setOpenDrawerPurchaseFilter,
         tableColumns,
         onChangeTable,
+        width,
     } = props;
 
     const navigate = useNavigate();
@@ -95,11 +96,16 @@ export default function PagePurchaseTabItemPurchase(props) {
                 tableColumns,
             }}
         >
-            <Row gutter={[12, 12]} id={`tbl_wrapper_${tabActive}`}>
+            <Row gutter={[20, 20]} id={`tbl_wrapper_${tabActive}`}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"}`}
                             onClick={() => {
                                 if (tabActive === "purchase") {
                                     navigate("/purchase-order/add-purchase");
@@ -112,7 +118,7 @@ export default function PagePurchaseTabItemPurchase(props) {
                             icon={<FontAwesomeIcon icon={faPlus} />}
                             name="btn_add"
                         >
-                            Add Purchase Order{" "}
+                            Purchase Order{" "}
                             {tabActive !== "purchase" ? "Return" : ""}
                         </Button>
 
@@ -120,12 +126,16 @@ export default function PagePurchaseTabItemPurchase(props) {
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
-                        <Flex>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center">
                             <Button
                                 type="default"
                                 shape="round"
@@ -143,7 +153,7 @@ export default function PagePurchaseTabItemPurchase(props) {
                             />
                         </Flex>
 
-                        <Flex gap={10}>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -158,7 +168,7 @@ export default function PagePurchaseTabItemPurchase(props) {
                                 tblIdWrapper={`tbl_wrapper_${tabActive}`}
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -166,10 +176,14 @@ export default function PagePurchaseTabItemPurchase(props) {
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -184,7 +198,7 @@ export default function PagePurchaseTabItemPurchase(props) {
                                 tblIdWrapper={`tbl_wrapper_${tabActive}`}
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
             </Row>
 

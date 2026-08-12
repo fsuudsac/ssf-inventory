@@ -54,6 +54,8 @@ export default function UserFormCollapseItemPersonalInfo() {
         false,
     );
 
+    console.log("dataCompany: ", dataCompany);
+
     const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
         `api/company`,
         "company_create",
@@ -94,126 +96,116 @@ export default function UserFormCollapseItemPersonalInfo() {
 
     return (
         <Row gutter={[20, 0]}>
-            {!location.pathname.includes("/users") &&
-                (location.pathname.includes("/supplier") ? (
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item
-                            name="company_id"
-                            rules={[validateRules.required()]}
-                        >
-                            <FloatSelect
-                                label="Company"
-                                placeholder="Company"
-                                disabled={formDisabled}
-                                allowClear
-                                required
-                                options={
-                                    dataCompany && dataCompany.length > 0
-                                        ? dataCompany
-                                              .map((item) => ({
-                                                  value: item.id,
-                                                  label: item.company,
-                                              }))
-                                              .sort((a, b) =>
-                                                  a.label.localeCompare(
-                                                      b.label,
-                                                  ),
-                                              )
-                                        : []
-                                }
-                                dropdownRender={(menu) => (
-                                    <>
-                                        {menu}
-                                        <Divider
-                                            style={{
-                                                margin: "8px 0",
-                                            }}
+            {location.pathname.includes("/supplier") ||
+            location.pathname.includes("/customer") ? (
+                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
+                    <Form.Item
+                        name="company_id"
+                        rules={[validateRules.required()]}
+                    >
+                        <FloatSelect
+                            label="Company"
+                            placeholder="Company"
+                            disabled={formDisabled}
+                            allowClear
+                            required
+                            options={
+                                dataCompany && dataCompany.length > 0
+                                    ? dataCompany
+                                          .map((item) => ({
+                                              value: item.id,
+                                              label: item.company,
+                                          }))
+                                          .sort((a, b) =>
+                                              a.label.localeCompare(b.label),
+                                          )
+                                    : []
+                            }
+                            dropdownRender={(menu) => (
+                                <>
+                                    {menu}
+                                    <Divider
+                                        style={{
+                                            margin: "8px 0",
+                                        }}
+                                    />
+                                    <Flex gap={10}>
+                                        <Input
+                                            value={companyValue}
+                                            placeholder="Add Company/ Department"
+                                            onChange={(e) =>
+                                                setCompanyValue(e.target.value)
+                                            }
+                                            onBlur={(e) =>
+                                                setCompanyValue(e.target.value)
+                                            }
+                                            onPressEnter={() =>
+                                                handleAddCompany()
+                                            }
                                         />
-                                        <Flex gap={10}>
-                                            <Input
-                                                value={companyValue}
-                                                placeholder="Add Company/ Department"
-                                                onChange={(e) =>
-                                                    setCompanyValue(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                onBlur={(e) =>
-                                                    setCompanyValue(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                onPressEnter={() =>
-                                                    handleAddCompany()
-                                                }
-                                            />
-                                            <Button
-                                                type="text"
-                                                icon={
-                                                    <FontAwesomeIcon
-                                                        icon={faPlus}
-                                                    />
-                                                }
-                                                onClick={() =>
-                                                    handleAddCompany()
-                                                }
-                                            />
-                                        </Flex>
-                                    </>
-                                )}
-                                onChange={(e) => {
-                                    handleDebounce({
-                                        field: "company_id",
-                                        value: e,
-                                    });
-                                    const selectedCompany = dataCompany.find(
-                                        (item) => item.id === e,
-                                    );
-                                    setInitialCompanyName(
-                                        selectedCompany
-                                            ? selectedCompany.company
-                                            : null,
-                                    );
-                                }}
-                            />
-                        </Form.Item>
-                    </Col>
-                ) : (
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item
-                            name="department_id"
-                            rules={[validateRules.required()]}
-                        >
-                            <FloatSelect
-                                label="Department"
-                                placeholder="Department"
-                                disabled={formDisabled}
-                                allowClear
-                                required
-                                options={
-                                    dataDepartment?.data?.length > 0
-                                        ? dataDepartment?.data
-                                              ?.map((item) => ({
-                                                  label: item.department_name,
-                                                  value: item.id,
-                                              }))
-                                              .sort((a, b) =>
-                                                  a.label.localeCompare(
-                                                      b.label,
-                                                  ),
-                                              )
-                                        : []
-                                }
-                                onChange={(e) => {
-                                    handleDebounce({
-                                        field: "department_id",
-                                        value: e,
-                                    });
-                                }}
-                            />
-                        </Form.Item>
-                    </Col>
-                ))}
+                                        <Button
+                                            type="text"
+                                            icon={
+                                                <FontAwesomeIcon
+                                                    icon={faPlus}
+                                                />
+                                            }
+                                            onClick={() => handleAddCompany()}
+                                        />
+                                    </Flex>
+                                </>
+                            )}
+                            onChange={(e) => {
+                                handleDebounce({
+                                    field: "company_id",
+                                    value: e,
+                                });
+                                const selectedCompany = dataCompany.find(
+                                    (item) => item.id === e,
+                                );
+                                setInitialCompanyName(
+                                    selectedCompany
+                                        ? selectedCompany.company
+                                        : null,
+                                );
+                            }}
+                        />
+                    </Form.Item>
+                </Col>
+            ) : (
+                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
+                    <Form.Item
+                        name="department_id"
+                        rules={[validateRules.required()]}
+                    >
+                        <FloatSelect
+                            label="Department"
+                            placeholder="Department"
+                            disabled={formDisabled}
+                            allowClear
+                            required
+                            options={
+                                dataDepartment?.data?.length > 0
+                                    ? dataDepartment?.data
+                                          ?.map((item) => ({
+                                              label: item.department_name,
+                                              value: item.id,
+                                          }))
+                                          .sort((a, b) =>
+                                              a.label.localeCompare(b.label),
+                                          )
+                                    : []
+                            }
+                            onChange={(e) => {
+                                handleDebounce({
+                                    field: "department_id",
+                                    value: e,
+                                });
+                            }}
+                        />
+                    </Form.Item>
+                </Col>
+            )}
 
             {location.pathname.includes("/customers") && (
                 <>

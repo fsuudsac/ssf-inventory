@@ -1,21 +1,17 @@
 :root {
-    --body-bg: #0026a0;
-    --back-image: url("/public/images/login_bg.png");
-    --font-family-sans-serif: RobotoRegular;
-    --font-size-base: 0.9rem;
-    --line-height-base: 1.6;
-    --color-primary: #114eaf;
+    --color-primary: #114eaf; /* Deep Blue */
     --color-primary-active: #0753a1;
     --color-secondary: #868e96;
     --color-secondary-active: #727b84;
-    --color-success: #23bf08;
+    --color-tertiary: #24d9ae;
+    --color-success: #27ae00; /* Vivid Green */
     --color-success-active: #1c9a06;
-    --color-warning: #f49917;
+    --color-danger: #ae0027; /* Bold Red */
+    --color-danger-active: #9a001c;
+    --color-warning: #f29d06; /* Gold-Yellow */
     --color-warning-active: #da850a;
-    --color-danger: #dc3545;
-    --color-danger-active: #c82333;
-    --color-info: #5b93d3;
-    --color-info-active: #3d7fcb;
+    --color-info: #29baff; /* Teal */
+    --color-info-active: #1d98d9;
     --color-indigo: #6610f2;
     --color-indigo-active: #560bd0;
     --color-purple: #6f42c1;
@@ -24,10 +20,37 @@
     --color-pink-active: #e41c78;
     --color-teal: #1caf9a;
     --color-teal-active: #178e7d;
-    --color-dark: #343a40;
-    --color-dark-active: #23272b;
     --color-orange: #f27510;
     --color-orange-active: #d16a17;
+    --color-light: #f4f4f4; /* Light Gray */
+    --color-dark: #2c3e50;
+    --color-dark-active: #23272b;
+    --color-black: #000000; /* Pure Black */
+    --color-white: #ffffff; /* Pure White */
+    --border-radius: 5px;
+    --color-border: #d9d9d9; /* Border Gray */
+    --color-tab-action: #7a0000; /* Light Blue for Active Tabs */
+    --color-blue-800: #1477d9; /* Dark Blue Background */
+    --color-purple-600: #8e44ad; /* Purple Accent */
+    --font-family: MontserratRegular, sans-serif;
+    --yellow: #4988fa;
+    --color-menu-icon: #abf0ef;
+    --color-header-icon: #2d60e2;
+    --border-color-base: #d9d9d9;
+    --border-radius-base: 5px;
+    --height-large: 45px;
+    --height-base: 40px;
+    --height-small: 35px;
+    --floating-label: #918f8ffa;
+
+    // Body
+    --body-bg: #0026a0;
+    --background-image: url("/public/images/login_bg.png");
+
+    // Typography
+    --font-family-sans-serif: RobotoRegular;
+    --font-size-base: 0.9rem;
+    --line-height-base: 1.6;
 
     // Layout
     --layout-background: #0026a0;
@@ -37,15 +60,15 @@
     --layout-icon-color-active: #ffffff;
 
     // Layout Side Menu
-    --sidebar-background: #0026a0;
-    --sidebar-background-selected-menu: #0157de;
-    --sidebar-border-color: #f0e3ca;
-    --sidebar-text-color: #ffffff;
-    --sidebar-icon-color: #9ae9fd;
-    --sidebar-text-color-active: #ffffff;
-    --sidebar-icon-color-active: #9ae9fd;
-    --sidebar-thumb-color: #808285;
-    --sidebar-track-color: #bbbbbb;
+    --sidemenu-background: #0026a0;
+    --sidemenu-background-active: #0157de;
+    --sidemenu-border-color: #f0e3ca;
+    --sidemenu-text-color: #ffffff;
+    --sidemenu-icon-color: #9ae9fd;
+    --sidemenu-text-color-active: #ffffff;
+    --sidemenu-icon-color-active: #9ae9fd;
+    --sidemenu-thumb-color: #808285;
+    --sidemenu-track-color: #bbbbbb;
 
     // Side-Sub Menu
     --submenu-default: #292a2a;
@@ -87,15 +110,25 @@
     --page-header-icon-color: #d1ebde;
     --page-header-icon-border-color: #b3d5c4;
 
+    // Main Primary
     --main-primary: #114eaf;
     --main-primary-text: #ffffff;
     --main-primary-active: #ffffff;
     --main-primary-text-active: #114eaf;
+
+    // Main Secondary
     --main-secondary: #e4151f;
     --main-secondary-text: #ffffff;
     --main-secondary-active: #b0b4b4;
     --main-secondary-text-active: #e4151f;
 
+    // Main Default
+    --main-default: #b0b4b4;
+    --main-default-text: #ffffff;
+    --main-default-active: #ffffff;
+    --main-default-text-active: #b0b4b4;
+
+    // Tooltip
     --tooltip-success: #d9f1d1;
     --tooltip-primary: #e0e9f5;
     --tooltip-warning: #faecd4;
@@ -105,11 +138,9 @@
     --tooltip-warning-text: #78521e;
     --tooltip-danger-text: #692326;
 
-    // Floating
-    --float-label: #918f8ffa;
-
     // Collapse
-    --collapse-header: #0157de;
+    --collapse-header: #114eaf;
+    --collapse-header-text: #ffffff;
 
     --table-scrollbar-thumb-color: #1e84c1;
     --table-scrollbar-thumb-width: 8px;

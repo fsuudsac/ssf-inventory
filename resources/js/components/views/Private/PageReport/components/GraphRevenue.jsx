@@ -5,9 +5,12 @@ import { faAngleDown, faAngleUp } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import PageReportContext from "./PageReportContext";
+import CustomCollapse from "../../../../providers/CustomCollapse";
 
 export default function GraphRevenue() {
     const { Highcharts, leftArrow } = useContext(PageReportContext);
+
+    const [collapseActiveKey, setCollapseActiveKey] = useState(["0", "1"]);
 
     const [filter, setFilter] = useState({
         action: "year",
@@ -23,7 +26,7 @@ export default function GraphRevenue() {
         `api/graph_revenue?${new URLSearchParams(filter)}`,
         "graph_revenue_graph",
         (res) => {},
-        false
+        false,
     );
 
     useEffect(() => {
@@ -67,7 +70,7 @@ export default function GraphRevenue() {
                                     let series_name =
                                         data_series_name[
                                             Math.abs(
-                                                Math.round(e.xAxis[0].value)
+                                                Math.round(e.xAxis[0].value),
                                             )
                                         ];
 
@@ -79,12 +82,12 @@ export default function GraphRevenue() {
 
                                     let div_graph_wrapper =
                                         document.querySelector(
-                                            "#divGraphRevenue"
+                                            "#divGraphRevenue",
                                         );
                                     if (div_graph_wrapper) {
                                         let highchartsDataTable =
                                             div_graph_wrapper.querySelector(
-                                                ".highcharts-data-table"
+                                                ".highcharts-data-table",
                                             );
                                         if (highchartsDataTable) {
                                             highchartsDataTable.remove();
@@ -147,7 +150,7 @@ export default function GraphRevenue() {
                                             this.y,
                                             2,
                                             ".",
-                                            ","
+                                            ",",
                                         )}`;
                                     },
                                 },
@@ -166,7 +169,7 @@ export default function GraphRevenue() {
                                             this.y,
                                             2,
                                             ".",
-                                            ","
+                                            ",",
                                         )}`;
                                     },
                                 },
@@ -180,13 +183,13 @@ export default function GraphRevenue() {
 
                                         let div_graph_wrapper =
                                             document.querySelector(
-                                                "#divGraphRevenue"
+                                                "#divGraphRevenue",
                                             );
 
                                         if (div_graph_wrapper) {
                                             let highchartsDataTable =
                                                 div_graph_wrapper.querySelector(
-                                                    ".highcharts-data-table"
+                                                    ".highcharts-data-table",
                                                 );
                                             if (highchartsDataTable) {
                                                 highchartsDataTable.remove();
@@ -252,7 +255,7 @@ export default function GraphRevenue() {
                                     chart.chartWidth - y,
                                     x,
                                     18,
-                                    17
+                                    17,
                                 )
                                 .add()
                                 .addClass("highcharts-button-arrow-left")
@@ -277,7 +280,7 @@ export default function GraphRevenue() {
                                     }));
                                 });
                         }
-                    }
+                    },
                 );
 
                 Highcharts.addEvent(chart, "aftergetTableAST", function (e) {
@@ -296,13 +299,9 @@ export default function GraphRevenue() {
     }, [dataSource]);
 
     return (
-        <Collapse
-            className="collapse-main-primary"
-            defaultActiveKey={["0", "1"]}
-            size="large"
-            expandIcon={({ isActive }) => (
-                <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} />
-            )}
+        <CustomCollapse
+            activeKey={collapseActiveKey}
+            setActiveKey={setCollapseActiveKey}
             items={[
                 {
                     key: "0",

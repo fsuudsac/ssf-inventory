@@ -71,7 +71,7 @@ export default function TableProduct() {
                 key="action"
                 dataIndex="action"
                 align="center"
-                width={130}
+                width={100}
                 render={(text, record) => {
                     return (
                         <Flex justify="center" gap={15}>
@@ -107,7 +107,8 @@ export default function TableProduct() {
                             >
                                 <Button
                                     type="link"
-                                    className="btn-delete w-auto h-auto"
+                                    className="w-auto h-auto"
+                                    danger={tableFilter.isTrash === 0}
                                     icon={
                                         <FontAwesomeIcon
                                             icon={

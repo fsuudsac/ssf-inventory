@@ -17,7 +17,7 @@ export default function PageUserPermissions() {
 
     const { data: dataSource, refetch: refetchSource } = GET(
         `api/user_role_permission?${new URLSearchParams(tableFilter)}`,
-        "user_role_permission_list"
+        "user_role_permission_list",
     );
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function PageUserPermissions() {
                 <Tabs
                     onChange={handleTabChange}
                     defaultActiveKey="1"
-                    type="card"
+                    // type="card"
                     items={optionUserType.map((item) => ({
                         key: item.value,
                         label: item.label,

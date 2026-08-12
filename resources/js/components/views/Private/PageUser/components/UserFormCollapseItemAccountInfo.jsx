@@ -37,6 +37,11 @@ export default function UserFormCollapseItemAccountInfo({ dataUserRole }) {
                         options={
                             dataUserRole?.data?.length > 0
                                 ? dataUserRole.data
+                                      .filter(
+                                          (item) =>
+                                              item.role !== "Customer" &&
+                                              item.role !== "Supplier",
+                                      )
                                       .sort((a, b) =>
                                           a.role.localeCompare(b.role),
                                       )

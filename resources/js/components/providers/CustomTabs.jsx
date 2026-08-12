@@ -12,7 +12,7 @@ export default function CustomTabs(props) {
     } = props;
 
     const [iconSize, setIconSize] = useState(
-        items.length > 0 && items[0].iconSize ? items[0].iconSize : 20
+        items.length > 0 && items[0].iconSize ? items[0].iconSize : 20,
     );
 
     return (

@@ -1,3 +1,5 @@
+@use "../index" as *;
+
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
     .ant-checkbox-checked:not(.ant-checkbox-disabled):after,
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
@@ -22,9 +24,6 @@
 
 .form-item-checkbox {
     .ant-form-item-control-input {
-        height: 45px;
+        height: var(--height-large);
     }
-}
-.ant-checkbox-wrapper {
-    align-items: center;
 }

@@ -61,36 +61,72 @@
 
                     .ant-btn {
                         &.ant-btn-primary {
-                            color: var(--main-primary-text);
-                            background-color: var(--main-primary);
-                            border-color: var(--main-primary);
+                            color: var(--main-primary-text) !important;
+                            background-color: var(--main-primary) !important;
+                            border-color: var(--main-primary) !important;
 
                             &:hover {
-                                color: var(--main-primary-text-active);
-                                background-color: var(--main-primary-active);
-                                border-color: var(--main-primary);
+                                color: var(
+                                    --main-primary-text-active
+                                ) !important;
+                                background-color: var(
+                                    --main-primary-active
+                                ) !important;
+                                border-color: var(--main-primary) !important;
                             }
-
                             &:focus {
-                                color: var(--main-primary-text-active);
-                                background-color: var(--main-primary-active);
-                                border-color: var(--main-primary);
+                                color: var(
+                                    --main-primary-text-active
+                                ) !important;
+                                background-color: var(
+                                    --main-primary-active
+                                ) !important;
+                                border-color: var(--main-primary) !important;
+                            }
+                            &:disabled {
+                                color: rgba(0, 0, 0, 0.25) !important;
+                                background-color: rgba(
+                                    0,
+                                    0,
+                                    0,
+                                    0.04
+                                ) !important;
+                                border-color: var(
+                                    --border-color-base
+                                ) !important;
                             }
                         }
 
                         &.ant-btn-default {
-                            color: var(--main-primary-text-active);
-                            background-color: var(--main-primary-active);
-                            border-color: var(--main-secondary-active);
+                            color: var(--main-default-text) !important;
+                            background-color: var(--main-default) !important	;
+                            border-color: var(--main-default) !important;
 
                             &:hover {
-                                border-color: var(--main-primary);
+                                border-color: var(--main-default) !important;
+                                color: var(--main-default) !important;
+                                background-color: var(
+                                    --main-default-active
+                                ) !important;
                             }
-
                             &:focus {
-                                color: var(--main-primary-text);
-                                background-color: var(--main-primary);
-                                border-color: var(--main-primary);
+                                color: var(--main-default-text) !important;
+                                background-color: var(
+                                    --main-default-active
+                                ) !important;
+                                border-color: var(--main-default) !important;
+                            }
+                            &:disabled {
+                                color: rgba(0, 0, 0, 0.25) !important;
+                                background-color: rgba(
+                                    0,
+                                    0,
+                                    0,
+                                    0.04
+                                ) !important;
+                                border-color: var(
+                                    --border-color-base
+                                ) !important;
                             }
                         }
                     }

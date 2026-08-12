@@ -1,13 +1,21 @@
 import { Flex, Layout } from "antd";
+import dayjs from "dayjs";
 
 import { appName } from "../../providers/appConfig";
 import packageJson from "../../../../../package.json";
 
 export default function Footer() {
     return (
-        <Layout.Footer>
+        <Layout.Footer
+            style={{
+                borderTop: "1px solid var(--color-border)",
+            }}
+        >
             <Flex justify="space-between">
-                <span>{`${appName} ©2023 DEVELOPED BY DSAC TEAM`}</span>
+                <span>
+                    TM and © {dayjs().format("YYYY")} {appName}. All Rights
+                    Reserved.
+                </span>
 
                 <span>
                     V:{" "}

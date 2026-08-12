@@ -1,12 +1,14 @@
-import { Collapse, Flex, Table } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faAngleUp } from "@fortawesome/pro-regular-svg-icons";
+import { useState } from "react";
+import { Flex, Table } from "antd";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import dayjs from "dayjs";
 import formatToCurrency from "../../../../providers/formatToCurrency";
+import CustomCollapse from "../../../../providers/CustomCollapse";
 
 export default function SalesDueList() {
+    const [collapseActiveKey, setCollapseActiveKey] = useState(["0", "1"]);
+
     const { data: dataPaymentDueSales } = GET(
         `api/sales?from=DashboardPaymentDueList&sort_field=date_due&sort_order=asc&limit=5`,
         "sales_due_list",
@@ -19,13 +21,10 @@ export default function SalesDueList() {
     );
 
     return (
-        <Collapse
-            className="collapse-main-primary collapse-payment-due-list"
-            defaultActiveKey={["0", "1"]}
-            size="large"
-            expandIcon={({ isActive }) => (
-                <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} />
-            )}
+        <CustomCollapse
+            className="custom-collapse collapse-payment-due-list"
+            activeKey={collapseActiveKey}
+            onChange={(key) => setCollapseActiveKey(key)}
             items={[
                 {
                     key: "0",

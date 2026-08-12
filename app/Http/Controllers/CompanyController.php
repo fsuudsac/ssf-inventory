@@ -59,8 +59,9 @@ class CompanyController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = Company::find($request->id);
-                $company = Company::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = Company::withTrashed()->find($request->id);
+                $company = Company::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 
@@ -78,6 +79,7 @@ class CompanyController extends Controller
                         "module" => "Company",
                     ]);
 
+                    // Include created/updated record in response so frontend can use res.data
                     $ret = [
                         "success" => true,
                         "message" => "Company " . ($request->id ? "updated" : "created") . " successfully.",

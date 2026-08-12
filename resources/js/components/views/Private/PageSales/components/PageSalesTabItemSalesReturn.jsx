@@ -24,6 +24,7 @@ export default function PageSalesTabItemSalesReturn(props) {
         setOpenDraReleaseItemReturnFilter,
         tableColumns,
         onChangeTable,
+        width,
     } = props;
 
     const navigate = useNavigate();
@@ -89,30 +90,39 @@ export default function PageSalesTabItemSalesReturn(props) {
                 isLoadingDeleteSalesReturn,
             }}
         >
-            <Row gutter={[12, 12]} id={`tbl_wrapper_return_${tabActive}`}>
+            <Row gutter={[20, 20]} id={`tbl_wrapper_return_${tabActive}`}>
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
                         <Button
-                            className="btn-main-primary btn-main-invert-outline b-r-none"
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"}`}
                             icon={<FontAwesomeIcon icon={faPlus} />}
                             onClick={() => {
                                 navigate("/release-item/add-sales-return");
                             }}
                             name="btn_add"
                         >
-                            Add Release Item Return
+                            Release Item Return
                         </Button>
 
                         <TablePageSize
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
-                        <Flex>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center">
                             <Button
                                 type="default"
                                 shape="round"
@@ -130,7 +140,7 @@ export default function PageSalesTabItemSalesReturn(props) {
                             />
                         </Flex>
 
-                        <Flex gap={10}>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -141,7 +151,7 @@ export default function PageSalesTabItemSalesReturn(props) {
                                 tblIdWrapper={`tbl_wrapper_${tabActive}`}
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -149,10 +159,14 @@ export default function PageSalesTabItemSalesReturn(props) {
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -163,7 +177,7 @@ export default function PageSalesTabItemSalesReturn(props) {
                                 tblIdWrapper={`tbl_wrapper_${tabActive}`}
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
             </Row>
 

@@ -13,7 +13,7 @@ export default function ModalBrandForm(props) {
 
     const { mutate: mutateCategory, isLoading: isLoadingCategory } = POST(
         `api/brand`,
-        "brand_list"
+        "brand_list",
     );
 
     const onFinish = (values) => {
@@ -91,7 +91,6 @@ export default function ModalBrandForm(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

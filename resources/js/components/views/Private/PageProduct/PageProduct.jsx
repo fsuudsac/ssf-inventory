@@ -16,10 +16,12 @@ import {
     TablePagination,
     TableShowingEntriesV2,
 } from "../../../providers/CustomTableFilter";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageProduct() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { width } = useWindowDimensions();
 
     const [toggleModalProductDetails, setToggleModalProductDetails] = useState({
         open: false,
@@ -108,16 +110,17 @@ export default function PageProduct() {
                 tableFilter,
             }}
         >
-            <Row gutter={[12, 12]}>
+            <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <Flex gap={12}>
+                    <Flex align="center" gap={15}>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"}`}
                             onClick={() => navigate("/product/add")}
                             icon={<FontAwesomeIcon icon={faPlus} />}
                             name="btn_add"
                         >
-                            Add Product Canvas
+                            Product Canvas
                         </Button>
 
                         <Button
@@ -136,12 +139,15 @@ export default function PageProduct() {
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={12}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    !tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "outlined" : "active"}`}
                                 onClick={() =>
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -153,9 +159,8 @@ export default function PageProduct() {
                             </Button>
 
                             <Button
-                                className={`btn-main-primary min-w-150 ${
-                                    tableFilter.isTrash ? "active" : "outlined"
-                                }`}
+                                type="primary"
+                                className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${tableFilter.isTrash ? "active" : "outlined"}`}
                                 onClick={() =>
                                     setTableFilter((ps) => ({
                                         ...ps,
@@ -171,12 +176,16 @@ export default function PageProduct() {
                             tableFilter={tableFilter}
                             setTableFilter={setTableFilter}
                         />
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-top-filter">
-                        <Flex gap={10}>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-top-filter"
+                    >
+                        <Flex align="center" gap={15}>
                             <TableGlobalSearchAnimated
                                 tableFilter={tableFilter}
                                 setTableFilter={setTableFilter}
@@ -206,7 +215,9 @@ export default function PageProduct() {
                                     name="btn_delete"
                                 >
                                     <Button
-                                        className="btn-main-secondary"
+                                        type="primary"
+                                        className={`${width < 576 ? "w-full" : ""} ${tableFilter.isTrash ? "btn-success" : ""}`}
+                                        danger={tableFilter.isTrash}
                                         name="btn_delete"
                                         loading={isLoadingArchivedTransfer}
                                     >
@@ -219,7 +230,7 @@ export default function PageProduct() {
                             )}
                         </Flex>
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -230,7 +241,7 @@ export default function PageProduct() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -238,10 +249,14 @@ export default function PageProduct() {
                 </Col>
 
                 <Col xs={24} sm={24} md={24}>
-                    <div className="tbl-bottom-filter">
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        className="tbl-bottom-filter"
+                    >
                         <div />
 
-                        <Flex>
+                        <Flex align="center" gap={15}>
                             <TableShowingEntriesV2 />
                             <TablePagination
                                 tableFilter={tableFilter}
@@ -252,7 +267,7 @@ export default function PageProduct() {
                                 tblIdWrapper="tbl_wrapper"
                             />
                         </Flex>
-                    </div>
+                    </Flex>
                 </Col>
 
                 <ModalImportProducts />

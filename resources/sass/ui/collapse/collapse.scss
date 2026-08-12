@@ -1,56 +1,59 @@
-.ant-collapse {
-    border-radius: 0px;
-    border: 0px;
-    background: transparent;
+@use "../index" as *;
 
-    &.ant-collapse-large {
-        .ant-collapse-item {
-            .ant-collapse-header {
-                padding: 10px 24px;
-            }
-        }
-    }
+.ant-collapse {
+    border: 0px;
+    background-color: transparent;
 
     .ant-collapse-item {
-        border: 1px solid #d9d9d9 !important;
-        border-radius: 5px;
+        border: 1px solid var(--border-color-base);
+        border-radius: var(--border-radius-base) !important;
+        overflow: hidden;
+        background-color: var(--layout-background);
 
-        &:not(:first-child) {
-            margin-top: 20px;
+        &:last-child {
+            border-bottom: 1px solid var(--border-color-base);
+            border-radius: 0;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
         }
 
         .ant-collapse-header {
+            padding: 12px 20px;
+            border-radius: 0 !important;
+            background-color: var(--bs-gray-100);
+
             .ant-collapse-expand-icon {
-                margin-inline-start: 0px;
                 svg {
-                    font-size: 18px;
+                    color: var(--main-primary);
+                    font-size: 16px;
                 }
             }
         }
 
-        &:last-child {
-            border-radius: 0px;
-
-            > .ant-collapse-header {
-                border-radius: 0px;
-            }
-        }
-
         .ant-collapse-content {
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
+            border-radius: 0px !important;
 
             .ant-collapse-content-box {
-                padding: 15px;
+                padding: 20px;
             }
         }
     }
 
-    &.collapse-main-primary {
+    &.custom-collapse {
         .ant-collapse-item {
+            box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.1);
+
             .ant-collapse-header {
                 background-color: var(--collapse-header);
-                color: #ffffff;
+                color: var(--collapse-header-text) !important;
+
+                .ant-collapse-expand-icon {
+                    svg {
+                        color: var(--collapse-header-text) !important;
+                    }
+                }
             }
         }
     }

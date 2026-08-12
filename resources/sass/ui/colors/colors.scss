@@ -1,158 +1,177 @@
-.text-primary {
+@use "../index" as *;
+
+.primary-color {
     color: var(--color-primary);
 }
-.bg-primary {
+.primary-bg-color {
     background-color: var(--color-primary);
 }
-.text-primary-active {
+.primary-color-active {
     color: var(--color-primary-active);
 }
-.bg-primary-active {
+.primary-bg-color-active {
     background-color: var(--color-primary-active);
 }
-.text-secondary {
+.second-color {
     color: var(--color-secondary);
 }
-.bg-secondary {
+.second-bg-color {
     background-color: var(--color-secondary);
 }
-.text-secondary-active {
+.second-color-active {
     color: var(--color-secondary-active);
 }
-.bg-secondary-active {
+.second-bg-color-active {
     background-color: var(--color-secondary-active);
 }
 
-.text-success {
+.success-color {
     color: var(--color-success);
 }
-.bg-success {
+.success-bg-color {
     background-color: var(--color-success);
 }
-.text-success-active {
+.success-color-active {
     color: var(--color-success-active);
 }
-.bg-success-active {
+.success-bg-color-active {
     background-color: var(--color-success-active);
 }
-.text-warning {
+.warning-color {
     color: var(--color-warning);
 }
-.bg-warning {
+.warning-bg-color {
     background-color: var(--color-warning);
 }
-.text-warning-active {
+.warning-color-active {
     color: var(--color-warning-active);
 }
-.bg-warning-active {
+.warning-bg-color-active {
     background-color: var(--color-warning-active);
 }
-.text-danger {
+.danger-color {
     color: var(--color-danger);
 }
-.bg-danger {
+.danger-bg-color {
     background-color: var(--color-danger);
 }
-.text-danger-active {
+.danger-color-active {
     color: var(--color-danger-active);
 }
-.bg-danger-active {
+.danger-bg-color-active {
     background-color: var(--color-danger-active);
 }
-.text-info {
+.info-color {
     color: var(--color-info);
 }
-.bg-info {
+.info-bg-color {
     background-color: var(--color-info);
 }
-.text-info-active {
+.info-color-active {
     color: var(--color-info-active);
 }
-.bg-info-active {
+.info-bg-color-active {
     background-color: var(--color-info-active);
 }
-.text-indigo {
+.indigo-color {
     color: var(--color-indigo);
 }
-.bg-indigo {
+.indigo-bg-color {
     background-color: var(--color-indigo);
 }
-.text-indigo-active {
+.indigo-color-active {
     color: var(--color-indigo-active);
 }
-.bg-indigo-active {
+.indigo-bg-color-active {
     background-color: var(--color-indigo-active);
 }
-.text-purple {
+.purple-color {
     color: var(--color-purple);
 }
-.bg-purple {
+.purple-bg-color {
     background-color: var(--color-purple);
 }
-.text-purple-active {
+.purple-color-active {
     color: var(--color-purple-active);
 }
-.bg-purple-active {
+.purple-bg-color-active {
     background-color: var(--color-purple-active);
 }
-.text-pink {
+.pink-color {
     color: var(--color-pink);
 }
-.bg-pink {
+.pink-bg-color {
     background-color: var(--color-pink);
 }
-.text-pink-active {
+.pink-color-active {
     color: var(--color-pink-active);
 }
-.bg-pink-active {
+.pink-bg-color-active {
     background-color: var(--color-pink-active);
 }
-.text-teal {
+.teal-color {
     color: var(--color-teal);
 }
-.bg-teal {
+.teal-bg-color {
     background-color: var(--color-teal);
 }
-.text-teal-active {
+.teal-color-active {
     color: var(--color-teal-active);
 }
-.bg-teal-active {
+.teal-bg-color-active {
     background-color: var(--color-teal-active);
 }
-.text-dark {
+.dark-color {
     color: var(--color-dark);
 }
-.bg-dark {
+.dark-bg-color {
     background-color: var(--color-dark);
 }
-.text-dark-active {
+.dark-color-active {
     color: var(--color-dark-active);
 }
-.bg-dark-active {
+.dark-bg-color-active {
     background-color: var(--color-dark-active);
 }
-.text-orange {
+.orange-color {
     color: var(--color-orange);
 }
-.bg-orange {
+.orange-bg-color {
     background-color: var(--color-orange);
 }
-.text-orange-active {
+.orange-color-active {
     color: var(--color-orange-active);
 }
-.bg-orange-active {
+.orange-bg-color-active {
     background-color: var(--color-orange-active);
 }
 
-.main-text-primary {
+.main-primary-color {
     color: var(--main-primary);
 }
-.main-bg-primary {
+.main-primary-bg-color {
     background-color: var(--main-primary);
 }
-.main-text-secondary {
+.main-second-color {
     color: var(--main-secondary);
 }
-.main-bg-secondary {
+.main-second-bg-color {
     background-color: var(--main-secondary);
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+.white-color {
+    color: var(--color-white);
+}
+.white-bgcolor {
+    background-color: var(--color-white);
+}
+.black-color {
+    color: var(--color-black);
+}
+.black-bgcolor {
+    background-color: var(--color-black);
 }

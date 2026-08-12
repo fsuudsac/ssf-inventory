@@ -2,21 +2,26 @@
 
 .private-layout {
     > .ant-layout-sider {
-        background-color: transparent;
+        background: var(--sidemenu-background) !important;
         width: 240px !important;
-        min-width: 240px !important;
         max-width: 240px !important;
-        overflow: hidden overlay;
+        overflow-x: hidden;
+        overflow-y: auto;
+        // Hide scrollbar track visually while keeping scroll functionality
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         position: fixed;
         height: 100%;
         left: 0;
         top: 0;
         bottom: 0;
         z-index: 6;
-        scrollbar-width: thin;
 
         @include atSMMax {
-            background-image: url("/resources/img/login_bg.png");
+            box-shadow: rgba(0, 0, 0, 0.2) 2px -4px 8px 0px;
+            background-image: var(--sidemenu-background);
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -26,10 +31,6 @@
             min-width: 55px !important;
 
             @include atSMMax {
-                display: none;
-            }
-
-            @include atXSMax {
                 display: none;
             }
         }
@@ -52,16 +53,12 @@
                     height: 70px;
                 }
 
-                @include atXSMax {
-                    height: 70px;
-                }
-
                 .anticon {
                     font-size: 22px;
-                    color: var(--color-cyan-400);
+                    color: var(--sidemenu-icon-color);
 
                     &:hover {
-                        color: var(--color-cyan-400);
+                        color: var(--sidemenu-icon-color-active);
                     }
                 }
 
@@ -76,17 +73,12 @@
                         @include atSMMax {
                             width: 105px;
                         }
-
-                        @include atXSMax {
-                            width: 105px;
-                        }
                     }
                 }
             }
 
-            .ant-menu {
+            > .ant-menu {
                 background-color: transparent;
-                height: 100%;
 
                 > .ant-menu-item {
                     margin-block: 0px;
@@ -96,14 +88,14 @@
                     padding-left: 16px !important;
                     line-height: 45px;
 
-                    &.ant-menu-item-selected,
-                    &.ant-menu-item-active {
-                        background: var(--color-blue-600);
-                    }
-
                     a {
                         color: var(--color-white);
                         text-decoration: none;
+                    }
+
+                    &.ant-menu-item-selected,
+                    &.ant-menu-item-active {
+                        background: var(--color-primary);
                     }
 
                     a:hover,
@@ -114,7 +106,7 @@
                     }
 
                     .ant-menu-item-icon {
-                        color: var(--color-cyan-400);
+                        color: var(--color-menu-icon);
                         font-size: 18px;
                         width: 20px;
                     }
@@ -128,7 +120,8 @@
                     background-color: transparent;
                     border-radius: 0px;
 
-                    .ant-menu-submenu-title {
+                    // Level 0 submenu title (People, Academic, Faculty Load, etc.)
+                    > .ant-menu-submenu-title {
                         padding-left: 16px !important;
                         padding-inline-end: 0px !important;
                         margin-inline: 0px;
@@ -138,7 +131,7 @@
 
                         .ant-menu-submenu-arrow,
                         .ant-menu-item-icon {
-                            color: var(--color-cyan-400);
+                            color: var(--color-menu-icon);
                             font-size: 18px;
                         }
 
@@ -152,47 +145,184 @@
 
                         .ant-menu-title-content {
                             color: var(--color-white);
+                            font-family: MontserratRegular, sans-serif;
                         }
                     }
 
                     &.ant-menu-submenu-active {
-                        background: var(--color-blue-600);
-                    }
-
-                    .ant-menu.ant-menu-sub {
-                        > .ant-menu-item {
-                            // background-color: var(--sidebar-background);
-                            margin-block: 0px;
-                            margin-inline: 0px;
-                            width: 100%;
+                        > .ant-menu-submenu-title {
+                            background: var(--color-primary);
                             border-radius: 0px;
-                            padding-left: 46px !important;
-                            line-height: 45px;
-
-                            &.ant-menu-item-selected,
-                            &.ant-menu-item-active {
-                                background: var(--color-blue-600);
-                            }
-
-                            a {
-                                color: var(--color-white);
-                            }
-
-                            a:hover,
-                            &.ant-menu-item-selected a,
-                            &.ant-menu-item-active a {
-                                color: var(--color-white);
-                            }
 
                             .ant-menu-title-content {
-                                line-height: 40px;
-                                a {
-                                    text-decoration: none !important;
-                                }
+                                color: var(--color-white);
                             }
                         }
                     }
+
+                    // Shared styles for all nested submenu titles (level 1+)
+                    .ant-menu-sub .ant-menu-submenu-title {
+                        padding-inline-end: 0px !important;
+                        margin-inline: 0px;
+                        margin-block: 0px;
+                        line-height: 45px;
+                        width: 100%;
+
+                        .ant-menu-submenu-arrow,
+                        .ant-menu-item-icon {
+                            color: var(--color-menu-icon);
+                            font-size: 18px;
+                        }
+
+                        .ant-menu-item-icon {
+                            width: 20px;
+                        }
+
+                        &:active {
+                            background-color: transparent;
+                        }
+
+                        .ant-menu-title-content {
+                            color: var(--color-white);
+                            font-family: MontserratRegular, sans-serif;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+
+                    // Level 1 submenu titles (Employees, Faculties, Applicants, Requests, etc.)
+                    .ant-menu-sub
+                        > .ant-menu-submenu
+                        > .ant-menu-submenu-title {
+                        padding-left: 46px !important;
+                    }
+
+                    // Level 2 submenu titles (if nested further)
+                    .ant-menu-sub
+                        .ant-menu-sub
+                        > .ant-menu-submenu
+                        > .ant-menu-submenu-title {
+                        padding-left: 76px !important;
+                    }
+
+                    // Shared styles for all leaf items inside any sub-menu
+                    .ant-menu.ant-menu-sub .ant-menu-item {
+                        margin-block: 0px;
+                        margin-inline: 0px;
+                        width: 100%;
+                        border-radius: 0px;
+                        line-height: 45px;
+
+                        &.ant-menu-item-selected,
+                        &.ant-menu-item-active {
+                            background: var(--color-primary);
+                        }
+
+                        a {
+                            color: var(--color-white);
+                            text-decoration: none;
+                        }
+
+                        a:hover,
+                        &.ant-menu-item-selected a,
+                        &.ant-menu-item-active a {
+                            color: var(--color-white);
+                        }
+
+                        .ant-menu-title-content {
+                            line-height: 40px;
+                            font-size: 14px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+
+                            a {
+                                color: var(--color-white);
+                                text-decoration: none !important;
+                            }
+                        }
+
+                        .ant-menu-item-icon {
+                            color: var(--color-menu-icon);
+                            font-size: 18px;
+                            width: 20px;
+                        }
+                    }
+
+                    // Layout for nested items where icon is rendered inside the label
+                    .menu-item-inner {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        width: 100%;
+                        overflow: hidden;
+
+                        .menu-item-inner-icon {
+                            color: var(--color-menu-icon);
+                            font-size: 18px;
+                            min-width: 20px;
+                            flex-shrink: 0;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        a {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            color: var(--color-white);
+                            text-decoration: none;
+                        }
+                    }
+
+                    // Level 1 leaf items (Profile, Class List, Loading, etc.)
+                    .ant-menu-sub > .ant-menu-item {
+                        padding-left: 46px !important;
+                    }
+
+                    // Level 2 leaf items (Full-Time, Grades, Employee Leave, etc.)
+                    .ant-menu-sub .ant-menu-sub > .ant-menu-item {
+                        padding-left: 76px !important;
+                    }
+
+                    // Level 3 leaf items (future-proofing)
+                    .ant-menu-sub .ant-menu-sub .ant-menu-sub > .ant-menu-item {
+                        padding-left: 106px !important;
+                    }
                 }
+            }
+
+            > .sidemune_profile_info {
+                .profile_image {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .profile_info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 5px;
+                    padding: 10px 0px;
+                    text-align: center;
+
+                    .profile_name {
+                        font-size: 20px;
+                        font-weight: 500;
+                        color: var(--color-white);
+                    }
+
+                    .profile_role {
+                        font-size: 14px;
+                        color: var(--color-white);
+                    }
+                }
+            }
+
+            > .ant-side-footer {
+                padding: 10px 10px 10px 20px;
+                color: var(--color-white);
             }
         }
     }

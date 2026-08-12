@@ -104,7 +104,6 @@ export default function ModalFormDepartment() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

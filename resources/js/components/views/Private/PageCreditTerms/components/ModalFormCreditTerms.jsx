@@ -15,7 +15,7 @@ export default function ModalFormCreditTerms() {
 
     const { mutate: mutateCreditTerm, isLoading: isLoadingCreditTerm } = POST(
         `api/credit_term`,
-        "credit_term_list"
+        "credit_term_list",
     );
 
     const onFinish = (values) => {
@@ -100,7 +100,6 @@ export default function ModalFormCreditTerms() {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

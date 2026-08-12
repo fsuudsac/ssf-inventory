@@ -14,10 +14,12 @@ import {
 import TableUser from "./components/TableUser";
 import ModalImport from "./components/ModalImport";
 import useTableScrollOnTop from "../../../providers/useTableScrollOnTop";
+import useWindowDimensions from "../../../providers/useWindowDimensions";
 
 export default function PageUser(props) {
     const navigate = useNavigate();
     const location = useLocation();
+    const { width } = useWindowDimensions();
 
     const [toggleModalImport, setToggleModalImport] = useState({
         open: false,
@@ -86,26 +88,28 @@ export default function PageUser(props) {
     useTableScrollOnTop("tbl_user", location);
 
     return (
-        <Row gutter={[12, 12]} id="tbl_wrapper">
+        <Row gutter={[20, 20]} id="tbl_wrapper">
             <Col xs={24} sm={24} md={24}>
-                <Flex gap={12}>
+                <Flex align="center" gap={15}>
                     <Button
-                        className="btn-main-primary btn-main-invert-outline b-r-none"
+                        type="primary"
+                        className={width < 576 ? "w-full" : "min-w-[150px]"}
                         icon={<FontAwesomeIcon icon={faPlus} />}
                         onClick={() => navigate(`${location.pathname}/add`)}
                         name="btn_add"
                     >
                         {location.pathname === "/suppliers"
-                            ? "Add Supplier"
+                            ? "Supplier"
                             : location.pathname === "/customers"
-                              ? "Add Customer"
-                              : "Add User"}
+                              ? "Customer"
+                              : "User"}
                     </Button>
 
                     {!location.pathname.includes("users") && (
                         <Button
+                            type="primary"
+                            className={width < 576 ? "w-full" : "min-w-[150px]"}
                             icon={<FontAwesomeIcon icon={faInboxArrowDown} />}
-                            className="btn-main-primary"
                             onClick={() =>
                                 setToggleModalImport({
                                     open: true,
@@ -121,10 +125,15 @@ export default function PageUser(props) {
             </Col>
 
             <Col xs={24} sm={24} md={24}>
-                <div className="tbl-top-filter">
-                    <Flex gap={12}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <Flex align="center" gap={15}>
                         <Button
-                            className={`btn-main-primary min-w-150 ${
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                 tableFilter.status === "Active"
                                     ? "active"
                                     : "outlined"
@@ -140,7 +149,8 @@ export default function PageUser(props) {
                         </Button>
 
                         <Button
-                            className={`btn-main-primary min-w-150 ${
+                            type="primary"
+                            className={`${width < 576 ? "w-full" : "min-w-[150px]"} ${
                                 tableFilter.status === "Archived"
                                     ? "active"
                                     : "outlined"
@@ -160,18 +170,32 @@ export default function PageUser(props) {
                         tableFilter={tableFilter}
                         setTableFilter={setTableFilter}
                     />
-                </div>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24}>
-                <div className="tbl-top-filter">
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
                     <TableGlobalSearchAnimated
                         tableFilter={tableFilter}
                         setTableFilter={setTableFilter}
                     />
 
-                    <TableShowingEntriesV2 />
-                </div>
+                    <Flex align="center" gap={15}>
+                        <TableShowingEntriesV2 />
+                        <TablePagination
+                            tableFilter={tableFilter}
+                            setTableFilter={setTableFilter}
+                            total={dataSource?.data.total}
+                            showLessItems={true}
+                            showSizeChanger={false}
+                            tblIdWrapper="tbl_wrapper"
+                        />
+                    </Flex>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24}>
@@ -184,10 +208,14 @@ export default function PageUser(props) {
             </Col>
 
             <Col xs={24} sm={24} md={24}>
-                <div className="tbl-bottom-filter">
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-bottom-filter"
+                >
                     <div />
 
-                    <Flex>
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -198,7 +226,7 @@ export default function PageUser(props) {
                             tblIdWrapper="tbl_wrapper"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <ModalImport

@@ -77,8 +77,9 @@ class ProductController extends Controller
                     $dataValidate["created_by"] = Auth::id();
                 }
 
-                $originalValue = Product::find($request->id);
-                $product = Product::updateOrCreate([
+                // withTrashed() so editing an archived record updates instead of duplicate-inserting
+                $originalValue = Product::withTrashed()->find($request->id);
+                $product = Product::withTrashed()->updateOrCreate([
                     "id" => $request->id ?? null,
                 ], $dataValidate);
 

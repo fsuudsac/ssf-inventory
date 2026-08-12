@@ -2,20 +2,24 @@ import { useEffect, useState } from "react";
 import { Button, Col, DatePicker, Flex, Form, Row, Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/pro-regular-svg-icons";
+import dayjs from "dayjs";
 
 import { GET, POST } from "../../../../providers/useAxiosQuery";
 import {
+    TableGlobalSearchAnimated,
     TablePageSize,
     TablePagination,
     TableShowingEntriesV2,
 } from "../../../../providers/CustomTableFilter";
 import formatToCurrency from "../../../../providers/formatToCurrency";
-import dayjs from "dayjs";
 import FloatSelect from "../../../../providers/FloatSelect";
 import ModalSupplierLedger from "./ModalSupplierLedger";
 import useTableScrollOnTop from "../../../../providers/useTableScrollOnTop";
+import FloatRangePicker from "../../../../providers/FloatRangePicker";
 
-export default function TabItemSupplier() {
+export default function TabItemSupplier(props) {
+    const { width } = props;
+
     const [form] = Form.useForm();
 
     const [toggleModalSupplierLedger, setToggleModalSupplierLedger] = useState({
@@ -63,21 +67,15 @@ export default function TabItemSupplier() {
     useTableScrollOnTop("tbl_ledger_supplier", "tbl_ledger_supplier");
 
     return (
-        <Row gutter={[12, 12]} id="tbl_wrapper_ledger_supplier">
+        <Row gutter={[20, 20]} id="tbl_wrapper_ledger_supplier">
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex className="flex-wrapper-filter">
+                <Row gutter={[12, 12]}>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                         <FloatSelect
-                            placeholder="Select Supplier"
-                            className="w-100 b-0"
-                            multi="multiple"
+                            label="Supplier"
+                            placeholder="Supplier"
+                            mode="multiple"
                             allowClear
-                            showSearch
-                            filterOption={(input, option) =>
-                                option.label
-                                    .toLowerCase()
-                                    .includes(input.toLowerCase())
-                            }
                             options={
                                 dataSupplier?.data?.map((item) => ({
                                     value: item.id,
@@ -92,38 +90,35 @@ export default function TabItemSupplier() {
                                 }));
                             }}
                         />
+                    </Col>
 
-                        <Col>
-                            <DatePicker.RangePicker
-                                value={tableFilter.date_purchased}
-                                allowClear
-                                onChange={(date, dateString) => {
-                                    setTableFilter((prev) => ({
-                                        ...prev,
-                                        date_purchased: date,
-                                        date_purchased_string: dateString,
-                                    }));
-                                }}
-                            />
-                        </Col>
-                    </Flex>
-                </div>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <FloatRangePicker
+                            label="Date Purchased"
+                            placeholder="Date Purchased"
+                            value={tableFilter.date_purchased}
+                            onChange={(date, dateString) => {
+                                setTableFilter((prev) => ({
+                                    ...prev,
+                                    date_purchased: date,
+                                    date_purchased_string: dateString,
+                                }));
+                            }}
+                        />
+                    </Col>
+                </Row>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <Flex justify="end">
-                    <TablePageSize
-                        tableFilter={tableFilter}
-                        setTableFilter={setTableFilter}
-                    />
-                </Flex>
-            </Col>
-
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-top-filter">
-                    <Flex gap={10}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <Flex align="center" gap={15}>
                         <Button
-                            className="btn-main-primary"
+                            type="primary"
+                            className={width < 576 ? "w-full" : "min-w-[150px]"}
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                             onClick={() => {
@@ -140,14 +135,33 @@ export default function TabItemSupplier() {
                             Export Pdf
                         </Button>
                         {/* <Button
-                            className="btn-main-primary"
+                            type="primary"
                             icon={<FontAwesomeIcon icon={faDownload} />}
                             iconPosition="end"
                         >
                             Export Excel
                         </Button> */}
                     </Flex>
-                    <Flex gap={10}>
+
+                    <TablePageSize
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+                </Flex>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-top-filter"
+                >
+                    <TableGlobalSearchAnimated
+                        tableFilter={tableFilter}
+                        setTableFilter={setTableFilter}
+                    />
+
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -158,7 +172,7 @@ export default function TabItemSupplier() {
                             tblIdWrapper="tbl_wrapper_ledger_supplier"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -295,10 +309,14 @@ export default function TabItemSupplier() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                <div className="tbl-bottom-filter">
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    className="tbl-bottom-filter"
+                >
                     <div />
 
-                    <Flex>
+                    <Flex align="center" gap={15}>
                         <TableShowingEntriesV2 />
                         <TablePagination
                             tableFilter={tableFilter}
@@ -309,7 +327,7 @@ export default function TabItemSupplier() {
                             tblIdWrapper="tbl_wrapper_ledger_supplier"
                         />
                     </Flex>
-                </div>
+                </Flex>
             </Col>
 
             <ModalSupplierLedger

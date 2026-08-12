@@ -15,14 +15,14 @@ export default function ModalPageVideoFaq({ module_name }) {
 
     const { mutate: mutateVideoFaq, isLoading: isLoadingVideoFaq } = POST(
         `api/video_faq_info`,
-        "video_faq_info"
+        "video_faq_info",
     );
 
     const handleVideoFaq = () => {
         let data = { module_name };
         mutateVideoFaq(data, {
             onSuccess: (res) => {
-                if (res.data.file_path) {
+                if (res.data?.file_path) {
                     setToggleModalVideoFaq({
                         open: true,
                         data: res.data,

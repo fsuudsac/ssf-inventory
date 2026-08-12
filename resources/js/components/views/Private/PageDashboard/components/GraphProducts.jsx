@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Collapse } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faAngleUp } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import PageDashboardContext from "./PageDashboardContext";
+import CustomCollapse from "../../../../providers/CustomCollapse";
 
 export default function GraphProducts() {
     const { Highcharts, leftArrow } = useContext(PageDashboardContext);
+
+    const [collapseActiveKey, setCollapseActiveKey] = useState(["0", "1"]);
 
     const [filter, setFilter] = useState({
         date_range: [],
@@ -18,7 +18,7 @@ export default function GraphProducts() {
         `api/graph_product?${new URLSearchParams(filter)}`,
         "graph_product_graph",
         (res) => {},
-        false
+        false,
     );
 
     useEffect(() => {
@@ -97,7 +97,7 @@ export default function GraphProducts() {
                                         this.y,
                                         0,
                                         ".",
-                                        ","
+                                        ",",
                                     )}`;
                                 },
                             },
@@ -116,7 +116,7 @@ export default function GraphProducts() {
                                         this.y,
                                         0,
                                         ".",
-                                        ","
+                                        ",",
                                     )}`;
                                 },
                             },
@@ -130,13 +130,13 @@ export default function GraphProducts() {
 
                                     let div_graph_wrapper =
                                         document.querySelector(
-                                            "#divGraphRevenue"
+                                            "#divGraphRevenue",
                                         );
 
                                     if (div_graph_wrapper) {
                                         let highchartsDataTable =
                                             div_graph_wrapper.querySelector(
-                                                ".highcharts-data-table"
+                                                ".highcharts-data-table",
                                             );
                                         if (highchartsDataTable) {
                                             highchartsDataTable.remove();
@@ -204,13 +204,9 @@ export default function GraphProducts() {
     }, [dataSource]);
 
     return (
-        <Collapse
-            className="collapse-main-primary"
-            defaultActiveKey={["0", "1"]}
-            size="large"
-            expandIcon={({ isActive }) => (
-                <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} />
-            )}
+        <CustomCollapse
+            activeKey={collapseActiveKey}
+            onChange={(key) => setCollapseActiveKey(key)}
             items={[
                 {
                     key: "0",

@@ -1,120 +1,424 @@
+@use "../index" as *;
+
+.ant-input {
+    border-radius: var(--border-radius-base);
+    border: 1px solid var(--border-color-base);
+    box-shadow: none;
+
+    &:not(textarea) {
+        height: var(--height-base);
+
+        &.ant-input-sm {
+            height: var(--height-small);
+        }
+
+        &.ant-input-lg {
+            height: var(--height-large);
+        }
+    }
+
+    &:focus,
+    &:hover {
+        border: 1px solid var(--border-color-base);
+    }
+    &:focus-within {
+        box-shadow: none !important;
+    }
+
+    &.ant-input-status-error {
+        border-color: var(--color-danger) !important;
+        box-shadow: none !important;
+    }
+}
+
+.ant-input-affix-wrapper {
+    border-radius: var(--border-radius-base);
+    height: var(--height-base);
+    box-shadow: none;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &.ant-input-affix-wrapper-sm {
+        height: var(--height-small);
+    }
+
+    &.ant-input-affix-wrapper-lg {
+        height: var(--height-large);
+    }
+
+    &:focus,
+    &:hover {
+        border: 1px solid var(--border-color-base);
+        box-shadow: none !important;
+    }
+    &:focus-within {
+        border-color: var(--border-color-base);
+        box-shadow: none !important;
+    }
+}
+
+.ant-picker {
+    width: 100%;
+    border-radius: var(--border-radius-base);
+    padding-block: 0px;
+
+    .ant-picker-input {
+        input {
+            height: calc(var(--height-base) - 2px);
+        }
+
+        .ant-picker-suffix,
+        .ant-picker-clear {
+            .anticon {
+                color: var(--main-primary);
+            }
+        }
+    }
+
+    &.ant-picker-large {
+        .ant-picker-input {
+            input {
+                height: calc(var(--height-large) - 2px);
+            }
+        }
+    }
+
+    &.ant-picker-small {
+        .ant-picker-input {
+            input {
+                height: calc(var(--height-small) - 2px);
+            }
+        }
+    }
+
+    &.ant-picker-focused,
+    &:focus,
+    &:hover {
+        border: 1px solid var(--border-color-base);
+        box-shadow: none !important;
+    }
+}
+
+.ant-select {
+    width: 100%;
+    // border-radius: var(--border-radius-base);
+    height: var(--height-base);
+    border: 1px solid var(--border-color-base);
+
+    &.ant-select-focused,
+    &:focus,
+    &:hover {
+        border: 1px solid var(--border-color-base);
+        box-shadow: none !important;
+    }
+
+    .ant-select-selector {
+        border: 0px !important;
+        box-shadow: none !important;
+    }
+
+    &.ant-select-sm {
+        height: var(--height-small);
+    }
+
+    &.ant-select-lg {
+        height: var(--height-large);
+    }
+
+    .ant-select-arrow {
+        color: var(--main-primary);
+    }
+
+    &.ant-select-multiple {
+        height: 100%;
+
+        &.ant-select-lg {
+            .ant-select-selector {
+                padding-block: 0px;
+                padding-top: 5px;
+            }
+        }
+    }
+}
+
+// Input.Search — match other controls + primary search trigger (addon button or suffix)
+.ant-input-search,
+.ant-input-group-wrapper.ant-input-search {
+    width: 100%;
+    // border-radius: var(--border-radius-base);
+    border: 1px solid var(--border-color-base);
+    box-shadow: none;
+    overflow: hidden;
+
+    &:hover,
+    &:focus-within,
+    &.ant-input-search-focused {
+        border: 1px solid var(--border-color-base);
+        box-shadow: none !important;
+    }
+
+    .ant-input {
+        border: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0;
+
+        &:not(textarea) {
+            height: var(--height-base);
+        }
+
+        &.ant-input-sm {
+            height: var(--height-small);
+        }
+
+        &.ant-input-lg {
+            height: var(--height-large);
+        }
+    }
+
+    &.ant-input-search-large .ant-input:not(textarea) {
+        height: var(--height-large);
+    }
+
+    &.ant-input-search-small .ant-input:not(textarea) {
+        height: var(--height-small);
+    }
+
+    // Addon search button (enterButton)
+    .ant-input-group-addon {
+        background: transparent;
+        border: 0;
+        padding: 0;
+
+        .ant-btn.ant-input-search-button {
+            height: var(--height-base);
+            min-width: var(--height-base);
+            border-radius: 0;
+            border: 1px solid var(--main-primary) !important;
+            background-color: var(--main-primary);
+            color: var(--main-primary-text) !important;
+
+            &:hover,
+            &:focus {
+                background: var(--main-primary-active) !important;
+                color: var(--main-primary-text-active) !important;
+            }
+
+            &:disabled {
+                border-color: var(--border-color-base) !important;
+                color: rgba(0, 0, 0, 0.25) !important;
+                background-color: rgba(0, 0, 0, 0.04) !important;
+            }
+        }
+    }
+
+    &.ant-input-search-large
+        .ant-input-group-addon
+        .ant-btn.ant-input-search-button {
+        height: var(--height-large);
+        min-width: var(--height-large);
+    }
+
+    &.ant-input-search-small
+        .ant-input-group-addon
+        .ant-btn.ant-input-search-button {
+        height: var(--height-small);
+        min-width: var(--height-small);
+    }
+}
+
+// Input.Search (suffix): matches .ant-input-affix-wrapper; primary icon / suffix button
+.ant-input-affix-wrapper.ant-input-search {
+    &:focus-visible {
+        outline: none !important;
+    }
+
+    .ant-input-suffix {
+        .anticon {
+            color: var(--main-primary);
+        }
+
+        .ant-btn.ant-input-search-icon {
+            height: var(--height-base);
+            min-width: var(--height-base);
+            padding: 0 10px;
+            border: 0 !important;
+            border-radius: 0 var(--border-radius-base) var(--border-radius-base)
+                0;
+            background-color: var(--main-primary);
+            color: var(--main-primary-text);
+
+            &:hover,
+            &:focus {
+                background: var(--main-primary-active) !important;
+                color: var(--main-primary-text-active) !important;
+            }
+        }
+    }
+
+    &.ant-input-affix-wrapper-lg
+        .ant-input-suffix
+        .ant-btn.ant-input-search-icon {
+        height: var(--height-large);
+        min-width: var(--height-large);
+    }
+
+    &.ant-input-affix-wrapper-sm
+        .ant-input-suffix
+        .ant-btn.ant-input-search-icon {
+        height: var(--height-small);
+        min-width: var(--height-small);
+    }
+}
+
+.ant-input-number {
+    width: 100%;
+
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &.ant-input-number-focused {
+        border: 1px solid var(--border-color-base);
+        box-shadow: none !important;
+    }
+
+    .ant-input-number-input-wrap {
+        .ant-input-number-input {
+            height: var(--height-base);
+        }
+    }
+
+    &.ant-input-number-lg {
+        .ant-input-number-input-wrap {
+            .ant-input-number-input {
+                height: var(--height-large);
+            }
+        }
+    }
+
+    &.ant-input-number-sm {
+        .ant-input-number-input-wrap {
+            .ant-input-number-input {
+                height: var(--height-small);
+            }
+        }
+    }
+}
+
+.ant-input-number-group-wrapper {
+    width: 100%;
+}
+
+.ant-input-phone-number {
+    width: 100%;
+    border-radius: var(--border-radius-base);
+    height: var(--height-base);
+    border: 1px solid var(--border-color-base);
+    padding: 9px 13px 9px 13px;
+
+    &:focus-within,
+    &:focus-visible,
+    &:focus {
+        outline: none !important;
+    }
+
+    input {
+        border: 0px !important;
+
+        &:focus-within,
+        &:focus-visible,
+        &:focus {
+            outline: none !important;
+        }
+    }
+
+    &.small {
+        height: var(--height-small);
+    }
+
+    &.large {
+        height: var(--height-large);
+    }
+
+    &.PhoneInput--disabled {
+        background-color: var(--bs-gray-100);
+        cursor: not-allowed;
+
+        input,
+        select {
+            cursor: not-allowed;
+        }
+    }
+}
+
+.quill {
+    .ql-editor {
+        min-height: 120px;
+    }
+}
+
 .float-wrapper {
     position: relative;
 
-    .ant-input-number .ant-input-number-input,
-    .ant-input-password .ant-input,
-    .ant-input {
-        border-radius: 0px;
-        padding-top: 14px;
-        padding-bottom: 2px;
-        border-color: var(--color-gray-600);
-
-        &:not(textarea) {
-            height: 35px;
-
-            &.ant-input-lg {
-                height: 40px;
-            }
-
-            &.ant-input-sm {
-                height: 30px;
-            }
-        }
-    }
-
-    .ant-input-password {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        border-radius: 0px;
-        border-color: var(--color-gray-600);
-    }
-
-    .ant-input-number {
-        width: 100%;
-        border-radius: 0px;
-    }
-
-    .ant-select {
-        width: 100%;
-        border-radius: 0px;
-        height: 35px;
-
-        .ant-select-selector {
-            border-radius: 0px;
-        }
-
-        &.ant-select-lg {
-            height: 40px;
-        }
-
-        &.ant-select-sm {
-            height: 30px;
-        }
-
-        .ant-select-selection-item,
-        .ant-select-selection-search-input {
-            padding-top: 14px !important;
-            padding-bottom: 2px !important;
-        }
-    }
-
-    .ant-picker {
-        width: 100%;
-        border-radius: 0px;
-        height: 35px;
-
-        .ant-picker-input {
-            input {
-                padding-top: 14px;
-                padding-bottom: 2px;
-            }
-        }
-
-        &.ant-picker-large {
-            height: 40px;
-        }
-
-        &.ant-picker-small {
-            height: 30px;
-        }
-    }
-
-    &.quill {
-        .ql-editor {
-            min-height: 120px;
-        }
-    }
-
     .label {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: normal;
         position: absolute;
         pointer-events: none;
-        left: 12px;
-        top: 10px;
+        left: 11px;
+        top: 12px;
         transition: 0.2s ease all;
-        color: var(--color-gray-600);
+        color: var(--floating-label);
         z-index: 1;
         line-height: normal;
+        width: calc(100% - 22px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &.float-label {
-            top: 2px;
-            font-size: 11px;
+            width: auto;
+            max-width: calc(100% - 22px) !important;
+            padding: 0 4px;
+            margin-left: -4px;
+            top: -4px;
+            font-size: 12px;
+            background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 1) 45%,
+                rgba(255, 255, 255, 0) 100%
+            );
         }
+    }
 
-        &.large {
+    &.middle,
+    &.medium,
+    &.default {
+        .label {
             top: 12px;
 
             &.float-label {
-                top: 2px;
+                top: -8px;
             }
         }
+    }
 
-        &.small {
-            top: 8px;
+    &.large {
+        .label {
+            top: 14px;
 
             &.float-label {
-                top: 2px;
+                top: -6px;
+            }
+        }
+    }
+
+    &.small {
+        .label {
+            top: 6px;
+
+            &.float-label {
+                top: -8px;
             }
         }
     }

@@ -33,7 +33,7 @@ export default function Sidemenu(props) {
         setOpenKeys(
             menuItems
                 .filter((item) => item.path === pathname)
-                .map((item) => item.path)
+                .map((item) => item.path),
         );
     }, [pathname, menuItems]);
 
@@ -187,7 +187,7 @@ export default function Sidemenu(props) {
                             setOpenKeys(
                                 menuItems
                                     .filter((item) => item.path === pathname)
-                                    .map((item) => item.path)
+                                    .map((item) => item.path),
                             );
                         }, 200);
                     }}

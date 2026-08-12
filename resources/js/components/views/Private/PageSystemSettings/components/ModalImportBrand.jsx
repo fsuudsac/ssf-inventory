@@ -14,7 +14,7 @@ export default function ModalImportBrand(props) {
 
     const { mutate: mutateImportBrand, isLoading: isLoadingCategory } = POST(
         `api/upload_brand`,
-        "brand_list"
+        "brand_list",
     );
 
     const onFinish = (values) => {
@@ -28,7 +28,7 @@ export default function ModalImportBrand(props) {
             data.append(
                 "file_excel",
                 values.file_excel[0].originFileObj,
-                values.file_excel[0].originFileObj.name
+                values.file_excel[0].originFileObj.name,
             );
         }
 
@@ -92,7 +92,6 @@ export default function ModalImportBrand(props) {
                     CANCEL
                 </Button>,
                 <Button
-                    className="btn-main-primary"
                     type="primary"
                     key={2}
                     onClick={(values) => form.submit(values)}

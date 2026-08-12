@@ -166,8 +166,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('email_template_multiple', [App\Http\Controllers\EmailTemplateController::class, 'email_template_multiple']);
     Route::apiResource('email_template', App\Http\Controllers\EmailTemplateController::class);
 
-    Route::get("user_notifications", [App\Http\Controllers\UserNotificationController::class, "index"]);
-    Route::post("update_notification", [App\Http\Controllers\UserNotificationController::class, "update_notification"]);
+    Route::get("user_notifications", [App\Http\Controllers\NotificationUserController::class, "index"]);
+    Route::post("update_notification", [App\Http\Controllers\NotificationUserController::class, "update_notification"]);
 
     Route::post("transfer_multi_archived", [App\Http\Controllers\TransferController::class, "transfer_multi_archived"]);
     Route::post("transfer_change_status", [App\Http\Controllers\TransferController::class, "transfer_change_status"]);
