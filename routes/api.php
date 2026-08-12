@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,9 +27,72 @@ Route::get('report_ledger_customer_pdf', [App\Http\Controllers\InventoryControll
 Route::get('report_inventory_pdf', [App\Http\Controllers\InventoryController::class, 'report_inventory_pdf']);
 
 Route::middleware('auth:api')->group(function () {
+    // Auth
     Route::get('check_auth_status', [App\Http\Controllers\AuthController::class, "check_auth_status"]);
 
-    // UserController
+    // Company
+    Route::post("company_archived", [App\Http\Controllers\CompanyController::class, "company_archived"]);
+    Route::apiResource("company", App\Http\Controllers\CompanyController::class);
+
+    // Credit Term
+    Route::post("credit_term_archived", [App\Http\Controllers\CreditTermController::class, "credit_term_archived"]);
+    Route::apiResource("credit_term", App\Http\Controllers\CreditTermController::class);
+
+    // Dashboard
+    Route::get("dashboard_list", [App\Http\Controllers\DashboardController::class, "dashboard_list"]);
+    Route::get("product_sales_and_purchase", [App\Http\Controllers\DashboardController::class, "product_sales_and_purchase"]);
+
+    // Email Template
+    Route::post('email_template_multiple', [App\Http\Controllers\EmailTemplateController::class, 'email_template_multiple']);
+    Route::apiResource('email_template', App\Http\Controllers\EmailTemplateController::class);
+
+    // EWT Type
+    Route::post("ewt_type_archived", [App\Http\Controllers\EwtTypeController::class, "ewt_type_archived"]);
+    Route::apiResource("ewt_type", App\Http\Controllers\EwtTypeController::class);
+
+    // Graph
+    Route::apiResource("graph_sales_and_inventory", App\Http\Controllers\Graph\GraphSalesAndInventoryController::class);
+    Route::apiResource("graph_product", App\Http\Controllers\Graph\GraphProductController::class);
+    Route::get("graph_revenue", [App\Http\Controllers\Graph\RevenueController::class, "graph_revenue"]);
+
+    // Historical Data
+    Route::apiResource("historical_data", App\Http\Controllers\HistoricalDataController::class);
+
+    // Inventory
+    Route::get('product_inventory', [App\Http\Controllers\InventoryController::class, 'product_inventory']);
+    Route::apiResource("inventory", App\Http\Controllers\InventoryController::class);
+
+    // Module
+    Route::apiResource('module', App\Http\Controllers\ModuleController::class);
+
+    // Notification
+    Route::apiResource("user_notifications", App\Http\Controllers\NotificationUserController::class);
+    Route::post("update_notification", [App\Http\Controllers\NotificationUserController::class, "update_notification"]);
+
+    // Profile Address
+    Route::apiResource('profile_address', App\Http\Controllers\ProfileAddressController::class);
+
+    // School Year
+    Route::apiResource("school_year", App\Http\Controllers\RefSchoolYearController::class);
+
+    // Transfer
+    Route::post("transfer_multi_archived", [App\Http\Controllers\TransferController::class, "transfer_multi_archived"]);
+    Route::post("transfer_change_status", [App\Http\Controllers\TransferController::class, "transfer_change_status"]);
+    Route::apiResource("transfers", App\Http\Controllers\TransferController::class);
+
+    // Video FAQ
+    Route::post("video_faq_info", [App\Http\Controllers\VideoFaqController::class, 'video_faq_info']);
+    Route::apiResource("video_faq", App\Http\Controllers\VideoFaqController::class);
+
+    // Warehouse
+    Route::post('warehouse_change_status', [App\Http\Controllers\WarehouseController::class, "warehouse_change_status"]);
+    Route::post('multiple_archived_warehouse', [App\Http\Controllers\WarehouseController::class, "multiple_archived_warehouse"]);
+    Route::apiResource('warehouse', App\Http\Controllers\WarehouseController::class);
+});
+
+// User
+Route::middleware('auth:api')->group(function () {
+    // User
     Route::get('users_supplier_company', [App\Http\Controllers\UserController::class, "users_supplier_company"]);
     Route::get('users_supplier', [App\Http\Controllers\UserController::class, "users_supplier"]);
     Route::get('users_customer', [App\Http\Controllers\UserController::class, "users_customer"]);
@@ -54,46 +116,21 @@ Route::middleware('auth:api')->group(function () {
     Route::post('user_upload_signature', [App\Http\Controllers\UserController::class, "user_upload_signature"]);
     Route::post('user_profile_picture', [App\Http\Controllers\UserController::class, "user_profile_picture"]);
     Route::apiResource('users', App\Http\Controllers\UserController::class);
-    // END UserController
 
-    // ProfileAddressController
-    Route::apiResource('profile_address', App\Http\Controllers\ProfileAddressController::class);
-    // End ProfileAddressController
-
-
-    // WarehouseController
-    Route::post('warehouse_change_status', [App\Http\Controllers\WarehouseController::class, "warehouse_change_status"]);
-    Route::post('multiple_archived_warehouse', [App\Http\Controllers\WarehouseController::class, "multiple_archived_warehouse"]);
-    Route::apiResource('warehouse', App\Http\Controllers\WarehouseController::class);
-    // END WarehouseController
-
-    // UserPermissionController
+    // User Permission
     Route::post('user_permission_status', [App\Http\Controllers\UserPermissionController::class, 'user_permission_status']);
     Route::apiResource('user_permission', App\Http\Controllers\UserPermissionController::class);
-    // END UserPermissionController
 
-    // ModuleController
-    Route::apiResource('module', App\Http\Controllers\ModuleController::class);
-    // END ModuleController
-
-    // UserRolePermissionController
+    // User Role Permission
     Route::apiResource('user_role_permission', App\Http\Controllers\UserRolePermissionController::class);
-    // END UserRolePermissionController
 
-    // EmailTemplateController
-    Route::post('email_template_multiple', [App\Http\Controllers\EmailTemplateController::class, 'email_template_multiple']);
-    Route::apiResource('email_template', App\Http\Controllers\EmailTemplateController::class);
-    // END EmailTemplateControllerlo ,m
+    // User Payment
+    Route::apiResource('user_payment', App\Http\Controllers\UserPaymentController::class);
+});
+// END User
 
-    // Purchase
-    Route::post('purchase_info', [App\Http\Controllers\PurchaseController::class, 'purchase_info']);
-    Route::post('purchase_archived', [App\Http\Controllers\PurchaseController::class, 'purchase_archived']);
-    Route::get('report_ledger_supplier', [App\Http\Controllers\PurchaseController::class, 'report_ledger_supplier']);
-    Route::apiResource('purchases', App\Http\Controllers\PurchaseController::class);
-
-    // Purchase Details
-    Route::post("purchase_detail_delete", [App\Http\Controllers\PurchaseDetailController::class, "purchase_detail_delete"]);
-
+// Sales
+Route::middleware('auth:api')->group(function () {
     // Sales
     Route::post('sales_archived', [App\Http\Controllers\SalesOrderController::class, 'sales_archived']);
     Route::get('revenue_snap_shot', [App\Http\Controllers\SalesOrderController::class, 'revenue_snap_shot']);
@@ -114,21 +151,15 @@ Route::middleware('auth:api')->group(function () {
     Route::post("sales_order_warranty_delete", [App\Http\Controllers\SalesOrderWarrantyController::class, "sales_order_warranty_delete"]);
     Route::apiResource('sales_order_warranty', App\Http\Controllers\SalesOrderWarrantyController::class);
 
-    // User Payment
-    Route::apiResource('user_payment', App\Http\Controllers\UserPaymentController::class);
+    // Sales Order Return
+    Route::post("sales_return_archived", [App\Http\Controllers\SalesOrderReturnController::class, 'sales_return_archived']);
+    Route::apiResource("sales_order_return", App\Http\Controllers\SalesOrderReturnController::class);
+});
+// END Sales
 
-    // Product Details
-    Route::post("product_detail_price_archived", [App\Http\Controllers\ProductDetailPriceController::class, "product_detail_price_archived"]);
-    Route::apiResource("product_detail_prices", App\Http\Controllers\ProductDetailPriceController::class);
-
-    // Product Details
-    Route::post("product_detail_delete", [App\Http\Controllers\ProductDetailController::class, "product_detail_delete"]);
-    Route::post("product_detail_preview", [App\Http\Controllers\ProductDetailController::class, "product_detail_preview"]);
-    Route::get("product_detail_generate_qr_code", [App\Http\Controllers\ProductDetailController::class, 'product_detail_generate_qr_code']);
-    Route::apiResource("product_details", App\Http\Controllers\ProductDetailController::class);
-
+// Product
+Route::middleware('auth:api')->group(function () {
     // Product
-
     Route::get("product_generate_qr_code", [App\Http\Controllers\ProductController::class, "product_generate_qr_code"]);
     Route::get("product_graph", [App\Http\Controllers\ProductController::class, "product_graph"]);
     Route::get("product_info", [App\Http\Controllers\ProductController::class, "product_info"]);
@@ -138,59 +169,60 @@ Route::middleware('auth:api')->group(function () {
     Route::delete("product_attachment/{id}", [App\Http\Controllers\ProductController::class, "product_attachment_delete"]);
     Route::apiResource("products", App\Http\Controllers\ProductController::class);
 
-    // Report
+    // Product Detail Prices
+    Route::post("product_detail_price_archived", [App\Http\Controllers\ProductDetailPriceController::class, "product_detail_price_archived"]);
+    Route::apiResource("product_detail_prices", App\Http\Controllers\ProductDetailPriceController::class);
 
-    Route::get('product_inventory', [App\Http\Controllers\InventoryController::class, 'product_inventory']);
-    Route::apiResource("inventory", App\Http\Controllers\InventoryController::class);
+    // Product Details
+    Route::post("product_detail_delete", [App\Http\Controllers\ProductDetailController::class, "product_detail_delete"]);
+    Route::post("product_detail_preview", [App\Http\Controllers\ProductDetailController::class, "product_detail_preview"]);
+    Route::get("product_detail_generate_qr_code", [App\Http\Controllers\ProductDetailController::class, 'product_detail_generate_qr_code']);
+    Route::apiResource("product_details", App\Http\Controllers\ProductDetailController::class);
 
-    // Dashboard
-    Route::get("dashboard_list", [App\Http\Controllers\DashboardController::class, "dashboard_list"]);
+    // Product Category
+    Route::post("product_category_archived", [App\Http\Controllers\ProductCategoryController::class, "product_category_archived"]);
+    Route::apiResource("product_category", App\Http\Controllers\ProductCategoryController::class);
 
-    // Admin Setting
-    Route::post("credit_term_archived", [App\Http\Controllers\CreditTermController::class, "credit_term_archived"]);
-    Route::post("ewt_type_archived", [App\Http\Controllers\EwtTypeController::class, "ewt_type_archived"]);
-    Route::post("company_archived", [App\Http\Controllers\CompanyController::class, "company_archived"]);
+    // Product Type
+    Route::post("product_type_archived", [App\Http\Controllers\ProductTypeController::class, "product_type_archived"]);
+    Route::apiResource("product_type", App\Http\Controllers\ProductTypeController::class);
+
+    // Product Size
     Route::post("product_size_archived", [App\Http\Controllers\ProductSizeController::class, "product_size_archived"]);
-
-    Route::apiResource("credit_term", App\Http\Controllers\CreditTermController::class);
-    Route::apiResource("ewt_type", App\Http\Controllers\EwtTypeController::class);
-    Route::apiResource("company", App\Http\Controllers\CompanyController::class);
     Route::apiResource("product_size", App\Http\Controllers\ProductSizeController::class);
+});
+// END Product
 
-    // added program type, used in departments (graduate, undergraduate, etc)
-    Route::post('department_type_archived', [\App\Http\Controllers\RefDepartmentTypeController::class, 'department_type_archived']);
-    Route::apiResource('department_type', \App\Http\Controllers\RefDepartmentTypeController::class);
+// Purchase
+Route::middleware('auth:api')->group(function () {
+    // Purchase
+    Route::post('purchase_info', [App\Http\Controllers\PurchaseController::class, 'purchase_info']);
+    Route::post('purchase_archived', [App\Http\Controllers\PurchaseController::class, 'purchase_archived']);
+    Route::get('report_ledger_supplier', [App\Http\Controllers\PurchaseController::class, 'report_ledger_supplier']);
+    Route::apiResource('purchases', App\Http\Controllers\PurchaseController::class);
 
+    // Purchase Details
+    Route::post("purchase_detail_delete", [App\Http\Controllers\PurchaseDetailController::class, "purchase_detail_delete"]);
+
+    // Purchase Return
+    Route::post("purchase_return_archived", [App\Http\Controllers\PurchaseReturnController::class, 'purchase_return_archived']);
+    Route::apiResource("purchase_return", App\Http\Controllers\PurchaseReturnController::class);
+});
+// END Purchase
+
+// Department
+Route::middleware('auth:api')->group(function () {
+    // Department
     Route::post('department_archived', [\App\Http\Controllers\RefDepartmentController::class, 'department_archived']);
     Route::get('department_dropdown', [\App\Http\Controllers\RefDepartmentController::class, 'department_dropdown']);
     Route::get('get_department_dropdown', [\App\Http\Controllers\RefDepartmentController::class, 'get_department_dropdown']);
     Route::apiResource('department', \App\Http\Controllers\RefDepartmentController::class);
 
-    Route::post("product_category_archived", [App\Http\Controllers\ProductCategoryController::class, "product_category_archived"]);
-    Route::apiResource("product_category", App\Http\Controllers\ProductCategoryController::class);
+    // Department Type
+    Route::post('department_type_archived', [\App\Http\Controllers\RefDepartmentTypeController::class, 'department_type_archived']);
+    Route::apiResource('department_type', \App\Http\Controllers\RefDepartmentTypeController::class);
 
-    Route::post("product_type_archived", [App\Http\Controllers\ProductTypeController::class, "product_type_archived"]);
-    Route::apiResource("product_type", App\Http\Controllers\ProductTypeController::class);
-
-    Route::apiResource("graph_sales_and_inventory", App\Http\Controllers\Graph\GraphSalesAndInventoryController::class);
-    Route::apiResource("graph_product", App\Http\Controllers\Graph\GraphProductController::class);
-    Route::get("graph_revenue", [App\Http\Controllers\Graph\RevenueController::class, "graph_revenue"]);
-
-    Route::apiResource("user_notifications", App\Http\Controllers\NotificationUserController::class);
-    Route::post("update_notification", [App\Http\Controllers\NotificationUserController::class, "update_notification"]);
-
-    Route::get("product_sales_and_purchase", [App\Http\Controllers\DashboardController::class, "product_sales_and_purchase"]);
-
-    Route::post("transfer_multi_archived", [App\Http\Controllers\TransferController::class, "transfer_multi_archived"]);
-    Route::post("transfer_change_status", [App\Http\Controllers\TransferController::class, "transfer_change_status"]);
-    Route::apiResource("transfers", App\Http\Controllers\TransferController::class);
-
-    Route::post("purchase_return_archived", [App\Http\Controllers\PurchaseReturnController::class, 'purchase_return_archived']);
-    Route::apiResource("purchase_return", App\Http\Controllers\PurchaseReturnController::class);
-
-    Route::post("sales_return_archived", [App\Http\Controllers\SalesOrderReturnController::class, 'sales_return_archived']);
-    Route::apiResource("sales_order_return", App\Http\Controllers\SalesOrderReturnController::class);
-
-    Route::post("video_faq_info", [App\Http\Controllers\VideoFaqController::class, 'video_faq_info']);
-    Route::apiResource("video_faq", App\Http\Controllers\VideoFaqController::class);
+    // Department Allocation
+    Route::apiResource('department_allocation', \App\Http\Controllers\RefDepartmentAllocationController::class);
 });
+// END Department
