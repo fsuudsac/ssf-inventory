@@ -530,7 +530,7 @@ abstract class Controller
 
     public function createUserPermission($user_id, $role)
     {
-        $dataUserRolePermission = UserRolePermission::where("role", $role)->get();
+        $dataUserRolePermission = UserRolePermission::where("user_role_id", $role)->get();
 
         foreach ($dataUserRolePermission as $d) {
             UserPermission::updateOrCreate([

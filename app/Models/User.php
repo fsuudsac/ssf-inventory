@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Models\UserRole;
 
 class User extends Authenticatable
 {
@@ -31,7 +32,7 @@ class User extends Authenticatable
         'gender',
         'contact_no',
         'address',
-        'role',
+        'user_role_id',
         'status',
         'one_time_update_info',
         'google2fa_enable',
@@ -64,6 +65,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function user_role()
+    {
+        return $this->belongsTo(UserRole::class, 'user_role_id');
     }
 
     public function profile()

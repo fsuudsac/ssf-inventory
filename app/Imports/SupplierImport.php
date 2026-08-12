@@ -157,7 +157,7 @@ class SupplierImport implements ToCollection
                     $userCreate = User::create([
                         "username" => $SUPPLIER,
                         "email" => strtolower(preg_replace('/[.\-\/,&\s]/', '', $SUPPLIER)) . "@gmail.com",
-                        "role" => "Supplier",
+                        "user_role_id" => "Supplier",
                     ]);
 
                     if ($userCreate) {

@@ -38,6 +38,8 @@ export default function UserFormCollapseItemPersonalInfo() {
         `api/company`,
         "company_dropdown",
         (res) => {
+            console.log("res:: ", res);
+
             if (res.data && res.data.length > 0) {
                 setDataCompany(res.data);
             }
@@ -107,14 +109,20 @@ export default function UserFormCollapseItemPersonalInfo() {
                                 disabled={formDisabled}
                                 allowClear
                                 required
-                                options={dataCompany
-                                    .map((item) => ({
-                                        value: item.id,
-                                        label: item.company,
-                                    }))
-                                    .sort((a, b) =>
-                                        a.label.localeCompare(b.label),
-                                    )}
+                                options={
+                                    dataCompany && dataCompany.length > 0
+                                        ? dataCompany
+                                              .map((item) => ({
+                                                  value: item.id,
+                                                  label: item.company,
+                                              }))
+                                              .sort((a, b) =>
+                                                  a.label.localeCompare(
+                                                      b.label,
+                                                  ),
+                                              )
+                                        : []
+                                }
                                 dropdownRender={(menu) => (
                                     <>
                                         {menu}

@@ -250,14 +250,20 @@ export default function ModalFormCustomer() {
                                 label="Company/ Department"
                                 placeholder="Company/ Department"
                                 allowClear
-                                options={dataCompany
-                                    .map((item) => ({
-                                        value: item.id,
-                                        label: item.company,
-                                    }))
-                                    .sort((a, b) =>
-                                        a.label.localeCompare(b.label),
-                                    )}
+                                options={
+                                    dataCompany && dataCompany.length > 0
+                                        ? dataCompany
+                                              .map((item) => ({
+                                                  value: item.id,
+                                                  label: item.company,
+                                              }))
+                                              .sort((a, b) =>
+                                                  a.label.localeCompare(
+                                                      b.label,
+                                                  ),
+                                              )
+                                        : []
+                                }
                                 dropdownRender={(menu) => (
                                     <>
                                         {menu}

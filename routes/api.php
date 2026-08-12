@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 // Your API routes go here
 Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);
@@ -26,6 +25,7 @@ Route::get('report_ledger_supplier_pdf', [App\Http\Controllers\InventoryControll
 Route::get('report_ledger_customer_pdf', [App\Http\Controllers\InventoryController::class, 'report_ledger_customer_pdf']);
 Route::get('report_inventory_pdf', [App\Http\Controllers\InventoryController::class, 'report_inventory_pdf']);
 
+// User and Profile
 Route::middleware('auth:api')->group(function () {
     // Auth
     Route::get('check_auth_status', [App\Http\Controllers\AuthController::class, "check_auth_status"]);
@@ -95,20 +95,14 @@ Route::middleware('auth:api')->group(function () {
     // User
     Route::get('users_supplier_company', [App\Http\Controllers\UserController::class, "users_supplier_company"]);
     Route::get('users_supplier', [App\Http\Controllers\UserController::class, "users_supplier"]);
-    Route::get('users_customer', [App\Http\Controllers\UserController::class, "users_customer"]);
-    Route::get('user_profile_info', [App\Http\Controllers\UserController::class, "user_profile_info"]);
-    Route::get('existing_username', [App\Http\Controllers\UserController::class, "existing_username"]);
-
     Route::post('upload_suppliers', [App\Http\Controllers\UserController::class, 'upload_suppliers']);
     Route::post('supplier', [App\Http\Controllers\UserController::class, 'supplier']);
-    Route::post('customer', [App\Http\Controllers\UserController::class, 'customer']);
     Route::post('upload_customers', [App\Http\Controllers\UserController::class, 'upload_customers']);
 
     Route::post('multiple_archived_supplier', [App\Http\Controllers\UserController::class, "multiple_archived_supplier"]);
     Route::post('multiple_archived_customer', [App\Http\Controllers\UserController::class, "multiple_archived_customer"]);
 
     Route::post('user_profile_info_update', [App\Http\Controllers\UserController::class, "user_profile_info_update"]);
-    Route::post('user_update_role', [App\Http\Controllers\UserController::class, "user_update_role"]);
     Route::post('user_archived', [App\Http\Controllers\UserController::class, "user_archived"]);
     Route::post('users_update_email', [App\Http\Controllers\UserController::class, "users_update_email"]);
     Route::post('users_update_password', [App\Http\Controllers\UserController::class, "users_update_password"]);
@@ -117,17 +111,22 @@ Route::middleware('auth:api')->group(function () {
     Route::post('user_profile_picture', [App\Http\Controllers\UserController::class, "user_profile_picture"]);
     Route::apiResource('users', App\Http\Controllers\UserController::class);
 
-    // User Permission
-    Route::post('user_permission_status', [App\Http\Controllers\UserPermissionController::class, 'user_permission_status']);
-    Route::apiResource('user_permission', App\Http\Controllers\UserPermissionController::class);
-
-    // User Role Permission
-    Route::apiResource('user_role_permission', App\Http\Controllers\UserRolePermissionController::class);
+    // User Role
+    Route::apiResource('user_role', App\Http\Controllers\UserRoleController::class);
 
     // User Payment
     Route::apiResource('user_payment', App\Http\Controllers\UserPaymentController::class);
 });
 // END User
+
+// Permission
+// User Permission
+Route::post('user_permission_status', [App\Http\Controllers\UserPermissionController::class, 'user_permission_status']);
+Route::apiResource('user_permission', App\Http\Controllers\UserPermissionController::class);
+
+// User Role Permission
+Route::apiResource('user_role_permission', App\Http\Controllers\UserRolePermissionController::class);
+// END Permission
 
 // Sales
 Route::middleware('auth:api')->group(function () {
@@ -143,12 +142,12 @@ Route::middleware('auth:api')->group(function () {
 
     // Sales Order Details
     Route::post("sale_detail_delete", [App\Http\Controllers\SalesOrderDetailController::class, "sale_detail_delete"]);
-    Route::post("sales_order_detail_archived", [App\Http\Controllers\SalesOrderDetailController::class, "sales_order_detail_archived"]);
     Route::apiResource('sales_order_details', App\Http\Controllers\SalesOrderDetailController::class);
 
+    Route::post("sales_return_archived", [App\Http\Controllers\SalesOrderReturnController::class, 'sales_return_archived']);
+    Route::apiResource("sales_order_return", App\Http\Controllers\SalesOrderReturnController::class);
+
     // Sales Order Warranty
-    Route::post("sales_order_warranty_archived", [App\Http\Controllers\SalesOrderWarrantyController::class, "sales_order_warranty_archived"]);
-    Route::post("sales_order_warranty_delete", [App\Http\Controllers\SalesOrderWarrantyController::class, "sales_order_warranty_delete"]);
     Route::apiResource('sales_order_warranty', App\Http\Controllers\SalesOrderWarrantyController::class);
 
     // Sales Order Return
@@ -214,8 +213,6 @@ Route::middleware('auth:api')->group(function () {
 Route::middleware('auth:api')->group(function () {
     // Department
     Route::post('department_archived', [\App\Http\Controllers\RefDepartmentController::class, 'department_archived']);
-    Route::get('department_dropdown', [\App\Http\Controllers\RefDepartmentController::class, 'department_dropdown']);
-    Route::get('get_department_dropdown', [\App\Http\Controllers\RefDepartmentController::class, 'get_department_dropdown']);
     Route::apiResource('department', \App\Http\Controllers\RefDepartmentController::class);
 
     // Department Type

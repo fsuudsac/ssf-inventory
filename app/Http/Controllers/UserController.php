@@ -55,7 +55,7 @@ class UserController extends Controller
         if ($request->search) {
             $query->where(function ($query) use ($request, $fullname, $gender, $contact_no, $taxpayer_identification, $company) {
                 $query->orWhere("email", 'LIKE', "%$request->search%")
-                    ->orWhere("role", 'LIKE', "%$request->search%")
+                    ->orWhere("user_role_id", 'LIKE', "%$request->search%")
                     ->orWhere("status", 'LIKE', "%$request->search%")
                     ->orWhere(DB::raw("$fullname"), 'LIKE', "%$request->search%")
                     ->orWhere(DB::raw("$gender"), 'LIKE', "%$request->search%")
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         if ($request->has('roles')) {
             $roles = explode(",", $request->roles);
-            $query->whereIn("role", $roles);
+            $query->whereIn("user_role_id", $roles);
         }
 
         if ($request->status == "Active") {
@@ -122,12 +122,12 @@ class UserController extends Controller
 
         $request->validate([
             "firstname" => "required",
-            "role"      => "required",
+            "user_role_id" => "required",
         ]);
 
         $email = null;
 
-        if (!in_array($request->role, ['Customer', 'Supplier'])) {
+        if (!in_array($request->user_role_id, ['Customer', 'Supplier'])) {
             $email = $request->email;
 
             $request->validate([
@@ -167,7 +167,7 @@ class UserController extends Controller
                 $data = [
                     "username" => $username,
                     "email"    => $email,
-                    "role"     => $request->role,
+                    "user_role_id" => $request->user_role_id,
                 ];
 
                 if ($request->status) {
@@ -1138,7 +1138,7 @@ class UserController extends Controller
                 $data = [
                     "username" => $username,
                     "email"    => $request->email,
-                    "role"     => $request->role ?? "Customer",
+                    "user_role_id" => $request->role ?? "Customer",
                 ];
 
                 if ($request->password) {
@@ -1266,7 +1266,7 @@ class UserController extends Controller
                     $data["created_by"]     = Auth::id();
                     $data["remember_token"] = Str::random(10);
                     $data["status"]         = "Active";
-                    $data["role"]           = "Supplier";
+                    $data["user_role_id"]   = "Supplier";
                 }
 
                 $dataUser = User::updateOrCreate(["id" => $request->id], $data);
@@ -1341,7 +1341,7 @@ class UserController extends Controller
                     "profile_addresses" => fn($q) => $q->select("*"),
                 ])
             ])
-            ->where("role", "Customer")
+            ->where("user_role_id", "Customer")
             ->orderBy(DB::raw("$fullname"), "asc")
             ->get();
 
@@ -1360,7 +1360,7 @@ class UserController extends Controller
 
         $data = User::select(["*", DB::raw("$fullname fullname")])
             ->with(["profile.profile_addresses"])
-            ->where("role", "Supplier")
+            ->where("user_role_id", "Supplier")
             ->get();
 
         return response()->json(["success" => true, "data" => $data], 200);
@@ -1368,7 +1368,7 @@ class UserController extends Controller
 
     public function users_supplier_company()
     {
-        $data = User::where("role", "Supplier")->get();
+        $data = User::where("user_role_id", "Supplier")->get();
 
         $profiles = Profile::whereIn("user_id", $data->pluck("id"))->get();
 

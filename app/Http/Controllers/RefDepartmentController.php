@@ -20,9 +20,10 @@ class RefDepartmentController extends Controller
             FROM profile_departments
             JOIN profiles ON profiles.id = profile_departments.profile_id
             JOIN users ON users.id = profiles.user_id
+            JOIN user_roles ON user_roles.id = users.user_role_id
             WHERE profile_departments.department_id = ref_departments.id
               AND profile_departments.status = 1
-              AND users.role IN ('Admin','Staff','Faculty/Dean','Faculty/Chairman','Faculty','Faculty/Staff','Student Assistant'))";
+              AND user_roles.role IN ('Admin','Staff','Faculty/Dean','Faculty/Chairman','Faculty','Faculty/Staff','Student Assistant'))";
 
         $data = RefDepartment::select([
             "*",

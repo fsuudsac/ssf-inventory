@@ -49,6 +49,7 @@ import PageUserPermissions from "../views/private/PageUserPermissions/PageUserPe
 import PageReportSalesRevenue from "../views/private/PageReport/PageReportSalesRevenue/PageReportSalesRevenue";
 import PageReport from "../views/private/PageReport/PageReport";
 import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudgetAllocation";
+import PagePermission from "../views/Private/PagePermission/PagePermission";
 
 export default function RouteList() {
     return (
@@ -917,7 +918,6 @@ export default function RouteList() {
             {/* end reports */}
 
             {/* admin settings */}
-
             <Route
                 path="/admin-setting"
                 element={
@@ -944,18 +944,19 @@ export default function RouteList() {
                 path="/user-permissions"
                 element={
                     <PrivateRoute
-                        moduleCode="page_user_permissions"
-                        moduleName="User Permissions"
+                        moduleCode="page_permissions"
+                        moduleName=" Permissions"
                         title="Permissions"
                         subtitle="USER"
-                        pageId="PageUserPermissions"
+                        pageId="PagePermission"
                         pageHeaderIcon={faUserShield}
                         breadcrumb={[
                             {
-                                name: "User Permissions",
+                                name: "Permissions",
                             },
                         ]}
-                        component={PageUserPermissions}
+                        // component={PageUserPermissions}
+                        component={PagePermission}
                     />
                 }
             />
