@@ -1,3 +1,5 @@
+import { isValidPhoneNumber } from "react-phone-number-input";
+
 const validateRules = {
     required: (message) => ({
         required: true,
@@ -13,7 +15,7 @@ const validateRules = {
                 return Promise.resolve();
             }
             return Promise.reject(
-                new Error("The two emails that you entered do not match!")
+                new Error("The two emails that you entered do not match!"),
             );
         },
     }),
@@ -21,9 +23,20 @@ const validateRules = {
         pattern: /^[0-9\b]+$/,
         message: "Invalid Number",
     },
+    // phone: {
+    //     pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+    //     message: "Invalid Phone Number",
+    // },
+    /** E.164 / international strings from `react-phone-number-input` (`FloatInputPhone`). */
     phone: {
-        pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
-        message: "Invalid Phone Number",
+        validator(_, value) {
+            if (value === undefined || value === null || value === "") {
+                return Promise.resolve();
+            }
+            return isValidPhoneNumber(value)
+                ? Promise.resolve()
+                : Promise.reject(new Error("Invalid Phone Number"));
+        },
     },
     cell: {
         pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
@@ -44,7 +57,7 @@ const validateRules = {
                 return Promise.resolve();
             }
             return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
+                new Error("The two passwords that you entered do not match!"),
             );
         },
     }),
@@ -54,7 +67,7 @@ const validateRules = {
                 !value
                     .toLowerCase()
                     .match(
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     )
             ) {
                 return Promise.resolve();
@@ -64,7 +77,7 @@ const validateRules = {
     }),
     assessment_pattern: {
         pattern: new RegExp(
-            /(^[E][F]$)|(^[A][I]$)|(^[A][R][T]$)|^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/
+            /(^[E][F]$)|(^[A][I]$)|(^[A][R][T]$)|^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/,
         ),
         message: "Invalid value",
     },

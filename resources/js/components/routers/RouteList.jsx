@@ -50,6 +50,8 @@ import PageReportSalesRevenue from "../views/private/PageReport/PageReportSalesR
 import PageReport from "../views/private/PageReport/PageReport";
 import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudgetAllocation";
 import PagePermission from "../views/Private/PagePermission/PagePermission";
+import DepartmentBudgetAllocation from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment";
+import PageBudgetAllocationDepartment from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment";
 
 export default function RouteList() {
     return (
@@ -131,6 +133,28 @@ export default function RouteList() {
                             },
                         ]}
                         component={PageBudgetAllocation}
+                    />
+                }
+            />
+            <Route
+                path="/budget-allocation/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_budget_allocation"
+                        moduleName="Budget Allocation / Department"
+                        title="DEPARTMENT"
+                        pageId="PageBudgetAllocation"
+                        pageHeaderIcon={faMoneyBillWave}
+                        breadcrumb={[
+                            {
+                                name: "Budget Allocation",
+                                link: "/budget-allocation",
+                            },
+                            {
+                                name: "Department",
+                            },
+                        ]}
+                        component={PageBudgetAllocationDepartment}
                     />
                 }
             />

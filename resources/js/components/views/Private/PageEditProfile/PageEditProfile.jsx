@@ -413,9 +413,21 @@ export default function PageEditProfile() {
                                         >
                                             <Form.Item
                                                 name="contact_no"
-                                                rules={[validateRules.cell]}
+                                                rules={[validateRules.phone]}
                                             >
-                                                <FloatInputMask
+                                                <FloatInputPhone
+                                                    label="Contact Number"
+                                                    placeholder="Contact Number"
+                                                    international={true}
+                                                    defaultCountry="PH"
+                                                    onChange={(value) => {
+                                                        handleDebounce({
+                                                            field: "contact_no",
+                                                            value: value || "",
+                                                        });
+                                                    }}
+                                                />
+                                                {/* <FloatInputMask
                                                     label="Contact No."
                                                     placeholder="Contact No."
                                                     maskLabel="contact_no"
@@ -432,7 +444,7 @@ export default function PageEditProfile() {
                                                                 .value,
                                                         });
                                                     }}
-                                                />
+                                                /> */}
                                             </Form.Item>
                                         </Col>
                                     </Row>

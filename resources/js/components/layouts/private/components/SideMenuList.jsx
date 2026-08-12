@@ -52,12 +52,12 @@ export const adminSideMenu = [
         icon: <FontAwesomeIcon icon={faHome} />,
         moduleCode: "page_dashboard",
     },
-    // {
-    //     title: "Budget Allocation",
-    //     path: "/budget-allocation",
-    //     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
-    //     moduleCode: "page_budget_allocation",
-    // },
+    {
+        title: "Budget Allocation",
+        path: "/budget-allocation",
+        icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
+        moduleCode: "page_budget_allocation",
+    },
     {
         title: "Purchase Order",
         path: "/purchase-order",

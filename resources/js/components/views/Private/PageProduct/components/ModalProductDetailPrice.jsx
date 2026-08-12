@@ -123,7 +123,7 @@ export default function ModalProductDetailPrice(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
+                    type="default"
                     key={1}
                     onClick={() => {
                         form.resetFields();
@@ -137,7 +137,6 @@ export default function ModalProductDetailPrice(props) {
                     CLOSE
                 </Button>,
                 <Button
-                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}

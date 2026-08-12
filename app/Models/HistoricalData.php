@@ -16,4 +16,9 @@ class HistoricalData extends Model
     {
         return $this->morphTo('historicalable');
     }
+
+    public function scopeFilter($query, $request)
+    {
+        return $query;
+    }
 }

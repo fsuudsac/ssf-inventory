@@ -29,8 +29,20 @@ export default function UserFormCollapseItemPrimaryContact() {
             </Col>
 
             <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                <Form.Item name="contact_no">
-                    <FloatInputMask
+                <Form.Item name="contact_no" rules={[validateRules.phone]}>
+                    <FloatInputPhone
+                        label="Contact Number"
+                        placeholder="Contact Number"
+                        international={true}
+                        defaultCountry="PH"
+                        onChange={(value) => {
+                            handleDebounce({
+                                field: "contact_no",
+                                value: value || "",
+                            });
+                        }}
+                    />
+                    {/* <FloatInputMask
                         label="Contact Number"
                         placeholder="Contact Number"
                         maskLabel="contact_no"
@@ -41,7 +53,7 @@ export default function UserFormCollapseItemPrimaryContact() {
                                 value: e.target.value,
                             });
                         }}
-                    />
+                    /> */}
                 </Form.Item>
             </Col>
         </Row>

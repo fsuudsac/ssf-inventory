@@ -329,13 +329,20 @@ export default function ModalFormSupplier(props) {
                                 validateRules.required(),
                             ]}
                         >
-                            <FloatInputMask
+                            <FloatInputPhone
+                                label="Contact Number"
+                                placeholder="Contact Number"
+                                international={true}
+                                defaultCountry="PH"
+                                required
+                            />
+                            {/* <FloatInputMask
                                 label="Contact No."
                                 placeholder="Contact No."
                                 maskLabel="contact_no"
                                 maskType="(+63) 999 999 9999"
                                 required
-                            />
+                            /> */}
                         </Form.Item>
                     </Col>
 

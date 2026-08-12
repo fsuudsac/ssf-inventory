@@ -120,12 +120,14 @@ Route::middleware('auth:api')->group(function () {
 // END User
 
 // Permission
-// User Permission
-Route::post('user_permission_status', [App\Http\Controllers\UserPermissionController::class, 'user_permission_status']);
-Route::apiResource('user_permission', App\Http\Controllers\UserPermissionController::class);
+Route::middleware('auth:api')->group(function () {
+    // User Permission
+    Route::post('user_permission_status', [App\Http\Controllers\UserPermissionController::class, 'user_permission_status']);
+    Route::apiResource('user_permission', App\Http\Controllers\UserPermissionController::class);
 
-// User Role Permission
-Route::apiResource('user_role_permission', App\Http\Controllers\UserRolePermissionController::class);
+    // User Role Permission
+    Route::apiResource('user_role_permission', App\Http\Controllers\UserRolePermissionController::class);
+});
 // END Permission
 
 // Sales
@@ -168,15 +170,15 @@ Route::middleware('auth:api')->group(function () {
     Route::delete("product_attachment/{id}", [App\Http\Controllers\ProductController::class, "product_attachment_delete"]);
     Route::apiResource("products", App\Http\Controllers\ProductController::class);
 
-    // Product Detail Prices
-    Route::post("product_detail_price_archived", [App\Http\Controllers\ProductDetailPriceController::class, "product_detail_price_archived"]);
-    Route::apiResource("product_detail_prices", App\Http\Controllers\ProductDetailPriceController::class);
-
     // Product Details
     Route::post("product_detail_delete", [App\Http\Controllers\ProductDetailController::class, "product_detail_delete"]);
     Route::post("product_detail_preview", [App\Http\Controllers\ProductDetailController::class, "product_detail_preview"]);
     Route::get("product_detail_generate_qr_code", [App\Http\Controllers\ProductDetailController::class, 'product_detail_generate_qr_code']);
     Route::apiResource("product_details", App\Http\Controllers\ProductDetailController::class);
+
+    // Product Detail Prices
+    Route::post("product_detail_price_archived", [App\Http\Controllers\ProductDetailPriceController::class, "product_detail_price_archived"]);
+    Route::apiResource("product_detail_prices", App\Http\Controllers\ProductDetailPriceController::class);
 
     // Product Category
     Route::post("product_category_archived", [App\Http\Controllers\ProductCategoryController::class, "product_category_archived"]);

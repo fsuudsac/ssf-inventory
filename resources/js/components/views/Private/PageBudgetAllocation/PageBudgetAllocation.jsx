@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +10,10 @@ import {
 import CustomTabs from "../../../providers/CustomTabs";
 import useWindowDimensions from "../../../providers/useWindowDimensions";
 import HistoricalDataContent from "../PageHistoricalData/components/HistoricalDataContent";
+import PageBudgetAllocationContent from "./components/PageBudgetAllocationContent";
 
 export default function PageBudgetAllocation() {
+    const location = useLocation();
     const { width } = useWindowDimensions();
 
     const [activeTab, setActiveTab] = useState("0");
@@ -21,7 +24,12 @@ export default function PageBudgetAllocation() {
             label: "Budget Allocation",
             icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
             iconSize: 23,
-            // children:
+            children: (
+                <PageBudgetAllocationContent
+                    width={width}
+                    location={location}
+                />
+            ),
         },
         {
             key: "1",

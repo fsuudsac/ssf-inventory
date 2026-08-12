@@ -21,6 +21,7 @@ import FloatInputMask from "../../../../providers/FloatInputMask";
 import FloatTextArea from "../../../../providers/FloatTextArea";
 import notificationErrors from "../../../../providers/notificationErrors";
 import PageUserFormContext from "./PageUserFormContext";
+import FloatInputPhone from "../../../../providers/FloatInputPhone";
 
 export default function UserFormCollapseItemPersonalInfo() {
     const { form, handleDebounce, formDisabled, location } =
@@ -372,7 +373,21 @@ export default function UserFormCollapseItemPersonalInfo() {
                                 validateRules.required(),
                             ]}
                         >
-                            <FloatInputMask
+                            <FloatInputPhone
+                                label="Contact Number"
+                                placeholder="Contact Number"
+                                international={true}
+                                defaultCountry="PH"
+                                required
+                                disabled={formDisabled}
+                                onChange={(value) => {
+                                    handleDebounce({
+                                        field: "contact_no",
+                                        value: value || "",
+                                    });
+                                }}
+                            />
+                            {/* <FloatInputMask
                                 label="Contact Number"
                                 placeholder="Contact Number"
                                 maskLabel="contact_no"
@@ -385,7 +400,7 @@ export default function UserFormCollapseItemPersonalInfo() {
                                         value: e.target.value,
                                     });
                                 }}
-                            />
+                            /> */}
                         </Form.Item>
                     </Col>
 

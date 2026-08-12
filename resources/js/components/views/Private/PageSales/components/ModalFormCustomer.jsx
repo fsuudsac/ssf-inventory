@@ -139,7 +139,7 @@ export default function ModalFormCustomer() {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
+                    type="default"
                     key={1}
                     onClick={() => {
                         setToggleModalFormCustomer({
@@ -153,7 +153,6 @@ export default function ModalFormCustomer() {
                     CANCEL
                 </Button>,
                 <Button
-                    type="primary"
                     type="primary"
                     key={2}
                     onClick={() => form.submit()}
@@ -343,12 +342,18 @@ export default function ModalFormCustomer() {
                             name="contact_no"
                             rules={[validateRules.phone]}
                         >
-                            <FloatInputMask
+                            <FloatInputPhone
+                                label="Contact Number"
+                                placeholder="Contact Number"
+                                international={true}
+                                defaultCountry="PH"
+                            />
+                            {/* <FloatInputMask
                                 label="Contact No."
                                 placeholder="Contact No."
                                 maskLabel="contact_no"
                                 maskType="(+63) 999 999 9999"
-                            />
+                            /> */}
                         </Form.Item>
                     </Col>
 
