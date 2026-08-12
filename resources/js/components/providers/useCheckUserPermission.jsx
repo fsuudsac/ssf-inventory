@@ -148,7 +148,8 @@ export default function useCheckUserPermission(moduleName, moduleCode) {
                                 },
                             );
                         } else {
-                            navigate("/request-permission");
+                            // navigate("/request-permission");
+                            navigate("/user-permissions");
                         }
                     } else {
                         navigate("/");
