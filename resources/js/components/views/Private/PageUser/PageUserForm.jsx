@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Row, Col, Button, Form, Collapse, notification, Flex } from "antd";
+import { Row, Col, Button, Form, notification, Flex } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faAngleDown,
-    faAngleUp,
     faArrowLeft,
     faCamera,
     faUserShield,
@@ -17,7 +15,6 @@ import notificationErrors from "../../../providers/notificationErrors";
 import ModalUploadProfilePicture from "./components/ModalUploadProfilePicture";
 import UserFormCollapseItemAccountInfo from "./components/UserFormCollapseItemAccountInfo";
 import UserFormCollapseItemPersonalInfo from "./components/UserFormCollapseItemPersonalInfo";
-import UserFormCollapseItemPrimaryContact from "./components/UserFormCollapseItemPrimaryContact";
 import UserFormCollapseItemAddressInfo from "./components/UserFormCollapseItemAddressInfo";
 import isEmptyObject from "../../../providers/isEmptyObject";
 import PageUserFormContext from "./components/PageUserFormContext";
@@ -30,6 +27,8 @@ export default function PageUserForm() {
     const params = useParams();
     const { width } = useWindowDimensions();
 
+    const [roleType, setRoleType] = useState(null);
+
     const [form] = Form.useForm();
     const [formDisabled, setFormDisabled] = useState(true);
     const [collapseActiveKey, setCollapseActiveKey] = useState([
@@ -37,7 +36,6 @@ export default function PageUserForm() {
         "1",
         "2",
         "3",
-        "4",
     ]);
 
     const [
@@ -58,7 +56,7 @@ export default function PageUserForm() {
             if (res.data) {
                 let data = res.data;
 
-                console.log("data user: ", data);
+                console.log("data:::: ", data);
 
                 if (data && data.attachments && data.attachments.length > 0) {
                     let profileAttachments = data.attachments.filter(
@@ -78,28 +76,25 @@ export default function PageUserForm() {
 
                 let profile = data.profile;
 
+                const user = data.users?.find((u) => u.id === profile.user_id);
+                const role = data.user_roles?.find(
+                    (r) => r.id === user?.user_role_id,
+                );
+                const currentRoleType = role?.role;
+
+                console.log("currentRoleType:: ", currentRoleType);
+
                 let newdata = {
                     ...data,
                     firstname: profile.firstname,
                     middlename: profile.middlename,
                     lastname: profile.lastname,
                     name_ext: profile.name_ext,
-                    salutation: profile.salutation,
-                    gender: profile.gender,
                     contact_no: profile.contact_no,
-                    // address: profile.address,
-                    company_id: profile.company_id,
-                    customer_type: profile.customer_type,
-                    taxpayer_identification: profile.taxpayer_identification,
-                    // profile_addresses: profile.profile_addresses,
-                    contact_number: profile.contact_no,
+                    gender: profile.gender,
                 };
 
-                if (
-                    ["customers", "suppliers"].includes(
-                        location.pathname.split("/")[1],
-                    )
-                ) {
+                if (roleType === "Customer" || roleType === "Supplier") {
                     let profile_address_bills = profile.profile_addresses
                         .filter((x) => x.type === "Bill")
                         .map((item) => ({
@@ -121,10 +116,13 @@ export default function PageUserForm() {
                         profile_address_ships.length
                             ? profile_address_ships
                             : [{}];
-                    newdata["salutation"] = profile.salutation ?? "";
                     newdata["company_id"] = profile.company_id ?? "";
                     newdata["taxpayer_identification"] =
                         profile.taxpayer_identification ?? "";
+
+                    if (roleType === "Customer") {
+                        newdata["customer_type"] = profile.customer_type ?? "";
+                    }
                 } else {
                     let profile_address = profile.profile_addresses.find(
                         (x) => x.type === "Bill",
@@ -148,15 +146,13 @@ export default function PageUserForm() {
         "user_role_list",
     );
 
-    console.log("dataUserRole::: ", dataUserRole);
-
     const { mutate: mutateUser, isLoading: isLoadingUser } = POST(
         `api/users`,
         "create_users_info",
     );
 
     const onFinish = (values) => {
-        // console.log("values: ", values);
+        console.log("values::: ", values);
 
         let data = new FormData();
 
@@ -189,7 +185,7 @@ export default function PageUserForm() {
                 }));
         }
 
-        if (location.pathname.split("/")[1] === "suppliers") {
+        if (roleType === "Suppliers") {
             let role = dataUserRole?.data?.find((x) => x.role === "Supplier");
             data.append("user_role_id", role.id);
             data.append("salutation", values.salutation ?? "");
@@ -199,8 +195,9 @@ export default function PageUserForm() {
                 values.taxpayer_identification ?? "",
             );
 
+            // default for login restriction
             if (!params.id) {
-                data.append("status", "Active");
+                data.append("status", "Deactived");
             }
 
             data.append(
@@ -215,9 +212,9 @@ export default function PageUserForm() {
                     ? JSON.stringify(profile_address_ships)
                     : [],
             );
-        } else if (location.pathname.split("/")[1] === "customers") {
+        } else if (roleType === "Customer") {
             let role = dataUserRole?.data?.find((x) => x.role === "Customer");
-            data.append("user_role_id", role.id);
+            data.append("user_role_id", role_type);
             data.append("salutation", values.salutation ?? "");
             data.append("customer_type", values.customer_type ?? "");
             data.append("company_id", values.company_id ?? "");
@@ -226,8 +223,9 @@ export default function PageUserForm() {
                 values.taxpayer_identification ?? "",
             );
 
+            // default for login restriction
             if (!params.id) {
-                data.append("status", "Active");
+                data.append("status", "Deactived");
             }
 
             data.append(
@@ -243,12 +241,12 @@ export default function PageUserForm() {
                     : [],
             );
         } else {
-            // Form.Item is named "user_role_id", so use values.user_role_id (not values.role)
             data.append("user_role_id", values.user_role_id);
             data.append("username", values.username);
-            data.append("address", values.address);
-            data.append("status", values.status);
-            data.append("password", values.password ?? "");
+            data.append("status", "Active");
+            data.append("school_id", school_id);
+            data.append("department_id", department_id);
+            // data.append("password", values.password ?? "");
         }
 
         if (toggleModalUploadProfilePicture.file) {
@@ -309,9 +307,8 @@ export default function PageUserForm() {
                         };
 
                         if (
-                            ["customers", "suppliers"].includes(
-                                location.pathname.split("/")[1],
-                            )
+                            roleType === "Customer" ||
+                            roleType === "Supplier"
                         ) {
                             let profile_address_bills =
                                 profile.profile_addresses.filter(
@@ -459,7 +456,7 @@ export default function PageUserForm() {
 
     const collapseItems = [];
 
-    if (location.pathname.split("/")[1] === "users") {
+    if (location.pathname.split("/")[2] === "edit") {
         collapseItems.push({
             key: "0",
             label: "ACCOUNT INFORMATION",
@@ -472,21 +469,18 @@ export default function PageUserForm() {
     collapseItems.push({
         key: "1",
         label: "PERSONAL INFORMATION",
-        children: <UserFormCollapseItemPersonalInfo />,
+        children: (
+            <UserFormCollapseItemPersonalInfo
+                dataUserRole={dataUserRole}
+                setRoleType={setRoleType}
+            />
+        ),
     });
 
-    if (
-        location.pathname.split("/")[1] === "customers" ||
-        location.pathname.split("/")[1] === "suppliers"
-    ) {
+    // Show Bill/Ship address sections only for Customer and Supplier roles
+    if (roleType === "Customer" || roleType === "Supplier") {
         collapseItems.push({
             key: "2",
-            label: "PRIMARY CONTACT",
-            children: <UserFormCollapseItemPrimaryContact />,
-        });
-
-        collapseItems.push({
-            key: "3",
             label: "BILL ADDRESS INFORMATION",
             children: (
                 <UserFormCollapseItemAddressInfo
@@ -498,7 +492,7 @@ export default function PageUserForm() {
         });
 
         collapseItems.push({
-            key: "4",
+            key: "3",
             label: "SHIP ADDRESS INFORMATION",
             children: (
                 <UserFormCollapseItemAddressInfo

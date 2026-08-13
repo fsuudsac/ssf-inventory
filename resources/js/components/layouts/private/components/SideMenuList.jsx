@@ -92,22 +92,24 @@ export const adminSideMenu = [
         moduleCode: "page_warehouse",
     },
     {
-        title: "Suppliers",
-        path: "/suppliers",
-        icon: <FontAwesomeIcon icon={faUserGroup} />,
-        moduleCode: "page_suppliers",
-    },
-    {
-        title: "Customers",
-        path: "/customers",
-        icon: <FontAwesomeIcon icon={faUserGroup} />,
-        moduleCode: "page_customers",
-    },
-    {
         title: "Users",
         path: "/users",
         icon: <FontAwesomeIcon icon={faUsers} />,
         moduleCode: "page_users",
+        // children: [
+        //     {
+        //         title: "Suppliers",
+        //         path: "/suppliers",
+        //         icon: <FontAwesomeIcon icon={faUserGroup} />,
+        //         moduleCode: "page_suppliers",
+        //     },
+        //     {
+        //         title: "Customers",
+        //         path: "/customers",
+        //         icon: <FontAwesomeIcon icon={faUserGroup} />,
+        //         moduleCode: "page_customers",
+        //     },
+        // ],
     },
     {
         title: "Reports",
@@ -133,16 +135,24 @@ export const adminSideMenu = [
         ],
     },
     {
-        title: "Admin Settings",
-        path: "/admin-setting",
+        title: "System Settings",
+        path: "/system-settings",
         icon: <FontAwesomeIcon icon={faCogs} />,
-        moduleCode: "page_admin_setting",
-    },
-    {
-        title: "User Permissions",
-        path: "/user-permissions",
-        icon: <FontAwesomeIcon icon={faUserShield} />,
-        moduleCode: "page_user_permissions",
+        moduleCode: "page_system_settings",
+        children: [
+            {
+                title: "Admin Settings",
+                path: "/admin-setting",
+                icon: <FontAwesomeIcon icon={faCogs} />,
+                moduleCode: "page_admin_setting",
+            },
+            {
+                title: "User Permissions",
+                path: "/user-permissions",
+                icon: <FontAwesomeIcon icon={faUserShield} />,
+                moduleCode: "page_user_permissions",
+            },
+        ],
     },
     {
         title: "Video FAQs",
