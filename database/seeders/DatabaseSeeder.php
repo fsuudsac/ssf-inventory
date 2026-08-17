@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ModuleAndPermissionSeeder::class,
             RefDepartmentTypeSeeder::class,
             RefDepartmentSeeder::class,
+            RefAllocationTypeSeeder::class,
             UserRoleSeeder::class,
             UserSeeder::class
         ]);

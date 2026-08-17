@@ -39,7 +39,9 @@ export default function PageBudgetAllocation() {
             children: (
                 <HistoricalDataContent
                     width={width}
-                    // historicalable_type={["App\\Models\\"]}
+                    historicalable_type={[
+                        "App\\Models\\RefDepartmentAllocation",
+                    ]}
                     from="PageBudgetAllocation"
                 />
             ),
@@ -62,7 +64,7 @@ export default function PageBudgetAllocation() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                {items[Number(activeTab)].children}
+                {items[Number(activeTab)]?.children}
             </Col>
         </Row>
     );

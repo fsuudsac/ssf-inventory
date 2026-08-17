@@ -2,11 +2,12 @@
 const formatToCurrency = (
     number,
     currency = "PHP",
+    style = "decimal",
     maxDecimal = 2,
-    minDecimal = 2
+    minDecimal = 2,
 ) => {
     return new Intl.NumberFormat("en-US", {
-        style: "decimal",
+        style: style,
         currency: currency,
         minimumFractionDigits: minDecimal,
         maximumFractionDigits: maxDecimal,

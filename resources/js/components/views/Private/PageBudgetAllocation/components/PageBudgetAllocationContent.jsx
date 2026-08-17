@@ -13,9 +13,10 @@ import {
     TablePagination,
     TableShowingEntriesV2,
 } from "../../../../providers/CustomTableFilter";
+import formatToCurrency from "../../../../providers/formatToCurrency";
 
 export default function PageBudgetAllocationContent(props) {
-    const { width, location } = props;
+    const { location } = props;
     const navigate = useNavigate();
 
     const [tableFilter, setTableFilter] = useState({
@@ -25,6 +26,7 @@ export default function PageBudgetAllocationContent(props) {
         page_size: 25,
         search: "",
         department_type_id: "",
+        school_year_id: "",
     });
 
     const { data: dataSchoolYear } = GET(
@@ -33,7 +35,6 @@ export default function PageBudgetAllocationContent(props) {
         () => {},
         false,
     );
-    // const {data: }
     const { data: dataDepartmentType } = GET(
         `api/department_type`,
         "department_type_dropdown",
@@ -57,8 +58,8 @@ export default function PageBudgetAllocationContent(props) {
         isLoading: isLoadingSource,
         isFetching: isFetchingSource,
     } = GET(
-        `api/department?${new URLSearchParams(tableFilter)}`,
-        `department_${new URLSearchParams(tableFilter)}`,
+        `api/department?${new URLSearchParams(effectiveTableFilter)}`,
+        `department_${new URLSearchParams(effectiveTableFilter)}`,
         () => {},
         false,
     );
@@ -67,6 +68,7 @@ export default function PageBudgetAllocationContent(props) {
         refetchSource();
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableFilter]);
 
     const onChangeTable = (pagination, filters, sorter) => {
@@ -80,8 +82,6 @@ export default function PageBudgetAllocationContent(props) {
     };
 
     useTableScrollOnTop("tbl_budget_allocation", location);
-
-    console.log("dataDepartmentType", dataDepartmentType);
 
     return (
         <Row gutter={[20, 20]}>
@@ -174,6 +174,7 @@ export default function PageBudgetAllocationContent(props) {
                             id="tbl_budget_allocation"
                             className="ant-table-default ant-table-striped"
                             dataSource={dataSource?.data?.data || []}
+                            loading={isLoadingSource || isFetchingSource}
                             rowKey={(record) => record.id}
                             pagination={false}
                             bordered={false}
@@ -232,12 +233,50 @@ export default function PageBudgetAllocationContent(props) {
                                 key="allocated_amount"
                                 dataIndex="allocated_amount"
                                 width={170}
+                                render={(_, record) => {
+                                    const departmentAllocation =
+                                        record.ref_department_allocations;
+                                    const totalAllocatedAmount =
+                                        departmentAllocation.reduce(
+                                            (acc, curr) =>
+                                                acc +
+                                                parseFloat(
+                                                    curr.base_amount || 0,
+                                                ),
+                                            0,
+                                        );
+
+                                    return formatToCurrency(
+                                        totalAllocatedAmount,
+                                        "PHP",
+                                        "currency",
+                                    );
+                                }}
                             />
                             <Table.Column
                                 title="Remaining Balance"
                                 key="remaining_balance"
                                 dataIndex="remaining_balance"
                                 width={170}
+                                render={(_, record) => {
+                                    const departmentAllocation =
+                                        record.ref_department_allocations;
+                                    const totalRemainingBalance =
+                                        departmentAllocation.reduce(
+                                            (acc, curr) =>
+                                                acc +
+                                                parseFloat(
+                                                    curr.remaining_amount || 0,
+                                                ),
+                                            0,
+                                        );
+
+                                    return formatToCurrency(
+                                        totalRemainingBalance,
+                                        "PHP",
+                                        "currency",
+                                    );
+                                }}
                             />
                         </Table>
                     </Col>

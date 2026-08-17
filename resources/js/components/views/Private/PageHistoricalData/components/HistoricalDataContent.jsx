@@ -13,8 +13,16 @@ import useTableScrollOnTop from "../../../../providers/useTableScrollOnTop";
 
 export default function HistoricalDataContent(props) {
     const {
-        historicalable_type = [],
-        profile_id = "",
+        // Filter props — pass only what's relevant for the context this component is used in
+        historicalable_type = [],  // comma-separated or array of model class strings
+        historicalable_id  = "",   // filter by a specific record's id
+        profile_id         = "",   // legacy: direct profile record filter
+        supplier_id        = "",   // filter purchase history by supplier
+        customer_id        = "",   // filter sales history by customer
+        department_id      = "",   // filter department/allocation history by department
+        subject            = "",   // comma-separated subject names
+        module             = "",   // comma-separated module names
+        action             = "",   // Create | Update | Delete
         width,
         from = "",
     } = props;
@@ -29,7 +37,14 @@ export default function HistoricalDataContent(props) {
         sort_order: "desc",
         from: from ? from : location.pathname,
         historicalable_type,
+        historicalable_id,
         profile_id,
+        supplier_id,
+        customer_id,
+        department_id,
+        subject,
+        module,
+        action,
     });
 
     const { data: dataSource, refetch: refetchSource } = GET(

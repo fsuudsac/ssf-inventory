@@ -133,6 +133,9 @@ class RefDepartmentController extends Controller
             "*",
             DB::raw("$departmentType AS department_type")
         ])
+            ->with([
+                "ref_department_allocations"
+            ])
             ->withTrashed()
             ->findOrFail($id);
 

@@ -39,6 +39,26 @@ class ModuleAndPermissionSeeder extends Seeder
                     [
                         "mod_button_code" => "view_page",
                         "mod_button_name" => "View Page",
+                    ],
+                    [
+                        "mod_button_code" => "btn_view",
+                        "mod_button_name" => "View",
+                    ],
+                    [
+                        "mod_button_code" => "btn_add",
+                        "mod_button_name" => "Add",
+                    ],
+                    [
+                        "mod_button_code" => "btn_edit",
+                        "mod_button_name" => "Edit",
+                    ],
+                    [
+                        "mod_button_code" => "btn_delete",
+                        "mod_button_name" => "Delete",
+                    ],
+                    [
+                        "mod_button_code" => "btn_sweep",
+                        "mod_button_name" => "Sweep Budget",
                     ]
                 ]
             ],

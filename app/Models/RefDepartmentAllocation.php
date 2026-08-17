@@ -40,6 +40,10 @@ class RefDepartmentAllocation extends Model
             });
         }
 
+        if ($request->filled('allocation_type_id')) {
+            $query->where('allocation_type_id', $request->allocation_type_id);
+        }
+
         if ($request->filled('school_year_id')) {
             $query->where('school_year_id', $request->school_year_id);
         }

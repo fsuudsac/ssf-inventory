@@ -45,13 +45,12 @@ import PageSalesReturnForm from "../views/private/PageSales/PageSalesReturnForm"
 import PagePurchaseReturnForm from "../views/private/PagePurchase/PagePurchaseReturnForm";
 import PageVideoFaqs from "../views/private/PageVideoFaqs/PageVideoFaqs";
 import PageTransfer from "../views/private/PageTransfer/PageTransfer";
-import PageUserPermissions from "../views/private/PageUserPermissions/PageUserPermissions";
 import PageReportSalesRevenue from "../views/private/PageReport/PageReportSalesRevenue/PageReportSalesRevenue";
 import PageReport from "../views/private/PageReport/PageReport";
 import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudgetAllocation";
 import PagePermission from "../views/Private/PagePermission/PagePermission";
-import DepartmentBudgetAllocation from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment";
-import PageBudgetAllocationDepartment from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment";
+import PageBudgetAllocationDepartment from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment/PageBudgetAllocationDepartment";
+import PageReportBudget from "../views/Private/PageReport/PageReportBudget";
 
 export default function RouteList() {
     return (
@@ -936,6 +935,28 @@ export default function RouteList() {
                             },
                         ]}
                         component={PageReportSalesRevenue}
+                    />
+                }
+            />
+            <Route
+                path="/reports/budget"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="BUDGET"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
+                        breadcrumb={[
+                            {
+                                name: "Report",
+                            },
+                            {
+                                name: "Budget",
+                            },
+                        ]}
+                        component={PageReportBudget}
                     />
                 }
             />

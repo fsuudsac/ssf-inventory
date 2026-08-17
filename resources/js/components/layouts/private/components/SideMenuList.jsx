@@ -14,6 +14,7 @@ import {
     faVideo,
     faRightLeftLarge,
     faUserShield,
+    faMoneyBillWave,
 } from "@fortawesome/pro-regular-svg-icons";
 
 export const adminHeaderMenuLeft = (
@@ -128,6 +129,11 @@ export const adminSideMenu = [
             {
                 title: "Inventory",
                 path: "/reports/inventory",
+                moduleCode: "page_reports",
+            },
+            {
+                title: "Budget",
+                path: "/reports/budget",
                 moduleCode: "page_reports",
             },
         ],

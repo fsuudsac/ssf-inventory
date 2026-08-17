@@ -27,6 +27,9 @@ Route::get('report_inventory_pdf', [App\Http\Controllers\InventoryController::cl
 
 // User and Profile
 Route::middleware('auth:api')->group(function () {
+    // Allocation Type
+    Route::apiResource("allocation_type", App\Http\Controllers\RefAllocationTypeController::class);
+
     // Auth
     Route::get('check_auth_status', [App\Http\Controllers\AuthController::class, "check_auth_status"]);
 
@@ -222,6 +225,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('department_type', \App\Http\Controllers\RefDepartmentTypeController::class);
 
     // Department Allocation
+    Route::post('department_allocation_archived', [\App\Http\Controllers\RefDepartmentAllocationController::class, 'department_allocation_archived']);
+    Route::post('budget_sweep', [\App\Http\Controllers\RefDepartmentAllocationController::class, 'budget_sweep']);
     Route::apiResource('department_allocation', \App\Http\Controllers\RefDepartmentAllocationController::class);
 });
 // END Department

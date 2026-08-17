@@ -34,6 +34,7 @@ class UserController extends Controller
         $contact_no = "(SELECT contact_no FROM profiles WHERE user_id = users.id LIMIT 1)";
         $taxpayer_identification = "(SELECT taxpayer_identification FROM profiles WHERE user_id = users.id LIMIT 1)";
         $company = "(SELECT (SELECT company FROM companies WHERE companies.id = `profiles`.company_id LIMIT 1) FROM `profiles` WHERE `profiles`.user_id = users.id LIMIT 1)";
+        $user_role = "(SELECT role FROM user_roles WHERE id = users.user_role_id LIMIT 1)";
 
         $query = User::select([
             "*",
@@ -42,6 +43,7 @@ class UserController extends Controller
             DB::raw("$contact_no contact_no"),
             DB::raw("$taxpayer_identification taxpayer_identification"),
             DB::raw("$company company"),
+            DB::raw("$user_role user_role"),
         ])
             ->with([
                 'profile' => function ($query) {
@@ -51,31 +53,23 @@ class UserController extends Controller
                     ]);
                 }
             ])
-            ->where("id", "!=", 1);
-
-        if ($request->search) {
-            $query->where(function ($query) use ($request, $fullname, $gender, $contact_no, $taxpayer_identification, $company) {
-                $query->orWhere("email", 'LIKE', "%$request->search%")
-                    ->orWhere("user_role_id", 'LIKE', "%$request->search%")
-                    ->orWhere("status", 'LIKE', "%$request->search%")
-                    ->orWhere(DB::raw("$fullname"), 'LIKE', "%$request->search%")
-                    ->orWhere(DB::raw("$gender"), 'LIKE', "%$request->search%")
-                    ->orWhere(DB::raw("$contact_no"), 'LIKE', "%$request->search%")
-                    ->orWhere(DB::raw("$taxpayer_identification"), 'LIKE', "%$request->search%")
-                    ->orWhere(DB::raw("$company"), 'LIKE', "%$request->search%");
-            });
-        }
-
-        if ($request->has('roles')) {
-            $roles = explode(",", $request->roles);
-            $query->whereIn("user_role_id", $roles);
-        }
-
-        if ($request->status == "Active") {
-            $query->where("status", "Active");
-        } else if ($request->status == "Archived") {
-            $query->where("status", "!=", "Active");
-        }
+            ->where("id", "!=", 1)
+            ->search([
+                "search" => $request->search,
+                "fields" => [
+                    "email",
+                    "status",
+                ],
+                "rawFields" => [
+                    $fullname,
+                    $gender,
+                    $contact_no,
+                    $taxpayer_identification,
+                    $company,
+                    $user_role,
+                ]
+            ])
+            ->filter($request);
 
         if ($request->sort_field && $request->sort_order) {
             if (
@@ -189,12 +183,25 @@ class UserController extends Controller
                     $data["email_verified_at"] = now();
                 }
 
+                // Capture original before update for historical data
+                $originalUser = User::find($request->id);
                 $dataUser = User::updateOrCreate(
                     ["id" => $request->id ?? null],
                     $data
                 );
 
                 if ($dataUser) {
+                    // Log historical data for user create/update
+                    $this->historical_data_bulk([
+                        "model"         => User::class,
+                        "originalValue" => $originalUser,
+                        "changes"       => $dataUser->getChanges(),
+                        "original"      => $dataUser->getOriginal(),
+                        "createUpdate"  => $dataUser,
+                        "subject"       => "User",
+                        "module"        => "User",
+                    ]);
+
                     if (!in_array($request->role, ["Customer", "Supplier"]) && !$request->id) {
                         $this->createUserPermission($dataUser->id, $request->role);
                     }
@@ -367,6 +374,20 @@ class UserController extends Controller
         $findUser = User::find($id);
 
         if ($findUser) {
+            // Log historical data before deletion
+            $this->historical_data([[
+                "historicalable_type" => User::class,
+                "historicalable_id"   => $findUser->id,
+                "subject"             => "User",
+                "module"              => "User",
+                "description"         => "User has been deleted by " . $this->authFullname(),
+                "field_name"          => "Status",
+                "old_value"           => $findUser->status,
+                "new_value"           => "Deleted",
+                "action"              => "Delete",
+                "status"              => "Success",
+            ]]);
+
             if ($findUser->delete()) {
                 $ret  = [
                     "success" => true,
@@ -701,8 +722,23 @@ class UserController extends Controller
         $data = User::find($request->id);
 
         if ($data) {
+            $oldEmail = $data->email;
             $data = $data->fill(["email" => $request->email]);
             if ($data->save()) {
+                // Log email change
+                $this->historical_data([[
+                    "historicalable_type" => User::class,
+                    "historicalable_id"   => $data->id,
+                    "subject"             => "User",
+                    "module"              => "User",
+                    "description"         => "User email updated by " . $this->authFullname(),
+                    "field_name"          => "email",
+                    "old_value"           => $oldEmail,
+                    "new_value"           => $request->email,
+                    "action"              => "Update",
+                    "status"              => "Success",
+                ]]);
+
                 $ret  = [
                     "success" => true,
                     "message" => "Email updated successfully"
@@ -725,6 +761,20 @@ class UserController extends Controller
         if ($data) {
             $data = $data->fill(["password" => Hash::make($request->new_password)]);
             if ($data->save()) {
+                // Log password change (don't store actual password values)
+                $this->historical_data([[
+                    "historicalable_type" => User::class,
+                    "historicalable_id"   => $data->id,
+                    "subject"             => "User",
+                    "module"              => "User",
+                    "description"         => "User password updated by " . $this->authFullname(),
+                    "field_name"          => "password",
+                    "old_value"           => "********",
+                    "new_value"           => "********",
+                    "action"              => "Update",
+                    "status"              => "Success",
+                ]]);
+
                 $ret  = [
                     "success" => true,
                     "message" => "Password updated successfully"
@@ -748,6 +798,20 @@ class UserController extends Controller
             if (Hash::check($request->old_password, $data->password)) {
                 $data = $data->fill(["password" => Hash::make($request->new_password)]);
                 if ($data->save()) {
+                    // Log self password change (don't store actual password values)
+                    $this->historical_data([[
+                        "historicalable_type" => User::class,
+                        "historicalable_id"   => $data->id,
+                        "subject"             => "User",
+                        "module"              => "User",
+                        "description"         => "User changed their own password",
+                        "field_name"          => "password",
+                        "old_value"           => "********",
+                        "new_value"           => "********",
+                        "action"              => "Update",
+                        "status"              => "Success",
+                    ]]);
+
                     $ret  = [
                         "success" => true,
                         "message" => "Password updated successfully"
@@ -780,8 +844,23 @@ class UserController extends Controller
 
         if ($findUser) {
             if ($findUser->status === 'Active') {
+                $oldRoleId = $findUser->user_role_id;
                 $findUser = $findUser->fill(["user_role_id" => $request->type, "user_role_id" => $request->user_role_id]);
                 if ($findUser->save()) {
+                    // Log role change
+                    $this->historical_data([[
+                        "historicalable_type" => User::class,
+                        "historicalable_id"   => $findUser->id,
+                        "subject"             => "User",
+                        "module"              => "User",
+                        "description"         => "User role updated by " . $this->authFullname(),
+                        "field_name"          => "user_role_id",
+                        "old_value"           => $oldRoleId,
+                        "new_value"           => $request->user_role_id,
+                        "action"              => "Update",
+                        "status"              => "Success",
+                    ]]);
+
                     $ret  = [
                         "success" => true,
                         "message" => "User role updated successfully"
@@ -847,6 +926,9 @@ class UserController extends Controller
                 $findUser = User::find($value);
 
                 if ($findUser) {
+                    // Track old status before changing
+                    $oldStatus = $findUser->status;
+
                     if ($request->isTrash == 0) {
                         $findUser->fill([
                             'deactivated_by' => Auth::id(),
@@ -860,6 +942,20 @@ class UserController extends Controller
                             'status' => 'Active'
                         ])->save();
                     }
+
+                    // Log bulk archive/restore for each user
+                    $this->historical_data([[
+                        "historicalable_type" => User::class,
+                        "historicalable_id"   => $findUser->id,
+                        "subject"             => "User",
+                        "module"              => "User",
+                        "description"         => "User has been " . ($request->isTrash == 0 ? "archived" : "restored") . " by " . $this->authFullname(),
+                        "field_name"          => "status",
+                        "old_value"           => $oldStatus,
+                        "new_value"           => $request->isTrash == 0 ? "Archived" : "Active",
+                        "action"              => "Update",
+                        "status"              => "Success",
+                    ]]);
                 }
             }
 
@@ -904,6 +1000,9 @@ class UserController extends Controller
             $findProfile = Profile::where("user_id", $data->id)->first();
 
             if ($findProfile) {
+                // Capture original profile values before update
+                $originalProfile = $findProfile->replicate();
+
                 $findProfile->fill([
                     "firstname"  => $request->firstname,
                     "lastname"   => $request->lastname,
@@ -912,6 +1011,17 @@ class UserController extends Controller
                     "gender"     => $request->gender,
                     "contact_no" => $request->contact_no,
                 ])->save();
+
+                // Log profile info update
+                $this->historical_data_bulk([
+                    "model"         => Profile::class,
+                    "originalValue" => $originalProfile,
+                    "changes"       => $findProfile->getChanges(),
+                    "original"      => $findProfile->getOriginal(),
+                    "createUpdate"  => $findProfile,
+                    "subject"       => "User",
+                    "module"        => "User",
+                ]);
             }
 
             $ret = [
@@ -933,7 +1043,9 @@ class UserController extends Controller
         $findUser = User::find($request->id);
 
         if ($findUser) {
-            if ($request->status == "Active") {
+            $isArchiving = $request->status == "Active";
+
+            if ($isArchiving) {
                 $findUser->fill([
                     "status"         => "Deactivated",
                     "deactivated_by" => Auth::id(),
@@ -947,9 +1059,23 @@ class UserController extends Controller
                 ])->save();
             }
 
+            // Log archive/restore
+            $this->historical_data([[
+                "historicalable_type" => User::class,
+                "historicalable_id"   => $findUser->id,
+                "subject"             => "User",
+                "module"              => "User",
+                "description"         => "User has been " . ($isArchiving ? "archived" : "restored") . " by " . $this->authFullname(),
+                "field_name"          => "status",
+                "old_value"           => $isArchiving ? "Active" : "Deactivated",
+                "new_value"           => $isArchiving ? "Deactivated" : "Active",
+                "action"              => "Update",
+                "status"              => "Success",
+            ]]);
+
             $ret = [
                 "success" => true,
-                "message" => "User " . ($request->status == "Active" ? "archived" : "restored") . " successfully.",
+                "message" => "User " . ($isArchiving ? "archived" : "restored") . " successfully.",
             ];
         }
 
@@ -979,7 +1105,11 @@ class UserController extends Controller
                     $findCustomer = User::find($id);
 
                     if ($findCustomer) {
-                        if ($request->status == "Active") {
+                        // Track old status before changing
+                        $oldStatus       = $findCustomer->status;
+                        $isArchiving     = $request->status == "Active";
+
+                        if ($isArchiving) {
                             $findCustomer->fill([
                                 "status"         => "Deactivated",
                                 "deactivated_by" => Auth::id(),
@@ -992,6 +1122,20 @@ class UserController extends Controller
                                 "deactivated_at" => null,
                             ])->save();
                         }
+
+                        // Log bulk archive/restore for each customer
+                        $this->historical_data([[
+                            "historicalable_type" => User::class,
+                            "historicalable_id"   => $findCustomer->id,
+                            "subject"             => "Customer",
+                            "module"              => "Customer",
+                            "description"         => "Customer has been " . ($isArchiving ? "archived" : "restored") . " by " . $this->authFullname(),
+                            "field_name"          => "status",
+                            "old_value"           => $oldStatus,
+                            "new_value"           => $isArchiving ? "Deactivated" : "Active",
+                            "action"              => "Update",
+                            "status"              => "Success",
+                        ]]);
                     }
                 }
 
@@ -1030,7 +1174,11 @@ class UserController extends Controller
                     $findSupplier = User::find($id);
 
                     if ($findSupplier) {
-                        if ($request->status == "Active") {
+                        // Track old status before changing
+                        $oldStatus   = $findSupplier->status;
+                        $isArchiving = $request->status == "Active";
+
+                        if ($isArchiving) {
                             $findSupplier->fill([
                                 "status"         => "Deactivated",
                                 "deactivated_by" => Auth::id(),
@@ -1043,6 +1191,20 @@ class UserController extends Controller
                                 "deactivated_at" => null,
                             ])->save();
                         }
+
+                        // Log bulk archive/restore for each supplier
+                        $this->historical_data([[
+                            "historicalable_type" => User::class,
+                            "historicalable_id"   => $findSupplier->id,
+                            "subject"             => "Supplier",
+                            "module"              => "Supplier",
+                            "description"         => "Supplier has been " . ($isArchiving ? "archived" : "restored") . " by " . $this->authFullname(),
+                            "field_name"          => "status",
+                            "old_value"           => $oldStatus,
+                            "new_value"           => $isArchiving ? "Deactivated" : "Active",
+                            "action"              => "Update",
+                            "status"              => "Success",
+                        ]]);
                     }
                 }
 
@@ -1163,6 +1325,8 @@ class UserController extends Controller
                     $data["status"] = $request->status;
                 }
 
+                // Capture original customer record before create/update
+                $originalCustomer = User::find($request->id);
                 $dataUser = User::updateOrCreate(["id" => $request->id], $data);
 
                 if ($dataUser) {
@@ -1222,6 +1386,19 @@ class UserController extends Controller
                     }
                 }
 
+                // Log create/update historical data for customer
+                if ($dataUser) {
+                    $this->historical_data_bulk([
+                        "model"         => User::class,
+                        "originalValue" => $originalCustomer,
+                        "changes"       => $dataUser->getChanges(),
+                        "original"      => $dataUser->getOriginal(),
+                        "createUpdate"  => $dataUser,
+                        "subject"       => "Customer",
+                        "module"        => "Customer",
+                    ]);
+                }
+
                 $ret = [
                     "success" => true,
                     "message" => "Customer " . ($request->id ? "updated" : "created") . " successfully.",
@@ -1272,6 +1449,8 @@ class UserController extends Controller
                     $data["user_role_id"]   = "Supplier";
                 }
 
+                // Capture original supplier record before create/update
+                $originalSupplier = User::find($request->id);
                 $dataUser = User::updateOrCreate(["id" => $request->id], $data);
 
                 if ($dataUser) {
@@ -1319,6 +1498,19 @@ class UserController extends Controller
                             );
                         }
                     }
+                }
+
+                // Log create/update historical data for supplier
+                if ($dataUser) {
+                    $this->historical_data_bulk([
+                        "model"         => User::class,
+                        "originalValue" => $originalSupplier,
+                        "changes"       => $dataUser->getChanges(),
+                        "original"      => $dataUser->getOriginal(),
+                        "createUpdate"  => $dataUser,
+                        "subject"       => "Supplier",
+                        "module"        => "Supplier",
+                    ]);
                 }
 
                 $ret = [
