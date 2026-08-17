@@ -17,13 +17,14 @@ import validateRules from "../../../../providers/validateRules";
 import optionGender from "../../../../providers/optionGender";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatSelect from "../../../../providers/FloatSelect";
-import FloatInputMask from "../../../../providers/FloatInputMask";
-import FloatTextArea from "../../../../providers/FloatTextArea";
+import FloatInputPhone from "../../../../providers/FloatInputPhone";
 import notificationErrors from "../../../../providers/notificationErrors";
 import PageUserFormContext from "./PageUserFormContext";
-import FloatInputPhone from "../../../../providers/FloatInputPhone";
 
-export default function UserFormCollapseItemPersonalInfo() {
+export default function UserFormCollapseItemPersonalInfo({
+    dataUserRole,
+    setRoleType,
+}) {
     const { form, handleDebounce, formDisabled, location } =
         useContext(PageUserFormContext);
 
@@ -39,8 +40,6 @@ export default function UserFormCollapseItemPersonalInfo() {
         `api/company`,
         "company_dropdown",
         (res) => {
-            console.log("res:: ", res);
-
             if (res.data && res.data.length > 0) {
                 setDataCompany(res.data);
             }
@@ -54,8 +53,6 @@ export default function UserFormCollapseItemPersonalInfo() {
         (res) => {},
         false,
     );
-
-    console.log("dataCompany: ", dataCompany);
 
     const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
         `api/company`,
@@ -97,157 +94,283 @@ export default function UserFormCollapseItemPersonalInfo() {
 
     return (
         <Row gutter={[20, 0]}>
-            {location.pathname.includes("/supplier") ||
-            location.pathname.includes("/customer") ? (
-                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                    <Form.Item
-                        name="company_id"
-                        rules={[validateRules.required()]}
-                    >
-                        <FloatSelect
-                            label="Company"
-                            placeholder="Company"
-                            disabled={formDisabled}
-                            allowClear
-                            required
-                            options={
-                                dataCompany && dataCompany.length > 0
-                                    ? dataCompany
-                                          .map((item) => ({
-                                              value: item.id,
-                                              label: item.company,
-                                          }))
-                                          .sort((a, b) =>
-                                              a.label.localeCompare(b.label),
-                                          )
-                                    : []
-                            }
-                            dropdownRender={(menu) => (
-                                <>
-                                    {menu}
-                                    <Divider
-                                        style={{
-                                            margin: "8px 0",
+            <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
+                <Form.Item name="role_type" rules={[validateRules.required]}>
+                    <FloatSelect
+                        label="Role"
+                        placeholder="Role"
+                        required={true}
+                        options={
+                            dataUserRole?.data?.length > 0
+                                ? dataUserRole.data
+                                      .sort((a, b) => a.id - b.id)
+                                      .map((item) => ({
+                                          value: item.role,
+                                          label: item.role,
+                                      }))
+                                : []
+                        }
+                        disabled={formDisabled}
+                        onChange={(value) => {
+                            handleDebounce({
+                                field: "role",
+                                value: value,
+                            });
+                            setRoleType(value);
+                        }}
+                    />
+                </Form.Item>
+            </Col>
+
+            <Form.Item shouldUpdate noStyle>
+                {() => {
+                    const role_type = form.getFieldValue("role_type");
+
+                    if (role_type === "Customer" || role_type === "Supplier") {
+                        return (
+                            <>
+                                {role_type === "Customer" && (
+                                    <Col
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={12}
+                                        xl={12}
+                                        xxl={12}
+                                    >
+                                        <Form.Item name="customer_type">
+                                            <FloatSelect
+                                                label="Customer Type"
+                                                placeholder="Customer Type"
+                                                disabled={formDisabled}
+                                                options={[
+                                                    {
+                                                        value: "Walk-In",
+                                                        label: "Walk-In",
+                                                    },
+                                                    {
+                                                        value: "Dealer",
+                                                        label: "Dealer",
+                                                    },
+                                                    {
+                                                        value: "Wholesale",
+                                                        label: "Wholesale",
+                                                    },
+                                                    {
+                                                        value: "Fleet",
+                                                        label: "Fleet",
+                                                    },
+                                                ]}
+                                                onChange={(value) => {
+                                                    handleDebounce({
+                                                        field: "customer_type",
+                                                        value: value,
+                                                    });
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                )}
+
+                                <Col
+                                    xs={24}
+                                    sm={24}
+                                    md={24}
+                                    lg={12}
+                                    xl={12}
+                                    xxl={12}
+                                >
+                                    <Form.Item
+                                        name="company_id"
+                                        rules={[validateRules.required]}
+                                    >
+                                        <FloatSelect
+                                            label="Company"
+                                            placeholder="Company"
+                                            disabled={formDisabled}
+                                            allowClear
+                                            required
+                                            options={
+                                                dataCompany?.length > 0
+                                                    ? dataCompany
+                                                          .map((item) => ({
+                                                              value: item.id,
+                                                              label: item.company,
+                                                          }))
+                                                          .sort((a, b) =>
+                                                              a.label.localeCompare(
+                                                                  b.label,
+                                                              ),
+                                                          )
+                                                    : []
+                                            }
+                                            dropdownRender={(menu) => (
+                                                <>
+                                                    {menu}
+
+                                                    <Divider
+                                                        style={{
+                                                            margin: "8px 0",
+                                                        }}
+                                                    />
+
+                                                    <Flex gap={10}>
+                                                        <Input
+                                                            value={companyValue}
+                                                            placeholder="Add Company/ Department"
+                                                            onChange={(e) =>
+                                                                setCompanyValue(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            onBlur={(e) =>
+                                                                setCompanyValue(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            onPressEnter={() =>
+                                                                handleAddCompany()
+                                                            }
+                                                            style={{
+                                                                width: 140,
+                                                                flex: "none",
+                                                            }}
+                                                        />
+
+                                                        <Button
+                                                            type="text"
+                                                            icon={
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                        faPlus
+                                                                    }
+                                                                />
+                                                            }
+                                                            loading={
+                                                                isLoadingCompany
+                                                            }
+                                                            onClick={() =>
+                                                                handleAddCompany()
+                                                            }
+                                                            disabled={
+                                                                !companyValue
+                                                            }
+                                                        >
+                                                            Add
+                                                        </Button>
+                                                    </Flex>
+                                                </>
+                                            )}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                <Col
+                                    xs={24}
+                                    sm={24}
+                                    md={24}
+                                    lg={12}
+                                    xl={12}
+                                    xxl={12}
+                                >
+                                    <Form.Item name="taxpayer_identification">
+                                        <FloatInput
+                                            label="TIN"
+                                            placeholder="TIN"
+                                            disabled={formDisabled}
+                                            onChange={(e) => {
+                                                handleDebounce({
+                                                    field: "taxpayer_identification",
+                                                    value: e.target.value,
+                                                });
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </>
+                        );
+                    }
+
+                    // Employee
+                    return (
+                        <>
+                            <Col
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                            >
+                                <Form.Item
+                                    name="department_id"
+                                    rules={[validateRules.required]}
+                                >
+                                    <FloatSelect
+                                        label="Department"
+                                        placeholder="Department"
+                                        disabled={formDisabled}
+                                        allowClear
+                                        required
+                                        options={
+                                            dataDepartment?.data?.length > 0
+                                                ? dataDepartment.data
+                                                      .map((item) => ({
+                                                          label: item.department_name,
+                                                          value: item.id,
+                                                      }))
+                                                      .sort((a, b) =>
+                                                          a.label.localeCompare(
+                                                              b.label,
+                                                          ),
+                                                      )
+                                                : []
+                                        }
+                                        onChange={(value) => {
+                                            handleDebounce({
+                                                field: "department_id",
+                                                value,
+                                            });
                                         }}
                                     />
-                                    <Flex gap={10}>
-                                        <Input
-                                            value={companyValue}
-                                            placeholder="Add Company/ Department"
-                                            onChange={(e) =>
-                                                setCompanyValue(e.target.value)
-                                            }
-                                            onBlur={(e) =>
-                                                setCompanyValue(e.target.value)
-                                            }
-                                            onPressEnter={() =>
-                                                handleAddCompany()
-                                            }
-                                        />
-                                        <Button
-                                            type="text"
-                                            icon={
-                                                <FontAwesomeIcon
-                                                    icon={faPlus}
-                                                />
-                                            }
-                                            onClick={() => handleAddCompany()}
-                                        />
-                                    </Flex>
-                                </>
-                            )}
-                            onChange={(e) => {
-                                handleDebounce({
-                                    field: "company_id",
-                                    value: e,
-                                });
-                                const selectedCompany = dataCompany.find(
-                                    (item) => item.id === e,
-                                );
-                                setInitialCompanyName(
-                                    selectedCompany
-                                        ? selectedCompany.company
-                                        : null,
-                                );
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            ) : (
-                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                    <Form.Item
-                        name="department_id"
-                        rules={[validateRules.required()]}
-                    >
-                        <FloatSelect
-                            label="Department"
-                            placeholder="Department"
-                            disabled={formDisabled}
-                            allowClear
-                            required
-                            options={
-                                dataDepartment?.data?.length > 0
-                                    ? dataDepartment?.data
-                                          ?.map((item) => ({
-                                              label: item.department_name,
-                                              value: item.id,
-                                          }))
-                                          .sort((a, b) =>
-                                              a.label.localeCompare(b.label),
-                                          )
-                                    : []
-                            }
-                            onChange={(e) => {
-                                handleDebounce({
-                                    field: "department_id",
-                                    value: e,
-                                });
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            )}
+                                </Form.Item>
+                            </Col>
 
-            {location.pathname.includes("/customers") && (
-                <>
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item name="customer_type">
-                            <FloatSelect
-                                label="Customer Type"
-                                placeholder="Customer Type"
-                                disabled={formDisabled}
-                                options={[
-                                    {
-                                        value: "Walk-In",
-                                        label: "Walk-In",
-                                    },
-                                    {
-                                        value: "Dealer",
-                                        label: "Dealer",
-                                    },
-                                    {
-                                        value: "Wholesale",
-                                        label: "Wholesale",
-                                    },
-                                    {
-                                        value: "Fleet",
-                                        label: "Fleet",
-                                    },
-                                ]}
-                                onChange={(value) => {
-                                    handleDebounce({
-                                        field: "customer_type",
-                                        value: value,
-                                    });
-                                }}
-                            />
-                        </Form.Item>
-                    </Col>
-                </>
-            )}
+                            <Col
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                            >
+                                <Form.Item
+                                    name="school_id"
+                                    rules={[validateRules.required]}
+                                >
+                                    <FloatInput
+                                        label="School ID"
+                                        placeholder="School ID"
+                                        required={true}
+                                        disabled={formDisabled}
+                                        onChange={(e) => {
+                                            handleDebounce({
+                                                field: "school_id",
+                                                value: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </>
+                    );
+                }}
+            </Form.Item>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                <Form.Item name="firstname" rules={[validateRules.required()]}>
+                <Form.Item name="firstname" rules={[validateRules.required]}>
                     <FloatInput
                         label="First Name"
                         placeholder="First Name"
@@ -280,7 +403,7 @@ export default function UserFormCollapseItemPersonalInfo() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                <Form.Item name="lastname">
+                <Form.Item name="lastname" rules={[validateRules.required]}>
                     <FloatInput
                         label="Last Name"
                         placeholder="Last Name"
@@ -291,6 +414,7 @@ export default function UserFormCollapseItemPersonalInfo() {
                                 value: e.target.value,
                             });
                         }}
+                        required
                     />
                 </Form.Item>
             </Col>
@@ -311,31 +435,6 @@ export default function UserFormCollapseItemPersonalInfo() {
                 </Form.Item>
             </Col>
 
-            {/* 
-            {location.pathname.split("/")[1] !== "users" && (
-                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                    <Form.Item name="salutation">
-                        <FloatSelect
-                            label="Mr./Mrs./Ms."
-                            placeholder="Mr./Mrs./Ms."
-                            disabled={formDisabled}
-                            options={[
-                                { label: "Mr.", value: "Mr." },
-                                { label: "Mrs.", value: "Mrs." },
-                                { label: "Ms.", value: "Ms." },
-                            ]}
-                            allowClear
-                            onChange={(value) => {
-                                handleDebounce({
-                                    field: "salutation",
-                                    value: value,
-                                });
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            )} */}
-
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                 <Form.Item name="gender">
                     <FloatSelect
@@ -353,82 +452,40 @@ export default function UserFormCollapseItemPersonalInfo() {
                 </Form.Item>
             </Col>
 
-            {location.pathname.split("/")[1] === "users" ? (
-                <>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                        <Form.Item
-                            name="contact_no"
-                            rules={[
-                                validateRules.phone,
-                                validateRules.required(),
-                            ]}
-                        >
-                            <FloatInputPhone
-                                label="Contact Number"
-                                placeholder="Contact Number"
-                                international={true}
-                                defaultCountry="PH"
-                                required
-                                disabled={formDisabled}
-                                onChange={(value) => {
-                                    handleDebounce({
-                                        field: "contact_no",
-                                        value: value || "",
-                                    });
-                                }}
-                            />
-                            {/* <FloatInputMask
-                                label="Contact Number"
-                                placeholder="Contact Number"
-                                maskLabel="contact_no"
-                                required={true}
-                                maskType="(+63) 999 999 9999"
-                                disabled={formDisabled}
-                                onChange={(e) => {
-                                    handleDebounce({
-                                        field: "contact_no",
-                                        value: e.target.value,
-                                    });
-                                }}
-                            /> */}
-                        </Form.Item>
-                    </Col>
+            <Form.Item shouldUpdate noStyle>
+                {() => {
+                    const role_type = form.getFieldValue("role_type");
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item name="address" noStyle>
-                            <FloatTextArea
-                                label="Address"
-                                placeholder="Address"
-                                disabled={formDisabled}
-                                onChange={(e) => {
-                                    handleDebounce({
-                                        field: "address",
-                                        value: e.target.value,
-                                    });
-                                }}
-                            />
-                        </Form.Item>
-                    </Col>
-                </>
-            ) : (
-                <>
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item name="taxpayer_identification">
-                            <FloatInput
-                                label="TIN"
-                                placeholder="TIN"
-                                disabled={formDisabled}
-                                onChange={(e) => {
-                                    handleDebounce({
-                                        field: "taxpayer_identification",
-                                        value: e.target.value,
-                                    });
-                                }}
-                            />
-                        </Form.Item>
-                    </Col>
-                </>
-            )}
+                    if (role_type === "Customer" || role_type === "Supplier") {
+                        return (
+                            <Col
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                            >
+                                <Form.Item
+                                    name="contact_number"
+                                    rules={[
+                                        validateRules.required,
+                                        validateRules.phone_international,
+                                    ]}
+                                >
+                                    <FloatInputPhone
+                                        international={true}
+                                        required={true}
+                                        label="Contact Number"
+                                        placeholder="Contact Number"
+                                        defaultCountry="PH"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        );
+                    }
+                }}
+            </Form.Item>
         </Row>
     );
 }

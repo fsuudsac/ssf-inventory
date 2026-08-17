@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Button, Col, Flex } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInboxArrowDown, faPlus } from "@fortawesome/pro-regular-svg-icons";
+import { faPlus } from "@fortawesome/pro-regular-svg-icons";
 
 import { GET } from "../../../providers/useAxiosQuery";
 import {
@@ -33,12 +33,6 @@ export default function PageUser(props) {
         sort_field: "created_at",
         sort_order: "desc",
         status: "Active",
-        roles:
-            location.pathname === "/customers"
-                ? "Customer"
-                : location.pathname === "/suppliers"
-                  ? "Supplier"
-                  : "Super Admin,Admin,Staff,Manager",
     });
 
     useEffect(() => {
@@ -57,7 +51,6 @@ export default function PageUser(props) {
             sort_field: "created_at",
             sort_order: "desc",
             status: "Active",
-            roles,
         });
 
         return () => {};
@@ -90,38 +83,15 @@ export default function PageUser(props) {
     return (
         <Row gutter={[20, 20]} id="tbl_wrapper">
             <Col xs={24} sm={24} md={24}>
-                <Flex align="center" gap={15}>
-                    <Button
-                        type="primary"
-                        className={width < 576 ? "w-full" : "min-w-[150px]"}
-                        icon={<FontAwesomeIcon icon={faPlus} />}
-                        onClick={() => navigate(`${location.pathname}/add`)}
-                        name="btn_add"
-                    >
-                        {location.pathname === "/suppliers"
-                            ? "Supplier"
-                            : location.pathname === "/customers"
-                              ? "Customer"
-                              : "User"}
-                    </Button>
-
-                    {!location.pathname.includes("users") && (
-                        <Button
-                            type="primary"
-                            className={width < 576 ? "w-full" : "min-w-[150px]"}
-                            icon={<FontAwesomeIcon icon={faInboxArrowDown} />}
-                            onClick={() =>
-                                setToggleModalImport({
-                                    open: true,
-                                    data: null,
-                                })
-                            }
-                            name="btn_import"
-                        >
-                            Import File
-                        </Button>
-                    )}
-                </Flex>
+                <Button
+                    type="primary"
+                    className={width < 576 ? "w-full" : "min-w-[150px]"}
+                    icon={<FontAwesomeIcon icon={faPlus} />}
+                    onClick={() => navigate(`${location.pathname}/add`)}
+                    name="btn_add"
+                >
+                    User
+                </Button>
             </Col>
 
             <Col xs={24} sm={24} md={24}>
