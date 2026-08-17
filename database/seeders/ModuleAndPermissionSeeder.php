@@ -386,7 +386,7 @@ class ModuleAndPermissionSeeder extends Seeder
                     $createModuleButton = ModuleButton::create($module_button + ["module_id" => $moduleCreate->id]);
 
                     if ($createModuleButton) {
-                        $dataUserRoles = [1, 2, 3];
+                        $dataUserRoles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
                         foreach ($dataUserRoles as $role_key => $role) {
                             UserRolePermission::create([

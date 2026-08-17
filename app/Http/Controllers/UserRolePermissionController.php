@@ -20,7 +20,8 @@ class UserRolePermissionController extends Controller
             'module_buttons' => function ($query) use ($request) {
                 $query->with([
                     "user_role_permissions" => function ($query) use ($request) {
-                        $query->where("user_role_id", $request->role);
+                        // Filter permissions to the selected role; frontend sends user_role_id
+                        $query->where("user_role_id", $request->user_role_id ?? $request->role);
                     }
                 ]);
             }
@@ -69,9 +70,10 @@ class UserRolePermissionController extends Controller
         ];
 
 
+        // Frontend sends user_role_id; using that instead of the legacy $request->role
         $result = UserRolePermission::updateOrCreate(
             [
-                "user_role_id"  => $request->role,
+                "user_role_id"  => $request->user_role_id,
                 "mod_button_id" => $request->mod_button_id,
             ],
             [

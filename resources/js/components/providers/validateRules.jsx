@@ -1,12 +1,10 @@
 import { isValidPhoneNumber } from "react-phone-number-input";
 
-import { isValidPhoneNumber } from "react-phone-number-input";
-
 const validateRules = {
-    required: {
+    required: (message) => ({
         required: true,
-        message: "This field is required",
-    },
+        message: message || "This field is required",
+    }),
     quillValidator: {
         validator: async (_, value) => {
             if (!value || value === "<p><br></p>") {
@@ -24,7 +22,6 @@ const validateRules = {
                 return Promise.resolve();
             }
             return Promise.reject(
-                new Error("The two emails that you entered do not match!"),
                 new Error("The two emails that you entered do not match!"),
             );
         },
@@ -214,7 +211,6 @@ const validateRules = {
             }
             return Promise.reject(
                 new Error("The two passwords that you entered do not match!"),
-                new Error("The two passwords that you entered do not match!"),
             );
         },
     }),
@@ -225,7 +221,6 @@ const validateRules = {
                     .toLowerCase()
                     .match(
                         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     )
             ) {
                 return Promise.resolve();
@@ -235,7 +230,6 @@ const validateRules = {
     }),
     assessment_pattern: {
         pattern: new RegExp(
-            /(^[E][F]$)|(^[A][I]$)|(^[A][R][T]$)|^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/,
             /(^[E][F]$)|(^[A][I]$)|(^[A][R][T]$)|^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/,
         ),
         message: "Invalid value",

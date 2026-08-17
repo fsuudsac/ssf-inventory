@@ -27,6 +27,12 @@ export default function TableUserRolePermission(props) {
         "user_role_permission_list"
     );
 
+    // Bulk toggle — same endpoint, called once per button in the module
+    const {
+        mutate: mutateMultiChangeStatus,
+        isLoading: isLoadingMultiChangeStatus,
+    } = POST(`api/user_role_permission`, "user_role_permission_list");
+
     const handleChangeStatus = (e, values) => {
         if (tableFilter.user_role_id) {
             let data = {
@@ -49,7 +55,7 @@ export default function TableUserRolePermission(props) {
                         });
                     }
                 },
-                onError: (err) => {
+                onError: () => {
                     notification.error({
                         message: "User Role Permission",
                         description: "Something went wrong",
@@ -62,6 +68,35 @@ export default function TableUserRolePermission(props) {
                 description: "Please select Role",
             });
         }
+    };
+
+    // Toggle ALL buttons in a module on/off at once
+    const handleMultiChangeStatus = (e, moduleButtons) => {
+        if (!tableFilter.user_role_id) {
+            notification.error({
+                message: "User Role Permission",
+                description: "Please select Role",
+            });
+            return;
+        }
+
+        moduleButtons.forEach((item) => {
+            mutateMultiChangeStatus(
+                {
+                    user_role_id: tableFilter.user_role_id,
+                    mod_button_id: item.id,
+                    status: e ? "1" : "0",
+                },
+                {
+                    onError: () => {
+                        notification.error({
+                            message: "User Role Permission",
+                            description: "Something went wrong",
+                        });
+                    },
+                }
+            );
+        });
     };
 
     return (
@@ -116,55 +151,77 @@ export default function TableUserRolePermission(props) {
                         title="Buttons"
                         key="buttons"
                         render={(_, record) => {
+                            if (!record.module_buttons.length) return null;
+
+                            // Derive per-button status from user_role_permissions
+                            const buttonsWithStatus = record.module_buttons.map(
+                                (item) => ({
+                                    ...item,
+                                    status:
+                                        item.user_role_permissions.length &&
+                                        parseInt(
+                                            item.user_role_permissions[0].status
+                                        ) === 1,
+                                })
+                            );
+
+                            // ALL is checked only when every button in the module is enabled
+                            const allChecked =
+                                buttonsWithStatus.length > 0 &&
+                                buttonsWithStatus.every((item) => item.status);
+
                             return (
                                 <Space direction="vertical">
-                                    {record.module_buttons.map(
-                                        (item, index) => {
-                                            let status = false;
-                                            if (
-                                                item.user_role_permissions
-                                                    .length
-                                            ) {
-                                                let user_role_permissions =
-                                                    item
-                                                        .user_role_permissions[0]
-                                                        .status;
-                                                status =
-                                                    parseInt(
-                                                        user_role_permissions
-                                                    ) === 1
-                                                        ? true
-                                                        : false;
+                                    {/* ALL toggle — enables/disables every button in this module at once */}
+                                    <Flex gap={10} align="center">
+                                        <Switch
+                                            checkedChildren={
+                                                <FontAwesomeIcon icon={faCheck} />
                                             }
-                                            return (
-                                                <span key={index}>
-                                                    <Switch
-                                                        checkedChildren={
-                                                            <FontAwesomeIcon
-                                                                icon={faCheck}
-                                                            />
-                                                        }
-                                                        unCheckedChildren={
-                                                            <FontAwesomeIcon
-                                                                icon={faXmark}
-                                                            />
-                                                        }
-                                                        checked={status}
-                                                        onChange={(e) =>
-                                                            handleChangeStatus(
-                                                                e,
-                                                                item
-                                                            )
-                                                        }
-                                                        loading={
-                                                            loadingChangeStatus
-                                                        }
-                                                    />{" "}
-                                                    {item.mod_button_name}
-                                                </span>
-                                            );
-                                        }
-                                    )}
+                                            unCheckedChildren={
+                                                <FontAwesomeIcon icon={faXmark} />
+                                            }
+                                            checked={allChecked}
+                                            onChange={(e) =>
+                                                handleMultiChangeStatus(
+                                                    e,
+                                                    record.module_buttons
+                                                )
+                                            }
+                                            loading={
+                                                loadingChangeStatus ||
+                                                isLoadingMultiChangeStatus
+                                            }
+                                        />
+                                        <span>ALL</span>
+                                    </Flex>
+
+                                    {/* Individual button toggles */}
+                                    {buttonsWithStatus.map((item, index) => (
+                                        <span key={index}>
+                                            <Switch
+                                                checkedChildren={
+                                                    <FontAwesomeIcon
+                                                        icon={faCheck}
+                                                    />
+                                                }
+                                                unCheckedChildren={
+                                                    <FontAwesomeIcon
+                                                        icon={faXmark}
+                                                    />
+                                                }
+                                                checked={item.status}
+                                                onChange={(e) =>
+                                                    handleChangeStatus(e, item)
+                                                }
+                                                loading={
+                                                    loadingChangeStatus ||
+                                                    isLoadingMultiChangeStatus
+                                                }
+                                            />{" "}
+                                            {item.mod_button_name}
+                                        </span>
+                                    ))}
                                 </Space>
                             );
                         }}

@@ -66,6 +66,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource("inventory", App\Http\Controllers\InventoryController::class);
 
     // Module
+    Route::post('module_update_permission_status', [App\Http\Controllers\ModuleController::class, 'module_update_permission_status']);
+    Route::post('module_multi_update_permission_status', [App\Http\Controllers\ModuleController::class, 'module_multi_update_permission_status']);
     Route::apiResource('module', App\Http\Controllers\ModuleController::class);
 
     // Notification

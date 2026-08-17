@@ -12,7 +12,7 @@ export default function Sidemenu(props) {
         sideMenuCollapse,
         setSideMenuCollapse,
         width,
-        // dataPermissions,
+        dataPermissions,
     } = props;
 
     const [openKeys, setOpenKeys] = useState();
@@ -50,18 +50,18 @@ export default function Sidemenu(props) {
         }
     };
 
-    // const handleCheckPermission = (moduleCode) => {
-    //     let checkPermissions = dataPermissions.filter(
-    //         (f) =>
-    //             f.module_code === moduleCode &&
-    //             f.module_buttons.filter(
-    //                 (f2) =>
-    //                     f2.mod_button_code === "view_page" &&
-    //                     parseInt(f2.status) === 1
-    //             ).length > 0
-    //     );
-    //     return checkPermissions.length > 0 ? true : false;
-    // };
+    const handleCheckPermission = (moduleCode) => {
+        let checkPermissions = dataPermissions.filter(
+            (f) =>
+                f.module_code === moduleCode &&
+                f.module_buttons.filter(
+                    (f2) =>
+                        f2.mod_button_code === "view_page" &&
+                        parseInt(f2.status) === 1,
+                ).length > 0,
+        );
+        return checkPermissions.length > 0 ? true : false;
+    };
 
     const activeRoute = (routeName) => {
         const pathname = location.pathname;
@@ -104,18 +104,18 @@ export default function Sidemenu(props) {
                         );
                     }
 
-                    // if (handleCheckPermission(item2.moduleCode)) {
-                    children_list.push({
-                        key: item2.path,
-                        className: activeSubRoute(item2.path),
-                        label: link,
-                        onClick: () => {
-                            if (width < 768) {
-                                setSideMenuCollapse(true);
-                            }
-                        },
-                    });
-                    // }
+                    if (handleCheckPermission(item2.moduleCode)) {
+                        children_list.push({
+                            key: item2.path,
+                            className: activeSubRoute(item2.path),
+                            label: link,
+                            onClick: () => {
+                                if (width < 768) {
+                                    setSideMenuCollapse(true);
+                                }
+                            },
+                        });
+                    }
 
                     return "";
                 });
@@ -155,21 +155,23 @@ export default function Sidemenu(props) {
                     );
                 }
 
-                // if (handleCheckPermission(item.moduleCode)) {
-                items.push({
-                    key: item.path,
-                    icon: item.icon,
-                    label: link,
-                    className:
-                        activeRoute(item.path) + " " + (item.className ?? ""),
-                    id: item.id,
-                    onClick: () => {
-                        if (width < 768) {
-                            setSideMenuCollapse(true);
-                        }
-                    },
-                });
-                // }
+                if (handleCheckPermission(item.moduleCode)) {
+                    items.push({
+                        key: item.path,
+                        icon: item.icon,
+                        label: link,
+                        className:
+                            activeRoute(item.path) +
+                            " " +
+                            (item.className ?? ""),
+                        id: item.id,
+                        onClick: () => {
+                            if (width < 768) {
+                                setSideMenuCollapse(true);
+                            }
+                        },
+                    });
+                }
             }
         });
 

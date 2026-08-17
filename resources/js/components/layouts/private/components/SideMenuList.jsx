@@ -7,7 +7,6 @@ import {
     faWarehouseFull,
     faListCheck,
     faChartMixedUpCircleDollar,
-    faUserGroup,
     faBoxesStacked,
     faChartPie,
     faBoxOpenFull,
@@ -133,11 +132,11 @@ export const adminSideMenu = [
                 path: "/reports/inventory",
                 moduleCode: "page_reports",
             },
-            {
-                title: "Budget",
-                path: "/reports/budget",
-                moduleCode: "page_reports",
-            },
+            // {
+            //     title: "Budget",
+            //     path: "/reports/budget",
+            //     moduleCode: "page_reports",
+            // },
         ],
     },
     {

@@ -35,16 +35,35 @@ class ModuleController extends Controller
         }
 
         if ($request->page_size) {
-            $data = $dataQuery->limit($request->page_size)
-                ->paginate($request->page_size, ['*'], 'page', $request->page)
-                ->toArray();
+            $data = $dataQuery->paginate($request->page_size, ['*'], 'page', $request->page);
         } else {
             $data = $dataQuery->get();
         }
 
+        // Inject status onto each module_button based on tab context (UserRole or Users)
+        $data->transform(function ($module) use ($request) {
+            $module->module_buttons->transform(function ($button) use ($request) {
+                if ($request->tab_parent_active === 'UserRole' && $request->filled('user_role_id')) {
+                    $perm = UserRolePermission::where('mod_button_id', $button->id)
+                        ->where('user_role_id', $request->user_role_id)
+                        ->first();
+                    $button->status = $perm ? (int) $perm->status : 0;
+                } elseif ($request->tab_parent_active === 'Users' && $request->filled('user_id')) {
+                    $perm = UserPermission::where('mod_button_id', $button->id)
+                        ->where('user_id', $request->user_id)
+                        ->first();
+                    $button->status = $perm ? (int) $perm->status : 0;
+                } else {
+                    $button->status = 0;
+                }
+                return $button;
+            });
+            return $module;
+        });
+
         return response()->json([
             "success" => true,
-            "data" => $data
+            "data" => $request->page_size ? $data->toArray() : $data,
         ], 200);
     }
 

@@ -253,7 +253,7 @@ export default function PageBudgetAllocationDepartmentContent() {
                                     total={dataSource?.data?.total || 0}
                                     showLessItems={true}
                                     showSizeChanger={false}
-                                    tblIdWrapper="tbl_wrapper_department_allocation"
+                                    tblIdWrapper="tbl_department_allocation"
                                 />
                             </Flex>
                         </Flex>
