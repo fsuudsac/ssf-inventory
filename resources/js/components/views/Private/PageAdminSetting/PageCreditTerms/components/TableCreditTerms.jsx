@@ -8,6 +8,8 @@ import PageCreditTermsContext from "./PageCreditTermsContext";
 export default function TableCreditTerms() {
     const {
         dataSource,
+        isLoadingSource,
+        isFetchingSource,
         setToggleModalFormCreditTerms,
         setSelectedRowKeys,
         selectedRowKeys,
@@ -18,7 +20,8 @@ export default function TableCreditTerms() {
         <Table
             id="tbl_credit_term"
             className="ant-table-default ant-table-striped"
-            dataSource={dataSource && dataSource.data.data}
+            dataSource={dataSource?.data?.data || []}
+            loading={isLoadingSource || isFetchingSource}
             rowKey={(record) => record.id}
             pagination={false}
             bordered={false}
@@ -38,7 +41,7 @@ export default function TableCreditTerms() {
                 dataIndex="action"
                 align="center"
                 width={80}
-                render={(text, record) => {
+                render={(_, record) => {
                     return (
                         <Flex justify="center">
                             <Tooltip title="Edit">
@@ -71,6 +74,7 @@ export default function TableCreditTerms() {
                 key="date_formatted"
                 dataIndex="date_formatted"
                 sorter={true}
+                defaultSortOrder="descend"
             />
         </Table>
     );

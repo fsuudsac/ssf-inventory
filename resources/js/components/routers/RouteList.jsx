@@ -51,6 +51,7 @@ import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudg
 import PagePermission from "../views/Private/PagePermission/PagePermission";
 import PageBudgetAllocationDepartment from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment/PageBudgetAllocationDepartment";
 import PageReportBudget from "../views/Private/PageReport/PageReportBudget";
+import PagePurchaseRequest from "../views/Private/PagePurchaseRequest/PagePurchaseRequest";
 
 export default function RouteList() {
     return (
@@ -112,6 +113,26 @@ export default function RouteList() {
                             },
                         ]}
                         component={PageDashboard}
+                    />
+                }
+            />
+
+            <Route
+                path="/purchase-request"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase_request"
+                        moduleName="Purchase Request"
+                        title="Purchase Request"
+                        subtitle="PURCHASE REQUEST"
+                        pageId="PagePurchaseRequest"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Request",
+                            },
+                        ]}
+                        component={PagePurchaseRequest}
                     />
                 }
             />

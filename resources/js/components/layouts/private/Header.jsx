@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown, Image, Layout, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPowerOff } from "@fortawesome/pro-light-svg-icons";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { faBell } from "@fortawesome/pro-regular-svg-icons";
 
 import {
     apiUrl,

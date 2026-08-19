@@ -25,10 +25,13 @@ class RefDepartmentController extends Controller
         //       AND profile_departments.status = 1
         //       AND user_roles.role IN ('Admin','Staff','Faculty/Dean','Faculty/Chairman','Faculty','Faculty/Staff','Student Assistant'))";
 
+        $date_formatted = "DATE_FORMAT(ref_departments.created_at, '%m/%d/%Y %h:%i %p')";
+
         $data = RefDepartment::select([
             "*",
             DB::raw("$departmentType department_type"),
             // DB::raw("$total_profiles_count total_profiles_count"),
+            DB::raw("$date_formatted date_formatted")
         ])
             ->with([
                 'profile_departments:id,profile_id,department_id',

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm, Row, Col } from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
@@ -8,6 +8,7 @@ import FloatInput from "../../../../providers/FloatInput";
 
 export default function ModalFormEmail(props) {
     const { toggleModalFormEmail, setToggleModalFormEmail } = props;
+
     const [form] = Form.useForm();
 
     const { mutate: mutateEmail, isLoading: isLoadingEmail } = POST(
@@ -70,8 +71,8 @@ export default function ModalFormEmail(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormEmail({
                             open: false,
@@ -83,40 +84,60 @@ export default function ModalFormEmail(props) {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={(values) => form.submit(values)}
-                    loading={isLoadingEmail}
+                    title="Are you sure you want to submit this email?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingEmail}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingEmail}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="email"
-                    rules={[validateRules.email, validateRules.required()]}
-                >
-                    <FloatInput
-                        label="New email"
-                        placeholder="New Email"
-                        required
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="confirm_email"
-                    rules={[
-                        validateRules.email_validate,
-                        validateRules.required(),
-                    ]}
-                >
-                    <FloatInput
-                        label="Confirm email"
-                        placeholder="Confirm Email"
-                        required
-                    />
-                </Form.Item>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item
+                            name="email"
+                            rules={[
+                                validateRules.email,
+                                validateRules.required(),
+                            ]}
+                        >
+                            <FloatInput
+                                label="New email"
+                                placeholder="New Email"
+                                required
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item
+                            name="confirm_email"
+                            rules={[
+                                validateRules.email_validate,
+                                validateRules.required(),
+                            ]}
+                        >
+                            <FloatInput
+                                label="Confirm email"
+                                placeholder="Confirm Email"
+                                required
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

@@ -1,14 +1,23 @@
 import { useEffect } from "react";
-import { Modal, Button, Form, notification, Col, Row, Divider } from "antd";
+import {
+    Modal,
+    Button,
+    Form,
+    notification,
+    Col,
+    Row,
+    Divider,
+    Popconfirm,
+} from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTrash } from "@fortawesome/pro-regular-svg-icons";
+import dayjs from "dayjs";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
 import FloatDatePicker from "../../../../providers/FloatDatePicker";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatSelect from "../../../../providers/FloatSelect";
-import dayjs from "dayjs";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/pro-regular-svg-icons";
 import FloatInputNumber from "../../../../providers/FloatInputNumber";
 
 export default function ModalPurchase(props) {
@@ -76,7 +85,7 @@ export default function ModalPurchase(props) {
                     });
                 }
             },
-            onError: (err) => {
+            onError: () => {
                 notification.error({
                     message: "Purchase Order not Added",
                     description: "Something went Wrong",
@@ -114,8 +123,8 @@ export default function ModalPurchase(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormPurchase({
                             open: false,
@@ -127,14 +136,21 @@ export default function ModalPurchase(props) {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={(values) => form.submit(values)}
-                    loading={isLoadingPurchase}
+                    title="Are you sure you want to submit this purchase order?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingPurchase}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingPurchase}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             <Form
@@ -143,6 +159,7 @@ export default function ModalPurchase(props) {
                 initialValues={{
                     purchase_details: [{}],
                 }}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
             >
                 <Row gutter={[12, 0]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>

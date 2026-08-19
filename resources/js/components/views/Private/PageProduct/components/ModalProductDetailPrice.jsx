@@ -1,12 +1,12 @@
-import { Button, Col, Form, Modal, notification, Row } from "antd";
+import { useEffect } from "react";
+import { Button, Col, Form, Modal, notification, Popconfirm, Row } from "antd";
+import dayjs from "dayjs";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import notificationErrors from "../../../../providers/notificationErrors";
-import FloatInput from "../../../../providers/FloatInput";
 import FloatDatePicker from "../../../../providers/FloatDatePicker";
 import FloatInputNumber from "../../../../providers/FloatInputNumber";
-import dayjs from "dayjs";
-import { useEffect } from "react";
+import FloatSelect from "../../../../providers/FloatSelect";
 
 export default function ModalProductDetailPrice(props) {
     const {
@@ -102,6 +102,7 @@ export default function ModalProductDetailPrice(props) {
         }
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleModalProductDetailPrice]);
 
     return (
@@ -123,8 +124,8 @@ export default function ModalProductDetailPrice(props) {
             }}
             footer={[
                 <Button
-                    type="default"
                     key={1}
+                    type="default"
                     onClick={() => {
                         form.resetFields();
                         setToggleModalProductDetailPrice({
@@ -136,20 +137,56 @@ export default function ModalProductDetailPrice(props) {
                 >
                     CLOSE
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingProductDetail}
+                    title="Are you sure you want to submit this product detail price?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProductDetail}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingProductDetail}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                    <Form form={form} onFinish={onFinish}>
+                    <Form
+                        form={form}
+                        onFinish={onFinish}
+                        onKeyDown={(e) =>
+                            e.key === "Enter" && e.preventDefault()
+                        }
+                    >
                         <Row gutter={[12, 0]}>
+                            <Col
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                            >
+                                <Form.Item name="supplier">
+                                    <FloatSelect
+                                        label="Supplier"
+                                        placeholder="Supplier"
+                                        allowClear
+                                        options={[
+                                            {
+                                                label: "If supplier doesn't exist, please add in Users page",
+                                                value: "",
+                                                disabled: true,
+                                            },
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
                             <Col
                                 xs={24}
                                 sm={24}

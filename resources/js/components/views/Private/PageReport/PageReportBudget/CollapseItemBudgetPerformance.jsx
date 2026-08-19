@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Flex, Row, Table } from "antd";
+import { Button, Col, Flex, Row, Table } from "antd";
 
 import { GET } from "../../../../providers/useAxiosQuery";
 import FloatSelect from "../../../../providers/FloatSelect";
@@ -53,6 +53,7 @@ export default function CollapseItemBudgetPerformance(props) {
                             label="School Year"
                             placeholder="School Year"
                             mode="multiple"
+                            value={tableFilter.school_year_ids}
                             options={dataSchoolYears?.data?.map((item) => ({
                                 label: `${item.sy_from} - ${item.sy_to}`,
                                 value: item.id,
@@ -69,6 +70,7 @@ export default function CollapseItemBudgetPerformance(props) {
                         <FloatSelect
                             label="Department Type"
                             placeholder="Department Type"
+                            value={tableFilter.department_type_id}
                             options={dataDepartmentTypes?.data?.map((item) => ({
                                 label: item.department_type,
                                 value: item.id,
@@ -86,6 +88,7 @@ export default function CollapseItemBudgetPerformance(props) {
                             label="Department"
                             placeholder="Department"
                             mode="multiple"
+                            value={tableFilter.department_ids}
                             options={dataDepartments?.data?.map((item) => ({
                                 label: item.department_name,
                                 value: item.id,
@@ -93,6 +96,12 @@ export default function CollapseItemBudgetPerformance(props) {
                         />
                     </Col>
                 </Row>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                <Flex>
+                    <Button type="primary">Submit</Button>
+                </Flex>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>

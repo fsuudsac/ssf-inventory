@@ -130,6 +130,7 @@ export default function SalesFormDetailContent(props) {
                     let total_discount =
                         form.getFieldValue("total_discount") ?? 0;
                     let ewt_type_id = form.getFieldValue("ewt_type_id");
+                    let vat_type = form.getFieldValue("vat_type");
 
                     let disabled = true;
 

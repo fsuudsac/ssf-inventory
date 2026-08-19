@@ -28,6 +28,7 @@ Route::get('report_inventory_pdf', [App\Http\Controllers\InventoryController::cl
 // User and Profile
 Route::middleware('auth:api')->group(function () {
     // Allocation Type
+    Route::post("allocation_type_archived", [App\Http\Controllers\RefAllocationTypeController::class, "allocation_type_archived"]);
     Route::apiResource("allocation_type", App\Http\Controllers\RefAllocationTypeController::class);
 
     // Auth
@@ -148,9 +149,10 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('sales', App\Http\Controllers\SalesOrderController::class);
 
     // Sales Order Details
-    Route::post("sale_detail_delete", [App\Http\Controllers\SalesOrderDetailController::class, "sale_detail_delete"]);
+    Route::post("sales_order_detail_delete", [App\Http\Controllers\SalesOrderDetailController::class, "sales_order_detail_delete"]);
     Route::apiResource('sales_order_details', App\Http\Controllers\SalesOrderDetailController::class);
 
+    // Sales Order Return
     Route::post("sales_return_archived", [App\Http\Controllers\SalesOrderReturnController::class, 'sales_return_archived']);
     Route::apiResource("sales_order_return", App\Http\Controllers\SalesOrderReturnController::class);
 
@@ -228,6 +230,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Department Allocation
     Route::post('department_allocation_archived', [\App\Http\Controllers\RefDepartmentAllocationController::class, 'department_allocation_archived']);
+    Route::post('department_allocation_update', [\App\Http\Controllers\RefDepartmentAllocationController::class, 'department_allocation_update']);
     Route::post('budget_sweep', [\App\Http\Controllers\RefDepartmentAllocationController::class, 'budget_sweep']);
     Route::apiResource('department_allocation', \App\Http\Controllers\RefDepartmentAllocationController::class);
 });

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm } from "antd";
 
 import { POST } from "../../../../../providers/useAxiosQuery";
 import validateRules from "../../../../../providers/validateRules";
@@ -91,8 +91,8 @@ export default function ModalFormDepartment() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormDepartment({
                             open: false,
@@ -103,18 +103,30 @@ export default function ModalFormDepartment() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingDepartment}
+                    title="Are you sure to submit this form?"
+                    onConfirm={() => form.submit()}
+                    onCancel={() => {}}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingDepartment}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingDepartment}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             {/* Fixed: single Form with all three fields */}
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Form.Item name="abbr" rules={[validateRules.required()]}>
                     <FloatInput
                         label="Abbreviation"

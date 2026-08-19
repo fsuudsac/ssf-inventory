@@ -8,6 +8,8 @@ import PageDepartmentContext from "./PageDepartmentContext";
 export default function TableDepartment() {
     const {
         dataSource,
+        isLoadingSource,
+        isFetchingSource,
         setToggleModalFormDepartment,
         setSelectedRowKeys,
         selectedRowKeys,
@@ -18,7 +20,8 @@ export default function TableDepartment() {
         <Table
             id="tbl_department"
             className="ant-table-default ant-table-striped"
-            dataSource={dataSource && dataSource.data.data}
+            dataSource={dataSource?.data?.data || []}
+            loading={isLoadingSource || isFetchingSource}
             rowKey={(record) => record.id}
             pagination={false}
             bordered={false}
@@ -38,23 +41,26 @@ export default function TableDepartment() {
                 dataIndex="action"
                 align="center"
                 width={100}
-                render={(text, record) => {
+                render={(_, record) => {
                     return (
                         <Flex justify="center">
-                            <Tooltip title="Edit">
-                                <Button
-                                    type="link"
-                                    className="color-1"
-                                    onClick={() =>
-                                        setToggleModalFormDepartment({
-                                            open: true,
-                                            data: record,
-                                        })
-                                    }
-                                    icon={<FontAwesomeIcon icon={faPencil} />}
-                                    name="btn_edit"
-                                />
-                            </Tooltip>
+                            <div name="btn_edit">
+                                <Tooltip title="Edit">
+                                    <Button
+                                        type="link"
+                                        className="color-1"
+                                        onClick={() =>
+                                            setToggleModalFormDepartment({
+                                                open: true,
+                                                data: record,
+                                            })
+                                        }
+                                        icon={
+                                            <FontAwesomeIcon icon={faPencil} />
+                                        }
+                                    />
+                                </Tooltip>
+                            </div>
                         </Flex>
                     );
                 }}
@@ -72,6 +78,7 @@ export default function TableDepartment() {
                 dataIndex="department_name"
                 sorter={true}
                 width={300}
+                defaultSortOrder="ascend"
             />
             <Table.Column
                 title="Department Type"

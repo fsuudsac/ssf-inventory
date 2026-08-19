@@ -8,6 +8,7 @@ import {
     Button,
     Typography,
     notification,
+    Popconfirm,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrashAlt } from "@fortawesome/pro-regular-svg-icons";
@@ -24,7 +25,7 @@ export default function ModalFormModule(props) {
 
     const { mutate: mutateModule, isLoading: isLoadingModule } = POST(
         `api/module`,
-        `module_list_${systemId}`
+        `module_list_${systemId}`,
     );
 
     const onFinish = (values) => {
@@ -82,6 +83,7 @@ export default function ModalFormModule(props) {
         }
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleModalModule]);
 
     return (
@@ -95,10 +97,33 @@ export default function ModalFormModule(props) {
                     data: null,
                 })
             }
-            footer={null}
             forceRender
+            footer={[
+                <Button key={1} type="default" loading={isLoadingModule}>
+                    Close
+                </Button>,
+                <Popconfirm
+                    key={2}
+                    title="Are you sure you want to submit this module?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingModule}
+                >
+                    <Button type="primary" loading={isLoadingModule}>
+                        Submit
+                    </Button>
+                </Popconfirm>,
+            ]}
         >
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Row gutter={[12, 0]}>
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
@@ -209,7 +234,7 @@ export default function ModalFormModule(props) {
                                                     ) : null}
                                                 </div>
                                             </Space>
-                                        )
+                                        ),
                                     )}
                                     <Form.Item>
                                         <Button
@@ -228,25 +253,6 @@ export default function ModalFormModule(props) {
                                 </>
                             )}
                         </Form.List>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} className="text-right">
-                        <Button
-                            type="primary"
-                            className="btn-main-primary outlined"
-                            loading={isLoadingModule}
-                        >
-                            Close
-                        </Button>
-
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="btn-main-primary ml-10"
-                            loading={isLoadingModule}
-                        >
-                            Submit
-                        </Button>
                     </Col>
                 </Row>
             </Form>

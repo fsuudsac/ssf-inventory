@@ -1,4 +1,4 @@
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm, Row, Col } from "antd";
 
 import { useEffect } from "react";
 import { POST } from "../../../../providers/useAxiosQuery";
@@ -47,7 +47,7 @@ export default function ModalFormPassword(props) {
                     });
                 }
             },
-            onError: (err) => {
+            onError: () => {
                 notification.error({
                     message: "Password Update",
                     description: "Something went wrong",
@@ -81,9 +81,8 @@ export default function ModalFormPassword(props) {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
-                    size="large"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormPassword({
                             open: false,
@@ -95,41 +94,60 @@ export default function ModalFormPassword(props) {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
-                    size="large"
+                <Popconfirm
                     key={2}
-                    onClick={(values) => form.submit(values)}
-                    loading={isLoadingPassword}
+                    title="Are you sure you want to submit this password?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingPassword}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingPassword}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="new_password"
-                    rules={[validateRules.required(), validateRules.password]}
-                >
-                    <FloatInputPassword
-                        label="New Password"
-                        placeholder="New Password"
-                        required={true}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="confirm_password"
-                    rules={[
-                        validateRules.password_validate,
-                        validateRules.required(),
-                    ]}
-                >
-                    <FloatInputPassword
-                        label="Confirm Password"
-                        placeholder="Confirm Password"
-                        required={true}
-                    />
-                </Form.Item>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                        <Form.Item
+                            name="new_password"
+                            rules={[
+                                validateRules.required(),
+                                validateRules.password,
+                            ]}
+                        >
+                            <FloatInputPassword
+                                label="New Password"
+                                placeholder="New Password"
+                                required={true}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                        <Form.Item
+                            name="confirm_password"
+                            rules={[
+                                validateRules.password_validate,
+                                validateRules.required(),
+                            ]}
+                        >
+                            <FloatInputPassword
+                                label="Confirm Password"
+                                placeholder="Confirm Password"
+                                required={true}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

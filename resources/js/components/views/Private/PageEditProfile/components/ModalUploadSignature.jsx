@@ -1,4 +1,13 @@
-import { Button, Col, Empty, Modal, Row, Upload, notification } from "antd";
+import {
+    Button,
+    Col,
+    Empty,
+    Modal,
+    Popconfirm,
+    Row,
+    Upload,
+    notification,
+} from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/pro-regular-svg-icons";
 
@@ -56,18 +65,17 @@ export default function ModalUploadSignature(props) {
             footer={[
                 <Button
                     key="cancel"
-                    size="large"
+                    type="default"
                     onClick={() => {
                         setToggleModalUploadSignature(false);
                     }}
                 >
                     Cancel
                 </Button>,
-                <Button
+                <Popconfirm
                     key="save"
-                    type="primary"
-                    size="large"
-                    onClick={() => {
+                    title="Are you sure you want to save this signature?"
+                    onConfirm={() => {
                         if (fileSignature.file) {
                             handleSave();
                         } else {
@@ -77,10 +85,17 @@ export default function ModalUploadSignature(props) {
                             });
                         }
                     }}
-                    loading={isLoadingUploadSignature}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingUploadSignature}
                 >
-                    Save
-                </Button>,
+                    <Button type="primary" loading={isLoadingUploadSignature}>
+                        Save
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             <Row gutter={[12, 12]}>

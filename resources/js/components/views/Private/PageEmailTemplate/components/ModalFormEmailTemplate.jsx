@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Col, Form, Modal, Row, notification } from "antd";
+import { Button, Col, Form, Modal, Popconfirm, Row, notification } from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
@@ -76,10 +76,43 @@ export default function ModalFormEmailTemplate(props) {
                     data: null,
                 })
             }
-            footer={null}
+            footer={[
+                <Button
+                    key={1}
+                    type="default"
+                    loading={loadingEmailTemplate}
+                    onClick={() =>
+                        setToggleModalFormEmailTemplate({
+                            open: false,
+                            data: null,
+                        })
+                    }
+                >
+                    Close
+                </Button>,
+                <Popconfirm
+                    key={2}
+                    title="Are you sure you want to submit this email template?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={loadingEmailTemplate}
+                >
+                    <Button type="primary" loading={loadingEmailTemplate}>
+                        Submit
+                    </Button>
+                </Popconfirm>,
+            ]}
             forceRender
         >
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Row gutter={[12, 0]}>
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
@@ -112,31 +145,6 @@ export default function ModalFormEmailTemplate(props) {
                         >
                             <FloatQuill placeholder="Body" required />
                         </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} className="text-right">
-                        <Button
-                            type="primary"
-                            className="btn-main-primary outlined"
-                            loading={loadingEmailTemplate}
-                            onClick={() =>
-                                setToggleModalFormEmailTemplate({
-                                    open: false,
-                                    data: null,
-                                })
-                            }
-                        >
-                            Close
-                        </Button>
-
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="btn-main-primary ml-10"
-                            loading={loadingEmailTemplate}
-                        >
-                            Submit
-                        </Button>
                     </Col>
                 </Row>
             </Form>

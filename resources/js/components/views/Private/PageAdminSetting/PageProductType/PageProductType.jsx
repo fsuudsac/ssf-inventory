@@ -22,26 +22,32 @@ export default function PageProductType() {
     const location = useLocation();
     const { width } = useWindowDimensions();
 
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
     const [toggleModalFormProductType, setToggleModalFormProductType] =
         useState({
             open: false,
             data: null,
         });
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
     const [tableFilter, setTableFilter] = useState({
         page: 1,
         page_size: 50,
         search: "",
-        sort_order: "desc",
         sort_field: "date_formatted",
+        sort_order: "desc",
         isTrash: 0,
     });
 
-    const { data: dataSource, refetch: refetchSource } = GET(
+    const {
+        data: dataSource,
+        refetch: refetchSource,
+        isLoading: isLoadingSource,
+        isFetching: isFetchingSource,
+    } = GET(
         `api/product_type?${new URLSearchParams(tableFilter)}`,
         "product_type_list",
+        () => {},
+        false,
     );
 
     useEffect(() => {
@@ -98,6 +104,8 @@ export default function PageProductType() {
         <PageProductTypeContext.Provider
             value={{
                 dataSource,
+                isLoadingSource,
+                isFetchingSource,
                 setTableFilter,
                 toggleModalFormProductType,
                 setToggleModalFormProductType,

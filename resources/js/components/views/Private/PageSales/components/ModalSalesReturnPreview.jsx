@@ -25,8 +25,8 @@ export default function ModalSalesReturnPreview() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalSalesPreview({
                             open: false,
@@ -45,7 +45,7 @@ export default function ModalSalesReturnPreview() {
                     src={apiUrl(
                         `api/sales_return_preview/${toggleModalSalesPreview?.data?.id}`,
                     )}
-                    frameborder="0"
+                    frameBorder="0"
                 />
             ) : null}
         </Modal>

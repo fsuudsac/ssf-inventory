@@ -1,13 +1,23 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, Row, Col, Flex, notification, Table } from "antd";
+import {
+    Modal,
+    Button,
+    Form,
+    Row,
+    Col,
+    Flex,
+    notification,
+    Table,
+    Popconfirm,
+} from "antd";
 import dayjs from "dayjs";
 
+import { userData } from "../../../../providers/appConfig";
 import { GET, POST } from "../../../../providers/useAxiosQuery";
 import FloatInputNumber from "../../../../providers/FloatInputNumber";
 import notificationErrors from "../../../../providers/notificationErrors";
 import validateRules from "../../../../providers/validateRules";
 import formatToCurrency from "../../../../providers/formatToCurrency";
-import { userData } from "../../../../providers/appConfig";
 import PagePurchaseContext from "./PagePurchaseContext";
 
 export default function ModalFormPayment() {
@@ -45,6 +55,7 @@ export default function ModalFormPayment() {
         refetchUserPayments();
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleModalPuchasePayment]);
 
     // Payment
@@ -114,8 +125,8 @@ export default function ModalFormPayment() {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalPuchasePayment({
                             open: false,
@@ -131,7 +142,13 @@ export default function ModalFormPayment() {
         >
             <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <Form form={form} onFinish={onFinish}>
+                    <Form
+                        form={form}
+                        onFinish={onFinish}
+                        onKeyDown={(e) =>
+                            e.key === "Enter" && e.preventDefault()
+                        }
+                    >
                         <Row gutter={[20, 0]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <Flex gap={15} vertical={true}>
@@ -222,13 +239,24 @@ export default function ModalFormPayment() {
                                                 />
                                             </Form.Item>
 
-                                            <Button
-                                                htmlType="submit"
-                                                type="primary"
-                                                size="large"
+                                            <Popconfirm
+                                                title="Are you sure you want to submit this payment?"
+                                                onConfirm={() => form.submit()}
+                                                okText="Yes"
+                                                cancelText="No"
+                                                okButtonProps={{
+                                                    className:
+                                                        "btn-main-invert",
+                                                }}
+                                                disabled={isLoadingPayment}
                                             >
-                                                Submit
-                                            </Button>
+                                                <Button
+                                                    type="primary"
+                                                    loading={isLoadingPayment}
+                                                >
+                                                    Submit
+                                                </Button>
+                                            </Popconfirm>
                                         </Flex>
                                     </Flex>
                                 </Flex>
@@ -236,6 +264,7 @@ export default function ModalFormPayment() {
                         </Row>
                     </Form>
                 </Col>
+
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Table
                         className="ant-table-default ant-table-striped"
@@ -252,9 +281,7 @@ export default function ModalFormPayment() {
                             title="Date Payment"
                             key="date_payment"
                             dataIndex="date_payment"
-                            render={(text, _) =>
-                                dayjs(text).format("DD/MM/YYYY")
-                            }
+                            render={(text) => dayjs(text).format("DD/MM/YYYY")}
                         />
 
                         <Table.Column
@@ -262,21 +289,27 @@ export default function ModalFormPayment() {
                             title="Amount Payable"
                             key="amount_payable"
                             dataIndex="amount_payable"
-                            render={(text, _) => `₱${formatToCurrency(text)}`}
+                            render={(text) =>
+                                formatToCurrency(text, "PHP", "currency")
+                            }
                         />
                         <Table.Column
                             width={150}
                             title="Amount Paid"
                             key="amount"
                             dataIndex="amount"
-                            render={(text, _) => `₱${formatToCurrency(text)}`}
+                            render={(text) =>
+                                formatToCurrency(text, "PHP", "currency")
+                            }
                         />
                         <Table.Column
                             width={150}
                             title="Balance"
                             key="balance"
                             dataIndex="balance"
-                            render={(text, _) => `₱${formatToCurrency(text)}`}
+                            render={(text) =>
+                                formatToCurrency(text, "PHP", "currency")
+                            }
                         />
                     </Table>
                 </Col>

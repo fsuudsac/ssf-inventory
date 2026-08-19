@@ -110,7 +110,7 @@ export default function PageBudgetAllocationDepartmentContent() {
                             }}
                         />
                     </Col>
-                    <Col xs={24} sm={24} md={6}>
+                    {/* <Col xs={24} sm={24} md={6}>
                         <FloatSelect
                             label="Allocation Type"
                             placeholder="Allocation Type"
@@ -126,7 +126,7 @@ export default function PageBudgetAllocationDepartmentContent() {
                                 }));
                             }}
                         />
-                    </Col>
+                    </Col> */}
                 </Row>
             </Col>
 

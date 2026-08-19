@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Form, notification, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,19 +15,20 @@ import ModalFormProfileAddress from "./components/ModalFormProfileAddress";
 export default function PageFormSales() {
     const params = useParams();
     const navigate = useNavigate();
+
     const [form] = Form.useForm();
 
     const [companyValue, setCompanyValue] = useState("");
     const [dataCompany, setDataCompany] = useState([]);
 
-    const [dataCreditTerm, setDataCreditTerm] = useState([]);
     const [creditTermValue, setCreditTermValue] = useState(null);
+    const [dataCreditTerm, setDataCreditTerm] = useState([]);
 
-    const [dataEwtType, setDataEwtType] = useState([]);
     const [ewtTypeValue, setEwtTypeValue] = useState(null);
+    const [dataEwtType, setDataEwtType] = useState([]);
 
-    const [dataSource, setDataSource] = useState(null);
     const [customerAddress, setCustomerAddress] = useState([]);
+    const [dataSource, setDataSource] = useState(null);
 
     const [toggleModalFormCustomer, setToggleModalFormCustomer] = useState({
         open: false,
@@ -43,7 +44,7 @@ export default function PageFormSales() {
     const { data: dataCustomers } = GET(
         `api/users`,
         "users_customer_dropdown",
-        (res) => {},
+        () => {},
         false,
     );
 
@@ -65,10 +66,7 @@ export default function PageFormSales() {
         false,
     );
 
-    const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
-        `api/company`,
-        "company_create",
-    );
+    const { mutate: mutateCompany } = POST(`api/company`, "company_create");
 
     const handleAddCompany = () => {
         let data = { company: companyValue };
@@ -109,7 +107,7 @@ export default function PageFormSales() {
         false,
     );
 
-    const { mutate: mutateCreditTerm, isLoading: isLoadingCreditTerm } = POST(
+    const { mutate: mutateCreditTerm } = POST(
         `api/credit_term`,
         "credit_term_create",
     );
@@ -153,10 +151,7 @@ export default function PageFormSales() {
         false,
     );
 
-    const { mutate: mutateEwtType, isLoading: isLoadingEwtType } = POST(
-        `api/ewt_type`,
-        "ewt_type_create",
-    );
+    const { mutate: mutateEwtType } = POST(`api/ewt_type`, "ewt_type_create");
 
     const handleAddEwtType = () => {
         let data = { ewt_type: ewtTypeValue };
@@ -232,7 +227,7 @@ export default function PageFormSales() {
                             vat: Number(item.vat),
                             gross_amount: Number(item.gross_amount),
                             total_stock:
-                                Number(item.product_detail.total_stock) ?? 0,
+                                Number(item.product_detail.total_stock) || 0,
                         }),
                     );
 
@@ -389,7 +384,7 @@ export default function PageFormSales() {
     const {
         mutate: mutateDeleteSalesDetail,
         isLoading: isLoadingDeleteSalesDetail,
-    } = POST(`api/sale_detail_delete`, "sales_detail_delete");
+    } = POST(`api/sales_order_detail_delete`, "sales_order_detail_delete");
 
     const handleDeleteSalesDetail = (name, remove) => {
         let sales_details = form.getFieldValue("sales_details");
@@ -397,7 +392,7 @@ export default function PageFormSales() {
         if (sales_details && sales_details.length > 0) {
             let sales_detail = sales_details[name];
 
-            if (sales_detail.id) {
+            if (sales_detail && sales_detail.id) {
                 mutateDeleteSalesDetail(sales_detail, {
                     onSuccess: (res) => {
                         if (res.success) {

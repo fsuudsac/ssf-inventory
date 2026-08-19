@@ -24,6 +24,7 @@ export default function PageTransfer() {
     const [toggleModalFormTransfer, setToggleModalFormTransfer] = useState({
         open: false,
         data: null,
+        disabled: false,
     });
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -79,6 +80,7 @@ export default function PageTransfer() {
         refetchProductDetail();
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productDetailFilter]);
 
     const onChangeTable = (pagination, filters, sorter) => {
@@ -180,6 +182,8 @@ export default function PageTransfer() {
                         onClick={() =>
                             setToggleModalFormTransfer({
                                 open: true,
+                                data: null,
+                                disabled: false,
                             })
                         }
                         name="btn_add"

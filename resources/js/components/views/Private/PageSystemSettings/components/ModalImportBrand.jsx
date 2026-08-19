@@ -1,6 +1,13 @@
 import { useEffect } from "react";
-import { Modal, Button, Form, notification, Row, Upload } from "antd";
-
+import {
+    Modal,
+    Button,
+    Form,
+    notification,
+    Row,
+    Upload,
+    Popconfirm,
+} from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileArrowUp } from "@fortawesome/pro-regular-svg-icons";
 
@@ -79,8 +86,8 @@ export default function ModalImportBrand(props) {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalImportBrand({
                             open: false,
@@ -91,17 +98,28 @@ export default function ModalImportBrand(props) {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={(values) => form.submit(values)}
-                    loading={isLoadingCategory}
+                    title="Are you sure you want to import this brand?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingCategory}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingCategory}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Row gutter={[12, 0]}>
                     <Form.Item
                         style={{ width: "100%" }}

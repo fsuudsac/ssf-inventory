@@ -102,8 +102,6 @@ export default function TableDepartmentAllocation(props) {
 
     useTableScrollOnTop("tbl_department_allocation", location);
 
-    console.log("allowedButtons: ", allowedButtons);
-
     return (
         <>
             <Table
@@ -270,13 +268,12 @@ export default function TableDepartmentAllocation(props) {
                     title="Allocation Type"
                     key="allocation_type"
                     dataIndex="allocation_type"
-                    width={170}
                 />
-                <Table.Column
+                {/* <Table.Column
                     title="Allocation Name"
                     key="allocation_name"
                     dataIndex="allocation_name"
-                />
+                /> */}
                 <Table.Column
                     title="Allocated Amount"
                     key="base_amount"

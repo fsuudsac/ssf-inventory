@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm, Row, Col } from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
@@ -92,8 +92,8 @@ export default function ModalFormProductCategory() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormProductCategory({
                             open: false,
@@ -104,27 +104,42 @@ export default function ModalFormProductCategory() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingProductCategory}
+                    title="Are you sure you want to submit this product category?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProductCategory}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingProductCategory}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="product_category"
-                    rules={[validateRules.required()]}
-                >
-                    <FloatInput
-                        label="Product Category"
-                        placeholder="Product Category"
-                        required
-                    />
-                </Form.Item>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item
+                            name="product_category"
+                            rules={[validateRules.required()]}
+                        >
+                            <FloatInput
+                                label="Product Category"
+                                placeholder="Product Category"
+                                required
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

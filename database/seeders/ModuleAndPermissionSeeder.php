@@ -31,6 +31,18 @@ class ModuleAndPermissionSeeder extends Seeder
                 ]
             ],
             [
+                "module_code" => "page_purchase_request",
+                "module_name" => "Purchase Request",
+                "description" => "",
+                "system_id" => 12,
+                "module_buttons" => [
+                    [
+                        "mod_button_code" => "view_page",
+                        "mod_button_name" => "View Page",
+                    ]
+                ]
+            ],
+            [
                 "module_code" => "page_budget_allocation",
                 "module_name" => "Budget Allocation",
                 "description" => "",

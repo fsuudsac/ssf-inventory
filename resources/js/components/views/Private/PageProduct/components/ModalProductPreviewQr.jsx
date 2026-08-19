@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { Modal, Button, Image } from "antd";
+import { Modal, Button, Image, Row, Col } from "antd";
+
 import PageProductFormContext from "./PageProductFormContext";
 
 export default function ModalProductPreviewQr() {
     const { toggleModalPreviewQr, setToggleModalPreviewQr } = useContext(
-        PageProductFormContext
+        PageProductFormContext,
     );
 
     return (
@@ -20,8 +21,8 @@ export default function ModalProductPreviewQr() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalPreviewQr({
                             open: false,
@@ -33,7 +34,11 @@ export default function ModalProductPreviewQr() {
                 </Button>,
             ]}
         >
-            <Image src={toggleModalPreviewQr.data} />
+            <Row gutter={[12, 0]}>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Image src={toggleModalPreviewQr.data} />
+                </Col>
+            </Row>
         </Modal>
     );
 }

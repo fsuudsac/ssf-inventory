@@ -18,8 +18,8 @@ import validateRules from "../../../../providers/validateRules";
 import FloatSelect from "../../../../providers/FloatSelect";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatTextArea from "../../../../providers/FloatTextArea";
-import FloatInputMask from "../../../../providers/FloatInputMask";
 import notificationErrors from "../../../../providers/notificationErrors";
+import FloatInputPhone from "../../../../providers/FloatInputPhone";
 
 export default function ModalFormSupplier(props) {
     const { toggleModalFormSupplier, setToggleModalFormSupplier } = props;
@@ -41,10 +41,7 @@ export default function ModalFormSupplier(props) {
         false,
     );
 
-    const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
-        `api/company`,
-        "company_create",
-    );
+    const { mutate: mutateCompany } = POST(`api/company`, "company_create");
 
     const handleAddCompany = () => {
         let data = { company: companyValue };

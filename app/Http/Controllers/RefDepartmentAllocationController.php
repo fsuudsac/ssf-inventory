@@ -62,71 +62,40 @@ class RefDepartmentAllocationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage (create only).
+     * allocation_name removed — form now uses allocation_type + amount only.
      */
     public function store(Request $request)
     {
         $ret = [
             "success" => false,
-            "message" => "Failed to " . ($request->id ? "update" : "create") . " department allocation.",
+            "message" => "Failed to create department allocation.",
         ];
 
         $request->validate([
             "department_id"      => "required",
             "school_year_id"     => "required",
             "allocation_type_id" => "required",
-            "allocation_name"    => "nullable|string",
             "amount"             => "required|numeric|min:0",
         ]);
 
         try {
             DB::transaction(function () use ($request, &$ret) {
-                // Capture original record before create/update for historical logging
-                $originalValue = RefDepartmentAllocation::withTrashed()->find($request->id);
-
-                // Calculate remaining_amount based on what has already been spent
-                // On create: nothing spent yet, remaining = base amount
-                // On update: preserve spent amount (base - remaining), apply to new base
-                if ($originalValue) {
-                    $spent = $originalValue->base_amount - $originalValue->remaining_amount;
-
-                    if ($request->amount < $spent) {
-                        throw new \Exception(
-                            "New amount ({$request->amount}) cannot be less than the amount already spent ({$spent})."
-                        );
-                    }
-
-                    $remainingAmount = $request->amount - $spent;
-                } else {
-                    $remainingAmount = $request->amount;
-                }
-
-                $data = [
+                // On create: nothing spent yet, remaining = full base amount
+                $allocation = RefDepartmentAllocation::create([
                     "department_id"      => $request->department_id,
                     "school_year_id"     => $request->school_year_id,
                     "allocation_type_id" => $request->allocation_type_id,
-                    "allocation_name"    => $request->allocation_name,
                     "base_amount"        => $request->amount,
-                    "remaining_amount"   => $remainingAmount,
-                    "status"             => $originalValue ? $originalValue->status : 1,
-                ];
-
-                if ($request->id) {
-                    $data["updated_by"] = Auth::id();
-                } else {
-                    $data["created_by"] = Auth::id();
-                }
-
-                // withTrashed() so editing an archived record updates instead of duplicate-inserting
-                $allocation = RefDepartmentAllocation::withTrashed()->updateOrCreate(
-                    ["id" => $request->id ?? null],
-                    $data
-                );
+                    "remaining_amount"   => $request->amount,
+                    "status"             => 1,
+                    "created_by"         => Auth::id(),
+                ]);
 
                 if ($allocation) {
                     $this->historical_data_bulk([
                         "model"         => RefDepartmentAllocation::class,
-                        "originalValue" => $originalValue,
+                        "originalValue" => null,
                         "changes"       => $allocation->getChanges(),
                         "original"      => $allocation->getOriginal(),
                         "createUpdate"  => $allocation,
@@ -136,10 +105,77 @@ class RefDepartmentAllocationController extends Controller
 
                     $ret = [
                         "success" => true,
-                        "message" => "Department allocation " . ($request->id ? "updated" : "created") . " successfully.",
-                        // "data"    => $allocation,
+                        "message" => "Department allocation created successfully.",
                     ];
                 }
+            });
+        } catch (\Throwable $th) {
+            $ret["message"] = "An error occurred: " . $th->getMessage();
+        }
+
+        return response()->json($ret, 200);
+    }
+
+    /**
+     * Update an existing department allocation.
+     * Separated from store() to keep create logic clean.
+     * Recalculates remaining_amount based on already-spent budget.
+     */
+    public function department_allocation_update(Request $request)
+    {
+        $ret = [
+            "success" => false,
+            "message" => "Failed to update department allocation.",
+        ];
+
+        $request->validate([
+            "id"                 => "required",
+            "allocation_type_id" => "required",
+            "amount"             => "required|numeric|min:0",
+        ]);
+
+        try {
+            DB::transaction(function () use ($request, &$ret) {
+                $originalValue = RefDepartmentAllocation::withTrashed()->find($request->id);
+
+                if (!$originalValue) {
+                    throw new \Exception("Allocation record not found.");
+                }
+
+                // Preserve spent amount: spent = base - remaining
+                // New remaining = new base - spent
+                $spent = $originalValue->base_amount - $originalValue->remaining_amount;
+
+                if ($request->amount < $spent) {
+                    throw new \Exception(
+                        "New amount ({$request->amount}) cannot be less than the amount already spent ({$spent})."
+                    );
+                }
+
+                $remainingAmount = $request->amount - $spent;
+
+                $allocation = $originalValue;
+                $allocation->fill([
+                    "allocation_type_id" => $request->allocation_type_id,
+                    "base_amount"        => $request->amount,
+                    "remaining_amount"   => $remainingAmount,
+                    "updated_by"         => Auth::id(),
+                ])->save();
+
+                $this->historical_data_bulk([
+                    "model"         => RefDepartmentAllocation::class,
+                    "originalValue" => $originalValue,
+                    "changes"       => $allocation->getChanges(),
+                    "original"      => $allocation->getOriginal(),
+                    "createUpdate"  => $allocation,
+                    "subject"       => "Budget Allocation",
+                    "module"        => "Budget Allocation / Department",
+                ]);
+
+                $ret = [
+                    "success" => true,
+                    "message" => "Department allocation updated successfully.",
+                ];
             });
         } catch (\Throwable $th) {
             $ret["message"] = "An error occurred: " . $th->getMessage();

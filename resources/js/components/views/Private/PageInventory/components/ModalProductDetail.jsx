@@ -10,16 +10,18 @@ import {
     Flex,
     Input,
     QRCode,
+    Popconfirm,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/pro-regular-svg-icons";
 
-import { GET, POST } from "../../../../providers/useAxiosQuery";
 import { apiUrl } from "../../../../providers/appConfig";
+import { GET, POST } from "../../../../providers/useAxiosQuery";
 import convertQrCodeToImage from "../../../../providers/convertQrCodeToImage";
 import FloatSelect from "../../../../providers/FloatSelect";
 import notificationErrors from "../../../../providers/notificationErrors";
 import FloatInputNumber from "../../../../providers/FloatInputNumber";
+import axios from "axios";
 
 export default function ModalProductDetail(props) {
     const {
@@ -58,7 +60,7 @@ export default function ModalProductDetail(props) {
         false,
     );
 
-    const { mutate: mutateProductType, isLoading: isLoadingProductType } = POST(
+    const { mutate: mutateProductType } = POST(
         `api/product_type`,
         "product_type_create",
     );
@@ -90,7 +92,7 @@ export default function ModalProductDetail(props) {
         });
     };
 
-    const { mutate: mutateProductSize, isLoading: isLoadingProductSize } = POST(
+    const { mutate: mutateProductSize } = POST(
         `api/product_size`,
         "product_size_create",
     );
@@ -224,6 +226,7 @@ export default function ModalProductDetail(props) {
         ) {
             generateQrCode();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -264,8 +267,8 @@ export default function ModalProductDetail(props) {
                 }}
                 footer={[
                     <Button
-                        className="btn-main-primary outlined"
                         key={1}
+                        type="default"
                         onClick={() => {
                             form.resetFields();
                             setToggleModalFormProductDetail({
@@ -277,17 +280,28 @@ export default function ModalProductDetail(props) {
                     >
                         CANCEL
                     </Button>,
-                    <Button
-                        type="primary"
+                    <Popconfirm
                         key={2}
-                        onClick={() => form.submit()}
-                        loading={isLoadingProductDetail}
+                        title="Are you sure you want to submit this product detail?"
+                        onConfirm={() => form.submit()}
+                        okText="Yes"
+                        cancelText="No"
+                        okButtonProps={{
+                            className: "btn-main-invert",
+                        }}
+                        disabled={isLoadingProductDetail}
                     >
-                        SUBMIT
-                    </Button>,
+                        <Button type="primary" loading={isLoadingProductDetail}>
+                            SUBMIT
+                        </Button>
+                    </Popconfirm>,
                 ]}
             >
-                <Form form={form} onFinish={onFinish}>
+                <Form
+                    form={form}
+                    onFinish={onFinish}
+                    onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+                >
                     <Row gutter={[12, 0]}>
                         <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                             <Form.Item name="product_type_id">

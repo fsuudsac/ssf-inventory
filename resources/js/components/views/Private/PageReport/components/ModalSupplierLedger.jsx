@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
+
 import { apiUrl } from "../../../../providers/appConfig";
 
 export default function ModalSupplierLedger(props) {
@@ -37,8 +38,8 @@ export default function ModalSupplierLedger(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalSupplierLedger({
                             open: false,

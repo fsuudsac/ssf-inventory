@@ -22,25 +22,31 @@ export default function PageEwtType() {
     const location = useLocation();
     const { width } = useWindowDimensions();
 
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
     const [toggleModalFormEwtType, setToggleModalFormEwtType] = useState({
         open: false,
         data: null,
     });
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
     const [tableFilter, setTableFilter] = useState({
         page: 1,
         page_size: 50,
         search: "",
-        sort_order: "desc",
         sort_field: "date_formatted",
+        sort_order: "desc",
         isTrash: 0,
     });
 
-    const { data: dataSource, refetch: refetchSource } = GET(
+    const {
+        data: dataSource,
+        refetch: refetchSource,
+        isLoading: isLoadingSource,
+        isFetching: isFetchingSource,
+    } = GET(
         `api/ewt_type?${new URLSearchParams(tableFilter)}`,
         "ewt_type_list",
+        () => {},
+        false,
     );
 
     useEffect(() => {
@@ -95,6 +101,8 @@ export default function PageEwtType() {
         <PageEwtTypeContext.Provider
             value={{
                 dataSource,
+                isLoadingSource,
+                isFetchingSource,
                 toggleModalFormEwtType,
                 setToggleModalFormEwtType,
                 selectedRowKeys,
