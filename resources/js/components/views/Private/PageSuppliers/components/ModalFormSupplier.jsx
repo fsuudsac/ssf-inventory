@@ -189,7 +189,7 @@ export default function ModalFormSupplier(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="firstname"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="First Name"
@@ -220,7 +220,7 @@ export default function ModalFormSupplier(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="company_id"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 label="Company"
@@ -288,7 +288,7 @@ export default function ModalFormSupplier(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="taxpayer_identification"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="TIN"
@@ -331,7 +331,7 @@ export default function ModalFormSupplier(props) {
                             name="contact_no"
                             rules={[
                                 validateRules.phone,
-                                validateRules.required(),
+                                validateRules.required,
                             ]}
                         >
                             <FloatInputMask

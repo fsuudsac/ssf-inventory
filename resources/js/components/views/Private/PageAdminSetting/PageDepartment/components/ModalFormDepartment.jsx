@@ -115,7 +115,7 @@ export default function ModalFormDepartment() {
         >
             {/* Fixed: single Form with all three fields */}
             <Form form={form} onFinish={onFinish}>
-                <Form.Item name="abbr" rules={[validateRules.required()]}>
+                <Form.Item name="abbr" rules={[validateRules.required]}>
                     <FloatInput
                         label="Abbreviation"
                         placeholder="Abbreviation"
@@ -125,7 +125,7 @@ export default function ModalFormDepartment() {
 
                 <Form.Item
                     name="department_name"
-                    rules={[validateRules.required()]}
+                    rules={[validateRules.required]}
                 >
                     <FloatInput
                         label="Department"

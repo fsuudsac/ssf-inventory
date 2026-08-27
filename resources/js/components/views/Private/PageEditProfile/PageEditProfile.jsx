@@ -279,9 +279,7 @@ export default function PageEditProfile() {
                                         >
                                             <Form.Item
                                                 name="firstname"
-                                                rules={[
-                                                    validateRules.required(),
-                                                ]}
+                                                rules={[validateRules.required]}
                                             >
                                                 <FloatInput
                                                     label="First Name"
@@ -329,9 +327,7 @@ export default function PageEditProfile() {
                                         >
                                             <Form.Item
                                                 name="lastname"
-                                                rules={[
-                                                    validateRules.required(),
-                                                ]}
+                                                rules={[validateRules.required]}
                                             >
                                                 <FloatInput
                                                     label="Last Name"

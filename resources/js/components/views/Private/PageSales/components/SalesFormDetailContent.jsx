@@ -241,7 +241,7 @@ export default function SalesFormDetailContent(props) {
                                                                         "product_detail_id",
                                                                     ]}
                                                                     rules={[
-                                                                        validateRules.required(),
+                                                                        validateRules.required,
                                                                         {
                                                                             validator:
                                                                                 (
@@ -422,7 +422,7 @@ export default function SalesFormDetailContent(props) {
                                                                         "quantity",
                                                                     ]}
                                                                     rules={[
-                                                                        validateRules.required(),
+                                                                        validateRules.required,
                                                                     ]}
                                                                 >
                                                                     <InputNumber

@@ -173,7 +173,7 @@ export default function ModalFormCustomer() {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="customer_type"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 label="Customer Type"
@@ -201,7 +201,7 @@ export default function ModalFormCustomer() {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="firstname"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="First Name"

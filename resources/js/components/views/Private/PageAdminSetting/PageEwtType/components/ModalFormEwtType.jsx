@@ -107,7 +107,7 @@ export default function ModalFormEwtType(props) {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item name="ewt_type" rules={[validateRules.required()]}>
+                <Form.Item name="ewt_type" rules={[validateRules.required]}>
                     <FloatInput
                         label="EWT Type"
                         placeholder="EWT Type"

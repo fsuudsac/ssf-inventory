@@ -101,7 +101,7 @@ export default function ModalBrandForm(props) {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item name="brand_name" rules={[validateRules.required()]}>
+                <Form.Item name="brand_name" rules={[validateRules.required]}>
                     <FloatInput label="Brand" placeholder="Brand" required />
                 </Form.Item>
             </Form>

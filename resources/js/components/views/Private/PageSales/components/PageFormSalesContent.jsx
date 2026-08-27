@@ -109,7 +109,7 @@ export default function PageFormSalesContent() {
                                 >
                                     <Form.Item
                                         name="customer_id"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Customer"
@@ -266,9 +266,7 @@ export default function PageFormSalesContent() {
                                         {() => (
                                             <Form.Item
                                                 name="customer_type"
-                                                rules={[
-                                                    validateRules.required(),
-                                                ]}
+                                                rules={[validateRules.required]}
                                             >
                                                 <FloatSelect
                                                     label="Customer Type"
@@ -417,7 +415,7 @@ export default function PageFormSalesContent() {
                                 >
                                     <Form.Item
                                         name="date_sales"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatDatePicker
                                             label="Date Release Item"
@@ -444,7 +442,7 @@ export default function PageFormSalesContent() {
                                 >
                                     <Form.Item
                                         name="terms"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Terms"
@@ -624,7 +622,7 @@ export default function PageFormSalesContent() {
                                 >
                                     <Form.Item
                                         name="vat_type"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Vat Type"
@@ -790,7 +788,7 @@ export default function PageFormSalesContent() {
                                 >
                                     <Form.Item
                                         name="invoice_no"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatInput
                                             label="Invoice No"

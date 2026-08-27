@@ -110,10 +110,7 @@ export default function ModalFormProductSize() {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="product_size"
-                    rules={[validateRules.required()]}
-                >
+                <Form.Item name="product_size" rules={[validateRules.required]}>
                     <FloatInput
                         label="Product Size"
                         placeholder="Product Size"

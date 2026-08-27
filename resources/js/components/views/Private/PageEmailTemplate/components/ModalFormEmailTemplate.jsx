@@ -84,7 +84,7 @@ export default function ModalFormEmailTemplate(props) {
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
                             name="title"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Title"
@@ -96,7 +96,7 @@ export default function ModalFormEmailTemplate(props) {
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
                             name="subject"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Subject"

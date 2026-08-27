@@ -104,7 +104,7 @@ export default function ModalFormWarehouse() {
                 <Col xs={24} sm={24} md={24} lg={24}>
                     <Form.Item
                         name="warehouse_name"
-                        rules={[validateRules.required()]}
+                        rules={[validateRules.required]}
                     >
                         <FloatInput
                             placeholder="Warehouse Name"

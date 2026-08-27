@@ -108,7 +108,7 @@ export default function ModalFormEmail(props) {
                     name="confirm_email"
                     rules={[
                         validateRules.email_validate,
-                        validateRules.required(),
+                        validateRules.required,
                     ]}
                 >
                     <FloatInput

@@ -76,7 +76,7 @@ export default function PageRegister() {
                             <Form.Item
                                 name="email"
                                 rules={[
-                                    validateRules.required(),
+                                    validateRules.required,
                                     validateRules.email,
                                 ]}
                             >
@@ -90,7 +90,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="username"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInput
                                     label="Student ID"
@@ -101,7 +101,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="firstname"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInput
                                     label="First Name"
@@ -119,7 +119,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="lastname"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInput
                                     label="Last Name"
@@ -130,7 +130,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="name_ext"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInput
                                     label="Name Ext."
@@ -158,7 +158,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="department_id"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Department"
@@ -196,7 +196,7 @@ export default function PageRegister() {
 
                             <Form.Item
                                 name="course_id"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Course"

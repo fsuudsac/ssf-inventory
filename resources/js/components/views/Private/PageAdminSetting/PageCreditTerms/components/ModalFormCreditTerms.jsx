@@ -110,10 +110,7 @@ export default function ModalFormCreditTerms() {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="credit_term"
-                    rules={[validateRules.required()]}
-                >
+                <Form.Item name="credit_term" rules={[validateRules.required]}>
                     <FloatInput
                         label="Credit Term"
                         placeholder="Credit Term"

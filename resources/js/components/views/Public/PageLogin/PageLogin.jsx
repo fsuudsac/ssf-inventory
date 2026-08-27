@@ -60,7 +60,7 @@ export default function PageLogin() {
                         <Form onFinish={onFinishLogin} autoComplete="off">
                             <Form.Item
                                 name="email"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInput
                                     label="Username / E-mail"
@@ -70,7 +70,7 @@ export default function PageLogin() {
 
                             <Form.Item
                                 name="password"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatInputPassword
                                     label="Password"

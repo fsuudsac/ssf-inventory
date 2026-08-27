@@ -146,10 +146,7 @@ export default function ModalPurchase(props) {
             >
                 <Row gutter={[12, 0]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                        <Form.Item
-                            name="type"
-                            rules={[validateRules.required()]}
-                        >
+                        <Form.Item name="type" rules={[validateRules.required]}>
                             <FloatSelect
                                 label="Type"
                                 placeholder="Type"
@@ -185,7 +182,7 @@ export default function ModalPurchase(props) {
                                     >
                                         <Form.Item
                                             name="date_purchased"
-                                            rules={[validateRules.required()]}
+                                            rules={[validateRules.required]}
                                         >
                                             <FloatDatePicker
                                                 label="Date Purchased Order"
@@ -208,7 +205,7 @@ export default function ModalPurchase(props) {
                                     >
                                         <Form.Item
                                             name="date_returned"
-                                            rules={[validateRules.required()]}
+                                            rules={[validateRules.required]}
                                         >
                                             <FloatDatePicker
                                                 label="Date Returned"
@@ -225,7 +222,7 @@ export default function ModalPurchase(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="warehouse_id"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 label="Warehouse"
@@ -246,7 +243,7 @@ export default function ModalPurchase(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="supplier_id"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 label="Supplier"
@@ -267,7 +264,7 @@ export default function ModalPurchase(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="tracking_number"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Tracking Number"
@@ -280,7 +277,7 @@ export default function ModalPurchase(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="credit_terms"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Credit Terms"
@@ -304,7 +301,7 @@ export default function ModalPurchase(props) {
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                         <Form.Item
                             name="paid_status"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 label="Paid Status"
@@ -326,7 +323,7 @@ export default function ModalPurchase(props) {
                         <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                             <Form.Item
                                 name="category_id"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Category"
@@ -388,7 +385,7 @@ export default function ModalPurchase(props) {
                                                             "product_id",
                                                         ]}
                                                         rules={[
-                                                            validateRules.required(),
+                                                            validateRules.required,
                                                         ]}
                                                     >
                                                         <FloatSelect
@@ -427,7 +424,7 @@ export default function ModalPurchase(props) {
                                                             "quantity",
                                                         ]}
                                                         rules={[
-                                                            validateRules.required(),
+                                                            validateRules.required,
                                                         ]}
                                                     >
                                                         <FloatInput
@@ -451,7 +448,7 @@ export default function ModalPurchase(props) {
                                                         {...restField}
                                                         name={[name, "cost"]}
                                                         rules={[
-                                                            validateRules.required(),
+                                                            validateRules.required,
                                                         ]}
                                                     >
                                                         <FloatInput

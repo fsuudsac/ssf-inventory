@@ -66,7 +66,7 @@ export default function ModalImportProducts() {
                         }
                         return e?.fileList;
                     }}
-                    rules={[validateRules.required()]}
+                    rules={[validateRules.required]}
                 >
                     <Upload.Dragger
                         className="upload-w-100 upload-hide-remove-icon"

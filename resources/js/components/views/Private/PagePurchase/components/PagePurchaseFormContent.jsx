@@ -48,7 +48,7 @@ export default function PagePurchaseFormContent() {
                                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                     <Form.Item
                                         name="warehouse_id"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Warehouse"
@@ -72,7 +72,7 @@ export default function PagePurchaseFormContent() {
                                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                     <Form.Item
                                         name="supplier_id"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Supplier"
@@ -238,7 +238,7 @@ export default function PagePurchaseFormContent() {
                                 >
                                     <Form.Item
                                         name="date_purchased"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatDatePicker
                                             label="Date Purchased Order"
@@ -274,7 +274,7 @@ export default function PagePurchaseFormContent() {
                                 >
                                     <Form.Item
                                         name="terms"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Terms"
@@ -454,7 +454,7 @@ export default function PagePurchaseFormContent() {
                                 >
                                     <Form.Item
                                         name="vat_type"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             label="Vat Type"
@@ -623,7 +623,7 @@ export default function PagePurchaseFormContent() {
                                 >
                                     <Form.Item
                                         name="invoice_no"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatInput
                                             label="Invoice No."

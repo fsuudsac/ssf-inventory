@@ -101,7 +101,7 @@ export default function ModalFormPassword(props) {
             <Form form={form} onFinish={onFinish}>
                 <Form.Item
                     name="new_password"
-                    rules={[validateRules.required(), validateRules.password]}
+                    rules={[validateRules.required, validateRules.password]}
                 >
                     <FloatInputPassword
                         label="New Password"
@@ -113,7 +113,7 @@ export default function ModalFormPassword(props) {
                     name="confirm_password"
                     rules={[
                         validateRules.password_validate,
-                        validateRules.required(),
+                        validateRules.required,
                     ]}
                 >
                     <FloatInputPassword

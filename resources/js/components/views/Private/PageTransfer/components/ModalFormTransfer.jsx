@@ -202,7 +202,7 @@ export default function ModalFormTransfer() {
                     <Col xs={24} sm={24} md={24} lg={24}>
                         <Form.Item
                             name="from_warehouse_id"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                             disabled={toggleModalFormTransfer.disabled}
                         >
                             <FloatSelect
@@ -254,7 +254,7 @@ export default function ModalFormTransfer() {
                                 return (
                                     <Form.Item
                                         name="to_warehouse_id"
-                                        rules={[validateRules.required()]}
+                                        rules={[validateRules.required]}
                                     >
                                         <FloatSelect
                                             placeholder="To Warehouse"
@@ -283,7 +283,7 @@ export default function ModalFormTransfer() {
                     <Col xs={24} sm={24} md={24} lg={24}>
                         <Form.Item
                             name="date_transfer"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatDatePicker
                                 label="Date Transfer"
@@ -348,7 +348,7 @@ export default function ModalFormTransfer() {
                                                                                 "product_category_id",
                                                                             ]}
                                                                             // rules={[
-                                                                            //     validateRules.required(),
+                                                                            //     validateRules.required,
                                                                             // ]}
                                                                         >
                                                                             <FloatSelect
@@ -424,7 +424,7 @@ export default function ModalFormTransfer() {
                                                                                 "product_detail_id",
                                                                             ]}
                                                                             rules={[
-                                                                                validateRules.required(),
+                                                                                validateRules.required,
                                                                             ]}
                                                                         >
                                                                             <FloatSelect
@@ -498,7 +498,7 @@ export default function ModalFormTransfer() {
                                                                                 "quantity",
                                                                             ]}
                                                                             rules={[
-                                                                                validateRules.required(),
+                                                                                validateRules.required,
                                                                                 {
                                                                                     validator:
                                                                                         (
@@ -615,7 +615,7 @@ export default function ModalFormTransfer() {
                     <Col xs={24} sm={24} md={24} lg={24}>
                         <Form.Item
                             name="status"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatSelect
                                 placeholder="Status"

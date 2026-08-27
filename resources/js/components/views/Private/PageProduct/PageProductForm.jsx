@@ -371,9 +371,7 @@ export default function PageProductForm() {
                                         >
                                             <Form.Item
                                                 name="product_name"
-                                                rules={[
-                                                    validateRules.required(),
-                                                ]}
+                                                rules={[validateRules.required]}
                                             >
                                                 <FloatInput
                                                     label="Product Name"
@@ -419,9 +417,7 @@ export default function PageProductForm() {
                                         >
                                             <Form.Item
                                                 name="product_category_id"
-                                                rules={[
-                                                    validateRules.required(),
-                                                ]}
+                                                rules={[validateRules.required]}
                                             >
                                                 <FloatSelect
                                                     label="Product Category"

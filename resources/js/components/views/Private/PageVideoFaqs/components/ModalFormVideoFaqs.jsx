@@ -104,19 +104,16 @@ export default function ModalFormVideoFaqs() {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item name="title" rules={[validateRules.required()]}>
+                <Form.Item name="title" rules={[validateRules.required]}>
                     <FloatInput label="Title" placeholder="Title" required />
                 </Form.Item>
                 <Form.Item
                     name="file_path"
-                    rules={[validateRules.required(), validateRules.url]}
+                    rules={[validateRules.required, validateRules.url]}
                 >
                     <FloatInput label="URL" placeholder="URL" required />
                 </Form.Item>
-                <Form.Item
-                    name="module_name"
-                    rules={[validateRules.required()]}
-                >
+                <Form.Item name="module_name" rules={[validateRules.required]}>
                     <FloatInput
                         label="Module Name"
                         placeholder="Module Name"

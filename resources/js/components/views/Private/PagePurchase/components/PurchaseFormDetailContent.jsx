@@ -201,7 +201,7 @@ export default function PurchaseFormDetailContent(props) {
                                                                         "product_detail_id",
                                                                     ]}
                                                                     rules={[
-                                                                        validateRules.required(),
+                                                                        validateRules.required,
                                                                         {
                                                                             validator:
                                                                                 (

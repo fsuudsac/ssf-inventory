@@ -24,7 +24,7 @@ export default function UserFormCollapseItemAccountInfo() {
     return (
         <Row gutter={[20, 0]}>
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                <Form.Item name="username" rules={[validateRules.required()]}>
+                <Form.Item name="username" rules={[validateRules.required]}>
                     <FloatInput
                         label="Username"
                         placeholder="Username"
@@ -37,7 +37,7 @@ export default function UserFormCollapseItemAccountInfo() {
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                 <Form.Item
                     name="email"
-                    rules={[validateRules.required(), validateRules.email]}
+                    rules={[validateRules.required, validateRules.email]}
                 >
                     <FloatInput
                         label="Email"
@@ -50,10 +50,7 @@ export default function UserFormCollapseItemAccountInfo() {
 
             {location.pathname.includes("user") && !params.id ? (
                 <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                    <Form.Item
-                        name="password"
-                        rules={[validateRules.required()]}
-                    >
+                    <Form.Item name="password" rules={[validateRules.required]}>
                         <FloatInputPassword
                             label="Password"
                             placeholder="Password"

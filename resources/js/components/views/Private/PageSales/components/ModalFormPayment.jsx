@@ -177,7 +177,7 @@ export default function ModalFormPayment() {
                                             <Form.Item
                                                 name="amount_payable"
                                                 rules={[
-                                                    validateRules.required(),
+                                                    validateRules.required,
                                                     {
                                                         validator: (
                                                             _,

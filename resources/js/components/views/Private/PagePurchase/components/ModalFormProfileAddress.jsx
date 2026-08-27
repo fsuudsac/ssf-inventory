@@ -106,7 +106,7 @@ export default function ModalFormProfileAddress() {
                 <Form.Item
                     name="type"
                     label="Type"
-                    rules={[validateRules.required()]}
+                    rules={[validateRules.required]}
                 >
                     <Radio.Group>
                         <Radio value="Bill">Bill</Radio>

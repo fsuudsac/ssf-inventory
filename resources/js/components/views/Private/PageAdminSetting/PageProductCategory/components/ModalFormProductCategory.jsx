@@ -117,7 +117,7 @@ export default function ModalFormProductCategory() {
             <Form form={form} onFinish={onFinish}>
                 <Form.Item
                     name="product_category"
-                    rules={[validateRules.required()]}
+                    rules={[validateRules.required]}
                 >
                     <FloatInput
                         label="Product Category"

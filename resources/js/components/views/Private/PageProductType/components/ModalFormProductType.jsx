@@ -110,10 +110,7 @@ export default function ModalFormProductType() {
             ]}
         >
             <Form form={form} onFinish={onFinish}>
-                <Form.Item
-                    name="product_type"
-                    rules={[validateRules.required()]}
-                >
+                <Form.Item name="product_type" rules={[validateRules.required]}>
                     <FloatInput
                         label="Product Type"
                         placeholder="Product Type"

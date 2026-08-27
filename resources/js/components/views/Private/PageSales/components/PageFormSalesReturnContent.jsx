@@ -28,7 +28,7 @@ export default function PageFormSalesReturnContent() {
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <Form.Item
                                 name="customer_id"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Customer"
@@ -55,7 +55,7 @@ export default function PageFormSalesReturnContent() {
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <Form.Item
                                 name="sales_order_id"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Invoice"
@@ -325,7 +325,7 @@ export default function PageFormSalesReturnContent() {
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <Form.Item
                                 name="date_return"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatDatePicker
                                     label="Date Return"
@@ -341,7 +341,7 @@ export default function PageFormSalesReturnContent() {
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <Form.Item
                                 name="status"
-                                rules={[validateRules.required()]}
+                                rules={[validateRules.required]}
                             >
                                 <FloatSelect
                                     label="Status"

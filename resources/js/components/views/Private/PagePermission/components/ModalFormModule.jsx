@@ -45,7 +45,7 @@ export default function ModalFormModule(props) {
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
                             name="module_code"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Module Code"
@@ -56,7 +56,7 @@ export default function ModalFormModule(props) {
                     <Col xs={24} sm={24} md={24}>
                         <Form.Item
                             name="module_name"
-                            rules={[validateRules.required()]}
+                            rules={[validateRules.required]}
                         >
                             <FloatInput
                                 label="Module Name"
@@ -98,7 +98,7 @@ export default function ModalFormModule(props) {
                                                             "mod_button_code",
                                                         ]}
                                                         rules={[
-                                                            validateRules.required(),
+                                                            validateRules.required,
                                                         ]}
                                                     >
                                                         <FloatInput
@@ -113,7 +113,7 @@ export default function ModalFormModule(props) {
                                                             "mod_button_name",
                                                         ]}
                                                         rules={[
-                                                            validateRules.required(),
+                                                            validateRules.required,
                                                         ]}
                                                     >
                                                         <FloatInput
@@ -147,7 +147,7 @@ export default function ModalFormModule(props) {
                                                     ) : null}
                                                 </div>
                                             </Space>
-                                        )
+                                        ),
                                     )}
                                     <Form.Item>
                                         <Button
