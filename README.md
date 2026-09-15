@@ -11,7 +11,7 @@ Create a new folder where you want to store the project.
 Example:
 
 ```text
-C:\xampp\htdocs\ssf-inventory
+D:\DSAC\Others\ssf-inventory
 ```
 
 ### 2. Open the Folder in Terminal
