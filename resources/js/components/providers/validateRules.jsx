@@ -1,10 +1,10 @@
 import { isValidPhoneNumber } from "react-phone-number-input";
 
 const validateRules = {
-    required: {
+    required: (message) => ({
         required: true,
-        message: "This field is required",
-    },
+        message: message || "This field is required",
+    }),
     quillValidator: {
         validator: async (_, value) => {
             if (!value || value === "<p><br></p>") {
@@ -164,9 +164,20 @@ const validateRules = {
         pattern: /^[0-9\b]+$/,
         message: "Invalid Number",
     },
+    // phone: {
+    //     pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+    //     message: "Invalid Phone Number",
+    // },
+    /** E.164 / international strings from `react-phone-number-input` (`FloatInputPhone`). */
     phone: {
-        pattern: /^\(\+63\)\s\d{3}\s\d{3}\s\d{4}$/,
-        message: "Invalid Phone Number",
+        validator(_, value) {
+            if (value === undefined || value === null || value === "") {
+                return Promise.resolve();
+            }
+            return isValidPhoneNumber(value)
+                ? Promise.resolve()
+                : Promise.reject(new Error("Invalid Phone Number"));
+        },
     },
     cell: {
         pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,

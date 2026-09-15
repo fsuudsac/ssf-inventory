@@ -23,6 +23,11 @@ class RefDepartment extends Model
         return $this->belongsTo(RefDepartmentType::class, 'department_type_id');
     }
 
+    public function ref_department_allocations()
+    {
+        return $this->hasMany(RefDepartmentAllocation::class, 'department_id');
+    }
+
     public function historicalData()
     {
         return $this->morphMany(HistoricalData::class, 'historicalable');

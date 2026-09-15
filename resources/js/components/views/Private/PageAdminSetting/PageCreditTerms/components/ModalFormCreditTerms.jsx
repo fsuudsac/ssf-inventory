@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm } from "antd";
 
 import { POST } from "../../../../../providers/useAxiosQuery";
 import validateRules from "../../../../../providers/validateRules";
@@ -87,8 +87,8 @@ export default function ModalFormCreditTerms() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormCreditTerms({
                             open: false,
@@ -99,18 +99,33 @@ export default function ModalFormCreditTerms() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingCreditTerm}
+                    title="Are you sure to submit this form?"
+                    onConfirm={() => form.submit()}
+                    onCancel={() => {}}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingCreditTerm}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingCreditTerm}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item name="credit_term" rules={[validateRules.required]}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Form.Item
+                    name="credit_term"
+                    rules={[validateRules.required()]}
+                >
                     <FloatInput
                         label="Credit Term"
                         placeholder="Credit Term"

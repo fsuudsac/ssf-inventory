@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserRole;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserRoleController extends Controller
@@ -66,11 +67,11 @@ class UserRoleController extends Controller
 
         if ($request->id) {
             $data += [
-                "updated_by" => auth()->user()->id
+                "updated_by" => Auth::id()
             ];
         } else {
             $data += [
-                "created_by" => auth()->user()->id
+                "created_by" => Auth::id()
             ];
         }
 
@@ -141,8 +142,8 @@ class UserRoleController extends Controller
 
                 if ($createUpdate) {
                     $createUpdate->update([
-                        'updated_by' => auth()->user()->id,
-                        'deleted_by' => $request->status == 'Inactive' ? auth()->user()->id : null,
+                        'updated_by' => Auth::id(),
+                        'deleted_by' => $request->status == 'Inactive' ? Auth::id() : null,
                         'deleted_at' => $request->status == 'Inactive' ? now() : null,
                     ]);
 

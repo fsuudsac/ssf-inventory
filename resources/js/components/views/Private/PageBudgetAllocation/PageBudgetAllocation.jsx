@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +10,10 @@ import {
 import CustomTabs from "../../../providers/CustomTabs";
 import useWindowDimensions from "../../../providers/useWindowDimensions";
 import HistoricalDataContent from "../PageHistoricalData/components/HistoricalDataContent";
+import PageBudgetAllocationContent from "./components/PageBudgetAllocationContent";
 
 export default function PageBudgetAllocation() {
+    const location = useLocation();
     const { width } = useWindowDimensions();
 
     const [activeTab, setActiveTab] = useState("0");
@@ -21,7 +24,12 @@ export default function PageBudgetAllocation() {
             label: "Budget Allocation",
             icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
             iconSize: 23,
-            // children:
+            children: (
+                <PageBudgetAllocationContent
+                    width={width}
+                    location={location}
+                />
+            ),
         },
         {
             key: "1",
@@ -31,7 +39,9 @@ export default function PageBudgetAllocation() {
             children: (
                 <HistoricalDataContent
                     width={width}
-                    // historicalable_type={["App\\Models\\"]}
+                    historicalable_type={[
+                        "App\\Models\\RefDepartmentAllocation",
+                    ]}
                     from="PageBudgetAllocation"
                 />
             ),
@@ -54,7 +64,7 @@ export default function PageBudgetAllocation() {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                {items[Number(activeTab)].children}
+                {items[Number(activeTab)]?.children}
             </Col>
         </Row>
     );

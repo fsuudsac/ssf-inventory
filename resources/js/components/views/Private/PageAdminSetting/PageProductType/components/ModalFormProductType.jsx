@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm } from "antd";
 
 import { POST } from "../../../../../providers/useAxiosQuery";
 import validateRules from "../../../../../providers/validateRules";
@@ -87,8 +87,8 @@ export default function ModalFormProductType() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormProductType({
                             open: false,
@@ -99,18 +99,33 @@ export default function ModalFormProductType() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingProductType}
+                    title="Are you sure to submit this form?"
+                    onConfirm={() => form.submit()}
+                    onCancel={() => {}}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProductType}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingProductType}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item name="product_type" rules={[validateRules.required]}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Form.Item
+                    name="product_type"
+                    rules={[validateRules.required()]}
+                >
                     <FloatInput
                         label="Product Type"
                         placeholder="Product Type"

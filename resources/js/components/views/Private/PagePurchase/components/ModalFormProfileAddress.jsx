@@ -1,5 +1,15 @@
-import { useContext, useState } from "react";
-import { Modal, Button, Form, notification, Radio, Typography } from "antd";
+import { useContext } from "react";
+import {
+    Modal,
+    Button,
+    Form,
+    notification,
+    Radio,
+    Typography,
+    Popconfirm,
+    Row,
+    Col,
+} from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import FloatTextArea from "../../../../providers/FloatTextArea";
@@ -15,7 +25,6 @@ export default function ModalFormProfileAddress() {
     } = useContext(PagePurchaseContext);
 
     const [form] = Form.useForm();
-    const [addressType, setAddressType] = useState(null);
 
     const { mutate: mutateProfileAddress, isLoading: isLoadingProfileAddress } =
         POST(`api/profile_address`, "create_users_info");
@@ -72,8 +81,8 @@ export default function ModalFormProfileAddress() {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key="cancel"
+                    type="default"
                     onClick={() =>
                         setToggleModalFormProfileAddress({
                             open: false,
@@ -84,39 +93,63 @@ export default function ModalFormProfileAddress() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key="submit"
-                    onClick={() => form.submit()}
-                    loading={isLoadingProfileAddress}
+                    title="Are you sure you want to submit this address?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProfileAddress}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingProfileAddress}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item label="Customer" shouldUpdate className="mb-10">
-                    {() => (
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
+                        className="mb-10!"
+                    >
                         <Typography.Text className="ant-form-text">
                             {toggleModalFormProfileAddress.data?.fullname}
                         </Typography.Text>
-                    )}
-                </Form.Item>
-
-                <Form.Item
-                    name="type"
-                    label="Type"
-                    rules={[validateRules.required]}
-                >
-                    <Radio.Group>
-                        <Radio value="Bill">Bill</Radio>
-                        <Radio value="Ship">Ship</Radio>
-                    </Radio.Group>
-                </Form.Item>
-
-                <Form.Item name="address">
-                    <FloatTextArea label="Address" placeholder="Address" />
-                </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <Form.Item
+                            name="type"
+                            label="Type"
+                            rules={[validateRules.required()]}
+                        >
+                            <Radio.Group>
+                                <Radio value="Bill">Bill</Radio>
+                                <Radio value="Ship">Ship</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <Form.Item name="address">
+                            <FloatTextArea
+                                label="Address"
+                                placeholder="Address"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

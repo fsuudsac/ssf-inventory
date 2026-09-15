@@ -1,14 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import {
-    Button,
-    Col,
-    Form,
-    Modal,
-    notification,
-    Row,
-    Flex,
-    Popconfirm,
-} from "antd";
+import { useContext, useEffect } from "react";
+import { Button, Col, Form, Modal, notification, Row, Popconfirm } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrash } from "@fortawesome/pro-regular-svg-icons";
 import dayjs from "dayjs";
@@ -34,8 +25,6 @@ export default function ModalFormTransfer() {
     } = useContext(PageTransferContext);
 
     const [form] = Form.useForm();
-
-    // console.log("productCategoryFilter: ", productCategoryFilter);
 
     const { mutate: mutateTransfer, isLoading: isLoadingTransfer } = POST(
         `api/transfers`,
@@ -141,18 +130,20 @@ export default function ModalFormTransfer() {
                 setToggleModalFormTransfer({
                     open: false,
                     data: null,
+                    disabled: false,
                 });
             }}
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key="cancel"
+                    type="default"
                     onClick={() => {
                         form.resetFields();
                         setToggleModalFormTransfer({
                             open: false,
                             data: null,
+                            disabled: false,
                         });
                     }}
                     disabled={isLoadingTransfer}
@@ -160,14 +151,21 @@ export default function ModalFormTransfer() {
                     CANCEL
                 </Button>,
                 !toggleModalFormTransfer.disabled && (
-                    <Button
-                        type="primary"
+                    <Popconfirm
                         key="submit"
-                        onClick={() => form.submit()}
-                        loading={isLoadingTransfer}
+                        title="Are you sure you want to submit this transfer?"
+                        onConfirm={() => form.submit()}
+                        okText="Yes"
+                        cancelText="No"
+                        okButtonProps={{
+                            className: "btn-main-invert",
+                        }}
+                        disabled={isLoadingTransfer}
                     >
-                        SUBMIT
-                    </Button>
+                        <Button type="primary" loading={isLoadingTransfer}>
+                            SUBMIT
+                        </Button>
+                    </Popconfirm>
                 ),
             ]}
         >
@@ -183,6 +181,7 @@ export default function ModalFormTransfer() {
                         },
                     ],
                 }}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
             >
                 <Row gutter={[20, 0]}>
                     {toggleModalFormTransfer &&
@@ -329,12 +328,13 @@ export default function ModalFormTransfer() {
                                                         ...restField
                                                     }) => {
                                                         return (
-                                                            <Flex key={key}>
+                                                            <>
                                                                 <Row
                                                                     gutter={[
-                                                                        10, 0,
+                                                                        12, 0,
                                                                     ]}
-                                                                    className="w-100"
+                                                                    key={key}
+                                                                    // className="w-100"
                                                                 >
                                                                     <Col
                                                                         xs={24}
@@ -415,7 +415,12 @@ export default function ModalFormTransfer() {
                                                                     <Col
                                                                         xs={24}
                                                                         sm={24}
-                                                                        md={14}
+                                                                        md={
+                                                                            fields.length >
+                                                                            1
+                                                                                ? 13
+                                                                                : 14
+                                                                        }
                                                                     >
                                                                         <Form.Item
                                                                             {...restField}
@@ -548,52 +553,65 @@ export default function ModalFormTransfer() {
                                                                             />
                                                                         </Form.Item>
                                                                     </Col>
-                                                                </Row>
 
-                                                                {fields.length >
-                                                                    1 && (
-                                                                    <Flex
-                                                                        align="center"
-                                                                        justify="center"
-                                                                        style={{
-                                                                            height: 40,
-                                                                            width: 40,
-                                                                        }}
-                                                                    >
-                                                                        <Popconfirm
-                                                                            title="Are you sure you want to remove this product?"
-                                                                            onConfirm={() =>
-                                                                                remove(
-                                                                                    name,
-                                                                                )
+                                                                    {fields.length >
+                                                                        1 && (
+                                                                        <Col
+                                                                            xs={
+                                                                                24
                                                                             }
-                                                                            okText="Yes"
-                                                                            cancelText="No"
+                                                                            sm={
+                                                                                24
+                                                                            }
+                                                                            md={
+                                                                                1
+                                                                            }
                                                                         >
-                                                                            <Button
-                                                                                type="link"
-                                                                                icon={
-                                                                                    <FontAwesomeIcon
-                                                                                        icon={
-                                                                                            faTrash
-                                                                                        }
-                                                                                    />
+                                                                            {/* <Flex
+                                                                                align="center"
+                                                                                justify="center"
+                                                                                style={{
+                                                                                    height: 40,
+                                                                                    width: 40,
+                                                                                }}
+                                                                            > */}
+                                                                            <Popconfirm
+                                                                                title="Are you sure you want to remove this product?"
+                                                                                onConfirm={() =>
+                                                                                    remove(
+                                                                                        name,
+                                                                                    )
                                                                                 }
-                                                                                disabled={
-                                                                                    toggleModalFormTransfer.disabled
-                                                                                }
-                                                                            />
-                                                                        </Popconfirm>
-                                                                    </Flex>
-                                                                )}
-                                                            </Flex>
+                                                                                okText="Yes"
+                                                                                cancelText="No"
+                                                                            >
+                                                                                <Button
+                                                                                    type="link"
+                                                                                    icon={
+                                                                                        <FontAwesomeIcon
+                                                                                            icon={
+                                                                                                faTrash
+                                                                                            }
+                                                                                        />
+                                                                                    }
+                                                                                    disabled={
+                                                                                        toggleModalFormTransfer.disabled
+                                                                                    }
+                                                                                />
+                                                                            </Popconfirm>
+                                                                            {/* </Flex> */}
+                                                                        </Col>
+                                                                    )}
+                                                                </Row>
+                                                            </>
                                                         );
                                                     },
                                                 )}
 
                                                 {!toggleModalFormTransfer.disabled && (
                                                     <Button
-                                                        className="btn-main-primary mb-20"
+                                                        type="primary"
+                                                        className="mb-6!"
                                                         onClick={() => add()}
                                                         icon={
                                                             <FontAwesomeIcon

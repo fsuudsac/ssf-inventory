@@ -10,13 +10,15 @@ import {
     Flex,
     Input,
     QRCode,
+    Popconfirm,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/pro-regular-svg-icons";
 import dayjs from "dayjs";
+import axios from "axios";
 
-import { GET, POST } from "../../../../providers/useAxiosQuery";
 import { apiUrl } from "../../../../providers/appConfig";
+import { GET, POST } from "../../../../providers/useAxiosQuery";
 import convertQrCodeToImage from "../../../../providers/convertQrCodeToImage";
 import FloatSelect from "../../../../providers/FloatSelect";
 import notificationErrors from "../../../../providers/notificationErrors";
@@ -113,7 +115,7 @@ export default function ModalProductDetail(props) {
                 if (res.success) {
                     setProductSizeValue(null);
                     setDataProductSize((prev) => [...prev, res.data]);
-                    form.setFieldValue("product_size_id", res.data.id);
+                    form.setFieldValue("product_size_id", res?.data?.id);
 
                     notification.success({
                         message: "Product Size",
@@ -140,9 +142,9 @@ export default function ModalProductDetail(props) {
         data.append(
             "id",
             toggleModalFormProductDetail &&
-                toggleModalFormProductDetail.data &&
-                toggleModalFormProductDetail.data.id
-                ? toggleModalFormProductDetail.data.id
+                toggleModalFormProductDetail?.data &&
+                toggleModalFormProductDetail?.data?.id
+                ? toggleModalFormProductDetail?.data?.id
                 : "",
         );
 
@@ -328,8 +330,8 @@ export default function ModalProductDetail(props) {
                 }}
                 footer={[
                     <Button
-                        className="btn-main-primary outlined"
                         key={1}
+                        type="default"
                         onClick={() => {
                             form.resetFields();
                             setToggleModalFormProductDetail({
@@ -341,19 +343,32 @@ export default function ModalProductDetail(props) {
                     >
                         CLOSE
                     </Button>,
-                    <Button
-                        type="primary"
+                    <Popconfirm
                         key={2}
-                        onClick={() => form.submit()}
-                        loading={isLoadingProductDetail}
+                        title="Are you sure you want to submit this product detail?"
+                        onConfirm={() => form.submit()}
+                        okText="Yes"
+                        cancelText="No"
+                        okButtonProps={{
+                            className: "btn-main-invert",
+                        }}
+                        disabled={isLoadingProductDetail}
                     >
-                        SUBMIT
-                    </Button>,
+                        <Button type="primary" loading={isLoadingProductDetail}>
+                            SUBMIT
+                        </Button>
+                    </Popconfirm>,
                 ]}
             >
                 <Row gutter={[20, 20]}>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                        <Form form={form} onFinish={onFinish}>
+                        <Form
+                            form={form}
+                            onFinish={onFinish}
+                            onKeyDown={(e) =>
+                                e.key === "Enter" && e.preventDefault()
+                            }
+                        >
                             <Row gutter={[12, 0]}>
                                 <Col
                                     xs={24}

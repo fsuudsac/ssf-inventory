@@ -7,13 +7,14 @@ import {
     faWarehouseFull,
     faListCheck,
     faChartMixedUpCircleDollar,
-    faUserGroup,
     faBoxesStacked,
     faChartPie,
     faBoxOpenFull,
     faVideo,
     faRightLeftLarge,
     faUserShield,
+    faMoneyBillWave,
+    faCodePullRequest,
 } from "@fortawesome/pro-regular-svg-icons";
 
 export const adminHeaderMenuLeft = (
@@ -48,12 +49,18 @@ export const adminSideMenu = [
         icon: <FontAwesomeIcon icon={faHome} />,
         moduleCode: "page_dashboard",
     },
-    // {
-    //     title: "Budget Allocation",
-    //     path: "/budget-allocation",
-    //     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
-    //     moduleCode: "page_budget_allocation",
-    // },
+    {
+        title: "Purchase Request",
+        path: "/purchase-request",
+        icon: <FontAwesomeIcon icon={faCodePullRequest} />,
+        moduleCode: "page_purchase_request",
+    },
+    {
+        title: "Budget Allocation",
+        path: "/budget-allocation",
+        icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
+        moduleCode: "page_budget_allocation",
+    },
     {
         title: "Purchase Order",
         path: "/purchase-order",
@@ -130,6 +137,11 @@ export const adminSideMenu = [
             {
                 title: "Inventory",
                 path: "/reports/inventory",
+                moduleCode: "page_reports",
+            },
+            {
+                title: "Budget",
+                path: "/reports/budget",
                 moduleCode: "page_reports",
             },
         ],

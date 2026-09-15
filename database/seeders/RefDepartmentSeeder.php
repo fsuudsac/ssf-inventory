@@ -37,12 +37,12 @@ class RefDepartmentSeeder extends Seeder
             ],
             [
                 "department_type_id" =>  7,
-                "abbr" => "",
+                "abbr" => "BED",
                 "department_name" => "Basic Education Department"
             ],
             [
                 "department_type_id" =>  3,
-                "abbr" => "",
+                "abbr" => "BIRC",
                 "department_name" => "Biodiversity Informatics and Research Center"
             ],
             [

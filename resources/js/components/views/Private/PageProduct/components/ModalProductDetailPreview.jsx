@@ -20,8 +20,8 @@ export default function ModalProductDetailPreview() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalProductDetails({
                             open: false,

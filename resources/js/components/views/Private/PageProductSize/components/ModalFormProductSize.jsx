@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Modal, Button, Form, notification } from "antd";
+import { Modal, Button, Form, notification, Popconfirm, Row, Col } from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
@@ -87,8 +87,8 @@ export default function ModalFormProductSize() {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormProductSize({
                             open: false,
@@ -99,24 +99,42 @@ export default function ModalFormProductSize() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingProductSize}
+                    title="Are you sure you want to submit this product size?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProductSize}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingProductSize}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Form.Item name="product_size" rules={[validateRules.required]}>
-                    <FloatInput
-                        label="Product Size"
-                        placeholder="Product Size"
-                        required
-                    />
-                </Form.Item>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item
+                            name="product_size"
+                            rules={[validateRules.required()]}
+                        >
+                            <FloatInput
+                                label="Product Size"
+                                placeholder="Product Size"
+                                required
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

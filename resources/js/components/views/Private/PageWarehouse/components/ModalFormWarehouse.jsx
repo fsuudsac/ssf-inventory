@@ -1,5 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import { Button, Col, Form, Modal, notification, Checkbox } from "antd";
+import { useContext, useEffect } from "react";
+import {
+    Button,
+    Col,
+    Form,
+    Modal,
+    notification,
+    Checkbox,
+    Popconfirm,
+    Row,
+} from "antd";
 
 import { POST } from "../../../../providers/useAxiosQuery";
 import validateRules from "../../../../providers/validateRules";
@@ -77,8 +86,8 @@ export default function ModalFormWarehouse() {
             forceRender
             footer={[
                 <Button
-                    type="default"
                     key="cancel"
+                    type="default"
                     onClick={() => {
                         form.resetFields();
                         setToggleModalFormWarehouse({
@@ -90,56 +99,72 @@ export default function ModalFormWarehouse() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key="submit"
-                    onClick={() => form.submit()}
-                    loading={isLoadingWarehouse}
+                    title="Are you sure you want to submit this warehouse?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingWarehouse}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingWarehouse}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
-                <Col xs={24} sm={24} md={24} lg={24}>
-                    <Form.Item
-                        name="warehouse_name"
-                        rules={[validateRules.required]}
-                    >
-                        <FloatInput
-                            placeholder="Warehouse Name"
-                            label="Warehouse Name"
-                            required
-                        />
-                    </Form.Item>
-                </Col>
-
-                <Col xs={24} sm={24} md={24} lg={24}>
-                    <Form.Item name="description">
-                        <FloatTextArea
-                            label="Description"
-                            placeholder="Description"
-                        />
-                    </Form.Item>
-                </Col>
-
-                <Col xs={24} sm={24} md={24} lg={24}>
-                    <Form.Item name="address">
-                        <FloatTextArea label="Address" placeholder="Address" />
-                    </Form.Item>
-                </Col>
-
-                <Col xs={24} sm={24} md={24} lg={24}>
-                    <Form.Item name="status" valuePropName="checked">
-                        <Checkbox
-                            onChange={(e) => {
-                                handleDebounce(e.target.checked, "status");
-                            }}
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
+                <Row gutter={[12, 0]}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item
+                            name="warehouse_name"
+                            rules={[validateRules.required()]}
                         >
-                            Is Main?
-                        </Checkbox>
-                    </Form.Item>
-                </Col>
+                            <FloatInput
+                                placeholder="Warehouse Name"
+                                label="Warehouse Name"
+                                required
+                            />
+                        </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item name="description">
+                            <FloatTextArea
+                                label="Description"
+                                placeholder="Description"
+                            />
+                        </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item name="address">
+                            <FloatTextArea
+                                label="Address"
+                                placeholder="Address"
+                            />
+                        </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item name="status" valuePropName="checked">
+                            <Checkbox
+                                onChange={(e) => {
+                                    handleDebounce(e.target.checked, "status");
+                                }}
+                            >
+                                Is Main?
+                            </Checkbox>
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Modal>
     );

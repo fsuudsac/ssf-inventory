@@ -16,24 +16,28 @@ class RefDepartmentController extends Controller
     public function index(Request $request)
     {
         $departmentType = "(SELECT department_type FROM ref_department_types WHERE ref_department_types.id = ref_departments.department_type_id LIMIT 1)";
-        $total_profiles_count = "(SELECT COUNT(DISTINCT profile_departments.profile_id)
-            FROM profile_departments
-            JOIN profiles ON profiles.id = profile_departments.profile_id
-            JOIN users ON users.id = profiles.user_id
-            JOIN user_roles ON user_roles.id = users.user_role_id
-            WHERE profile_departments.department_id = ref_departments.id
-              AND profile_departments.status = 1
-              AND user_roles.role IN ('Admin','Staff','Faculty/Dean','Faculty/Chairman','Faculty','Faculty/Staff','Student Assistant'))";
+        // $total_profiles_count = "(SELECT COUNT(DISTINCT profile_departments.profile_id)
+        //     FROM profile_departments
+        //     JOIN profiles ON profiles.id = profile_departments.profile_id
+        //     JOIN users ON users.id = profiles.user_id
+        //     JOIN user_roles ON user_roles.id = users.user_role_id
+        //     WHERE profile_departments.department_id = ref_departments.id
+        //       AND profile_departments.status = 1
+        //       AND user_roles.role IN ('Admin','Staff','Faculty/Dean','Faculty/Chairman','Faculty','Faculty/Staff','Student Assistant'))";
+
+        $date_formatted = "DATE_FORMAT(ref_departments.created_at, '%m/%d/%Y %h:%i %p')";
 
         $data = RefDepartment::select([
             "*",
             DB::raw("$departmentType department_type"),
-            DB::raw("$total_profiles_count total_profiles_count"),
+            // DB::raw("$total_profiles_count total_profiles_count"),
+            DB::raw("$date_formatted date_formatted")
         ])
             ->with([
                 'profile_departments:id,profile_id,department_id',
                 'profile_departments.profile:id,user_id',
                 'profile_departments.profile.user:id,email',
+                'ref_department_allocations'
             ])
             ->search([
                 "search" => $request->search,
@@ -132,6 +136,9 @@ class RefDepartmentController extends Controller
             "*",
             DB::raw("$departmentType AS department_type")
         ])
+            ->with([
+                "ref_department_allocations"
+            ])
             ->withTrashed()
             ->findOrFail($id);
 

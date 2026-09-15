@@ -1,6 +1,14 @@
 import { useEffect } from "react";
-import { Modal, Button, Form, notification, Row, Upload } from "antd";
-
+import {
+    Modal,
+    Button,
+    Form,
+    notification,
+    Row,
+    Upload,
+    Col,
+    Popconfirm,
+} from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileArrowUp } from "@fortawesome/pro-regular-svg-icons";
 
@@ -94,8 +102,8 @@ export default function ModalImport(props) {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalImport({
                             open: false,
@@ -107,66 +115,80 @@ export default function ModalImport(props) {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={(values) => form.submit(values)}
-                    loading={isLoadingImport}
+                    title="Are you sure you want to submit this import?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingImport}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingImport}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Row gutter={[12, 0]}>
-                    <Form.Item
-                        style={{ width: "100%" }}
-                        name="file_excel"
-                        valuePropName="fileList"
-                        getValueFromEvent={(e) => {
-                            if (Array.isArray(e)) {
-                                return e;
-                            }
-
-                            return e?.fileList;
-                        }}
-                        // rules={[validateRules.quillValidator()]}
-                    >
-                        <Upload.Dragger
-                            className="upload-w-100 upload-hide-remove-icon"
-                            accept="application/excel"
-                            multiple
-                            beforeUpload={(file) => {
-                                let error = false;
-                                const isLt2M = file.size / 102400 / 102400 < 5;
-                                if (!isLt2M) {
-                                    notification.error({
-                                        message: "Exam Result",
-                                        description:
-                                            "Excel must smaller than 5MB!",
-                                    });
-                                    error = Upload.LIST_IGNORE;
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                        <Form.Item
+                            style={{ width: "100%" }}
+                            name="file_excel"
+                            valuePropName="fileList"
+                            getValueFromEvent={(e) => {
+                                if (Array.isArray(e)) {
+                                    return e;
                                 }
-                                return error;
+
+                                return e?.fileList;
                             }}
+                            // rules={[validateRules.quillValidator()]}
                         >
-                            <p className="ant-upload-drag-icon">
-                                <FontAwesomeIcon
-                                    icon={faFileArrowUp}
-                                    className="m-r-xs"
-                                    style={{
-                                        fontSize: "24px",
-                                    }}
-                                />
-                            </p>
-                            <p className="ant-upload-text">
-                                Click or drag file to this area to upload
-                            </p>
-                            <p className="ant-upload-hint">
-                                Support for a single or bulk upload
-                            </p>
-                        </Upload.Dragger>
-                    </Form.Item>
+                            <Upload.Dragger
+                                className="upload-w-100 upload-hide-remove-icon"
+                                accept="application/excel"
+                                multiple
+                                beforeUpload={(file) => {
+                                    let error = false;
+                                    const isLt2M =
+                                        file.size / 102400 / 102400 < 5;
+                                    if (!isLt2M) {
+                                        notification.error({
+                                            message: "Exam Result",
+                                            description:
+                                                "Excel must smaller than 5MB!",
+                                        });
+                                        error = Upload.LIST_IGNORE;
+                                    }
+                                    return error;
+                                }}
+                            >
+                                <p className="ant-upload-drag-icon">
+                                    <FontAwesomeIcon
+                                        icon={faFileArrowUp}
+                                        className="m-r-xs"
+                                        style={{
+                                            fontSize: "24px",
+                                        }}
+                                    />
+                                </p>
+                                <p className="ant-upload-text">
+                                    Click or drag file to this area to upload
+                                </p>
+                                <p className="ant-upload-hint">
+                                    Support for a single or bulk upload
+                                </p>
+                            </Upload.Dragger>
+                        </Form.Item>
+                    </Col>
                 </Row>
             </Form>
         </Modal>

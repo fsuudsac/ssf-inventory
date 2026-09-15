@@ -1,5 +1,13 @@
 import { useCallback, useContext, useRef, useState } from "react";
-import { Modal, Row, Col, Button, Upload, notification } from "antd";
+import {
+    Modal,
+    Row,
+    Col,
+    Button,
+    Upload,
+    notification,
+    Popconfirm,
+} from "antd";
 import {
     faCamera,
     faRefresh,
@@ -179,7 +187,7 @@ export default function ModalUploadProfilePicture() {
     const { mutate: mutateProfilePicture, isLoading: isLoadingProfilePicture } =
         POST(`api/user_profile_picture`, "users_info");
 
-    const handleSaveProfilePicture = (data) => {
+    const handleSaveProfilePicture = () => {
         let formData = new FormData();
         formData.append("user_id", params.id);
         formData.append("profile_picture", fileImage.file);
@@ -234,7 +242,7 @@ export default function ModalUploadProfilePicture() {
             footer={[
                 <Button
                     key="cancel"
-                    size="large"
+                    type="default"
                     onClick={() => {
                         setToggleModalUploadProfilePicture((ps) => ({
                             ...ps,
@@ -253,13 +261,10 @@ export default function ModalUploadProfilePicture() {
                 >
                     Cancel
                 </Button>,
-                <Button
+                <Popconfirm
                     key="save"
-                    type="primary"
-                    size="large"
-                    disabled={fileImage.file ? false : true}
-                    loading={isLoadingProfilePicture}
-                    onClick={() => {
+                    title="Are you sure you want to save this profile picture?"
+                    onConfirm={() => {
                         if (params && params.id) {
                             handleSaveProfilePicture();
                         } else {
@@ -286,9 +291,21 @@ export default function ModalUploadProfilePicture() {
                             }
                         }
                     }}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProfilePicture}
                 >
-                    Save
-                </Button>,
+                    <Button
+                        type="primary"
+                        disabled={fileImage.file ? false : true}
+                        loading={isLoadingProfilePicture}
+                    >
+                        Save
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             <Row gutter={[12, 12]}>

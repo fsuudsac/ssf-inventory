@@ -124,8 +124,9 @@ export default function PageProduct() {
                         </Button>
 
                         <Button
+                            type="primary"
+                            className={width < 576 ? "w-full" : "min-w-[150px]"}
                             icon={<FontAwesomeIcon icon={faInboxArrowDown} />}
-                            className="btn-main-primary"
                             onClick={() =>
                                 setToggleModalImportProduct({
                                     open: true,

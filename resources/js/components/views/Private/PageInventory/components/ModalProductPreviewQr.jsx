@@ -1,4 +1,4 @@
-import { Modal, Button, Form, Image } from "antd";
+import { Modal, Button, Image, Row, Col } from "antd";
 
 export default function ModalProductPreviewQr(props) {
     const { toggleModalPreviewQr, setToggleModalPreviewQr } = props;
@@ -18,8 +18,8 @@ export default function ModalProductPreviewQr(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalPreviewQr({
                             open: false,
@@ -31,7 +31,11 @@ export default function ModalProductPreviewQr(props) {
                 </Button>,
             ]}
         >
-            <Image src={toggleModalPreviewQr.data} />
+            <Row gutter={[12, 0]}>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Image src={toggleModalPreviewQr.data} />
+                </Col>
+            </Row>
         </Modal>
     );
 }

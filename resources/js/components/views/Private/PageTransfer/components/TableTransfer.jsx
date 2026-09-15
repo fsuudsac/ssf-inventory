@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { Table, Tooltip, Switch, Button, Select, Flex, Divider } from "antd";
+import { Table, Tooltip, Button, Flex } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil, faTimes } from "@fortawesome/pro-regular-svg-icons";
+import { faEye, faPencil } from "@fortawesome/pro-regular-svg-icons";
 
 import PageTransferContext from "./PageTransferContext";
 import useTableScrollOnTop from "../../../../providers/useTableScrollOnTop";
@@ -14,8 +14,6 @@ export default function TableTransfer() {
         selectedRowKeys,
         onChangeTable,
         location,
-        handleChangeStatus,
-        isLoadingChangeStatus,
     } = useContext(PageTransferContext);
 
     useTableScrollOnTop("table-transfer", location.pathname);

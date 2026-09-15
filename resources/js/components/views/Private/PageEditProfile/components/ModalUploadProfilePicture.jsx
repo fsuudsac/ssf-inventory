@@ -1,20 +1,28 @@
 import { useCallback, useRef, useState } from "react";
-import { Modal, Row, Col, Button, Upload, notification } from "antd";
+import Webcam from "react-webcam";
+import {
+    Modal,
+    Row,
+    Col,
+    Button,
+    Upload,
+    notification,
+    Popconfirm,
+} from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCamera,
     faRefresh,
     faUpload,
 } from "@fortawesome/pro-regular-svg-icons";
-import Webcam from "react-webcam";
 
-import { POST } from "../../../../providers/useAxiosQuery";
 import {
     apiUrl,
     defaultProfile,
     encrypt,
     userData,
 } from "../../../../providers/appConfig";
+import { POST } from "../../../../providers/useAxiosQuery";
 import imageFileToBase64 from "../../../../providers/imageFileToBase64";
 import dataURLtoBlob from "../../../../providers/dataURLtoBlob";
 import notificationErrors from "../../../../providers/notificationErrors";
@@ -281,6 +289,7 @@ export default function ModalUploadProfilePicture(props) {
             footer={[
                 <Button
                     key="cancel"
+                    type="default"
                     disabled={isLoadingProfilePicture}
                     onClick={() => {
                         setToggleModalUploadProfilePicture((ps) => ({
@@ -299,16 +308,23 @@ export default function ModalUploadProfilePicture(props) {
                 >
                     Cancel
                 </Button>,
-                <Button
+                <Popconfirm
                     key="save"
-                    type="primary"
-                    loading={isLoadingProfilePicture}
-                    onClick={() => {
+                    title="Are you sure you want to save this profile picture?"
+                    onConfirm={() => {
                         onFinish();
                     }}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingProfilePicture}
                 >
-                    Save
-                </Button>,
+                    <Button type="primary" loading={isLoadingProfilePicture}>
+                        Save
+                    </Button>
+                </Popconfirm>,
             ]}
         >
             <Row gutter={[12, 12]}>

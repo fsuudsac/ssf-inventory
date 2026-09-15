@@ -31,6 +31,18 @@ class ModuleAndPermissionSeeder extends Seeder
                 ]
             ],
             [
+                "module_code" => "page_purchase_request",
+                "module_name" => "Purchase Request",
+                "description" => "",
+                "system_id" => 12,
+                "module_buttons" => [
+                    [
+                        "mod_button_code" => "view_page",
+                        "mod_button_name" => "View Page",
+                    ]
+                ]
+            ],
+            [
                 "module_code" => "page_budget_allocation",
                 "module_name" => "Budget Allocation",
                 "description" => "",
@@ -39,6 +51,26 @@ class ModuleAndPermissionSeeder extends Seeder
                     [
                         "mod_button_code" => "view_page",
                         "mod_button_name" => "View Page",
+                    ],
+                    [
+                        "mod_button_code" => "btn_view",
+                        "mod_button_name" => "View",
+                    ],
+                    [
+                        "mod_button_code" => "btn_add",
+                        "mod_button_name" => "Add",
+                    ],
+                    [
+                        "mod_button_code" => "btn_edit",
+                        "mod_button_name" => "Edit",
+                    ],
+                    [
+                        "mod_button_code" => "btn_delete",
+                        "mod_button_name" => "Delete",
+                    ],
+                    [
+                        "mod_button_code" => "btn_sweep",
+                        "mod_button_name" => "Sweep Budget",
                     ]
                 ]
             ],
@@ -366,7 +398,7 @@ class ModuleAndPermissionSeeder extends Seeder
                     $createModuleButton = ModuleButton::create($module_button + ["module_id" => $moduleCreate->id]);
 
                     if ($createModuleButton) {
-                        $dataUserRoles = [1, 2, 3];
+                        $dataUserRoles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
                         foreach ($dataUserRoles as $role_key => $role) {
                             UserRolePermission::create([

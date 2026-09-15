@@ -33,14 +33,21 @@ export default function PageDepartment() {
         page: 1,
         page_size: 50,
         search: "",
-        sort_order: "desc",
         sort_field: "department_name",
+        sort_order: "asc",
         isTrash: 0,
     });
 
-    const { data: dataSource, refetch: refetchSource } = GET(
+    const {
+        data: dataSource,
+        refetch: refetchSource,
+        isLoading: isLoadingSource,
+        isFetching: isFetchingSource,
+    } = GET(
         `api/department?${new URLSearchParams(tableFilter)}`,
         "department_list",
+        () => {},
+        false,
     );
 
     const { data: dataDepartmentType } = GET(
@@ -104,6 +111,8 @@ export default function PageDepartment() {
         <PageDepartmentContext.Provider
             value={{
                 dataSource,
+                isLoadingSource,
+                isFetchingSource,
                 setTableFilter,
                 toggleModalFormDepartment,
                 setToggleModalFormDepartment,

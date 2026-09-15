@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
+
 import { apiUrl } from "../../../../providers/appConfig";
 
 export default function ModalGeneralReportPdf(props) {
@@ -41,8 +42,8 @@ export default function ModalGeneralReportPdf(props) {
             }}
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalGeneralReportPdf({
                             open: false,

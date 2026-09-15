@@ -10,25 +10,25 @@ export default function useCheckUserPermission(moduleName, moduleCode) {
 
     // Updated: synced to match buttonCodes list below, duplicates removed
     const buttonNames = [
-        "btn_accept",
-        "btn_accept_decline",
         "btn_active_archive",
         "btn_add",
-        "btn_bulk_upload",
         "btn_decline",
-        "btn_deduction",
         "btn_delete",
         "btn_download",
         "btn_edit",
+        "btn_edit_permission",
         "btn_generate_report",
         "btn_import",
+        "btn_payment",
         "btn_preview",
         "btn_print",
         "btn_request",
+        "btn_status",
+        "btn_submit",
+        "btn_sweep",
         "btn_switch",
         "btn_upload_excel",
         "btn_view",
-        "btn_submit",
     ];
 
     useEffect(() => {
@@ -97,25 +97,25 @@ export default function useCheckUserPermission(moduleName, moduleCode) {
                                     setTimeout(() => {
                                         // Updated: duplicates removed, kept in logical add/edit/delete groups
                                         const buttonCodes = [
-                                            "btn_accept",
-                                            "btn_accept_decline",
                                             "btn_active_archive",
                                             "btn_add",
-                                            "btn_bulk_upload",
                                             "btn_decline",
-                                            "btn_deduction",
                                             "btn_delete",
                                             "btn_download",
                                             "btn_edit",
+                                            "btn_edit_permission",
                                             "btn_generate_report",
                                             "btn_import",
+                                            "btn_payment",
                                             "btn_preview",
                                             "btn_print",
                                             "btn_request",
+                                            "btn_status",
+                                            "btn_submit",
+                                            "btn_sweep",
                                             "btn_switch",
                                             "btn_upload_excel",
                                             "btn_view",
-                                            "btn_submit",
                                         ];
                                         buttonCodes.forEach((buttonCode) => {
                                             // console.log("buttonCodes", buttonCode);

@@ -10,6 +10,7 @@ import {
     Flex,
     Input,
     Radio,
+    Popconfirm,
 } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,10 +20,10 @@ import { POST } from "../../../../providers/useAxiosQuery";
 import FloatSelect from "../../../../providers/FloatSelect";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatTextArea from "../../../../providers/FloatTextArea";
-import FloatInputMask from "../../../../providers/FloatInputMask";
 import validateRules from "../../../../providers/validateRules";
 import notificationErrors from "../../../../providers/notificationErrors";
 import PageFormSalesContext from "./PageFormSalesContext";
+import FloatInputPhone from "../../../../providers/FloatInputPhone";
 
 export default function ModalFormCustomer() {
     const {
@@ -139,8 +140,8 @@ export default function ModalFormCustomer() {
             forceRender
             footer={[
                 <Button
-                    className="btn-main-primary outlined"
                     key={1}
+                    type="default"
                     onClick={() => {
                         setToggleModalFormCustomer({
                             open: false,
@@ -152,17 +153,28 @@ export default function ModalFormCustomer() {
                 >
                     CANCEL
                 </Button>,
-                <Button
-                    type="primary"
+                <Popconfirm
                     key={2}
-                    onClick={() => form.submit()}
-                    loading={isLoadingCustomer}
+                    title="Are you sure you want to submit this customer?"
+                    onConfirm={() => form.submit()}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                        className: "btn-main-invert",
+                    }}
+                    disabled={isLoadingCustomer}
                 >
-                    SUBMIT
-                </Button>,
+                    <Button type="primary" loading={isLoadingCustomer}>
+                        SUBMIT
+                    </Button>
+                </Popconfirm>,
             ]}
         >
-            <Form form={form} onFinish={onFinish}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            >
                 <Row gutter={[12, 0]}>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <Divider orientation="left">
@@ -342,12 +354,18 @@ export default function ModalFormCustomer() {
                             name="contact_no"
                             rules={[validateRules.phone]}
                         >
-                            <FloatInputMask
+                            <FloatInputPhone
+                                label="Contact Number"
+                                placeholder="Contact Number"
+                                international={true}
+                                defaultCountry="PH"
+                            />
+                            {/* <FloatInputMask
                                 label="Contact No."
                                 placeholder="Contact No."
                                 maskLabel="contact_no"
                                 maskType="(+63) 999 999 9999"
-                            />
+                            /> */}
                         </Form.Item>
                     </Col>
 

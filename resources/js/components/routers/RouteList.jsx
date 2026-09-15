@@ -45,11 +45,13 @@ import PageSalesReturnForm from "../views/private/PageSales/PageSalesReturnForm"
 import PagePurchaseReturnForm from "../views/private/PagePurchase/PagePurchaseReturnForm";
 import PageVideoFaqs from "../views/private/PageVideoFaqs/PageVideoFaqs";
 import PageTransfer from "../views/private/PageTransfer/PageTransfer";
-import PageUserPermissions from "../views/private/PageUserPermissions/PageUserPermissions";
 import PageReportSalesRevenue from "../views/private/PageReport/PageReportSalesRevenue/PageReportSalesRevenue";
 import PageReport from "../views/private/PageReport/PageReport";
 import PageBudgetAllocation from "../views/Private/PageBudgetAllocation/PageBudgetAllocation";
 import PagePermission from "../views/Private/PagePermission/PagePermission";
+import PageBudgetAllocationDepartment from "../views/Private/PageBudgetAllocation/components/PageBudgetAllocationDepartment/PageBudgetAllocationDepartment";
+import PageReportBudget from "../views/Private/PageReport/PageReportBudget";
+import PagePurchaseRequest from "../views/Private/PagePurchaseRequest/PagePurchaseRequest";
 
 export default function RouteList() {
     return (
@@ -116,6 +118,26 @@ export default function RouteList() {
             />
 
             <Route
+                path="/purchase-request"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_purchase_request"
+                        moduleName="Purchase Request"
+                        title="Purchase Request"
+                        subtitle="PURCHASE REQUEST"
+                        pageId="PagePurchaseRequest"
+                        pageHeaderIcon={faListCheck}
+                        breadcrumb={[
+                            {
+                                name: "Purchase Request",
+                            },
+                        ]}
+                        component={PagePurchaseRequest}
+                    />
+                }
+            />
+
+            <Route
                 path="/budget-allocation"
                 element={
                     <PrivateRoute
@@ -131,6 +153,28 @@ export default function RouteList() {
                             },
                         ]}
                         component={PageBudgetAllocation}
+                    />
+                }
+            />
+            <Route
+                path="/budget-allocation/:id"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_budget_allocation"
+                        moduleName="Budget Allocation / Department"
+                        title="DEPARTMENT"
+                        pageId="PageBudgetAllocation"
+                        pageHeaderIcon={faMoneyBillWave}
+                        breadcrumb={[
+                            {
+                                name: "Budget Allocation",
+                                link: "/budget-allocation",
+                            },
+                            {
+                                name: "Department",
+                            },
+                        ]}
+                        component={PageBudgetAllocationDepartment}
                     />
                 }
             />
@@ -911,6 +955,28 @@ export default function RouteList() {
                             },
                         ]}
                         component={PageReportSalesRevenue}
+                    />
+                }
+            />
+            <Route
+                path="/reports/budget"
+                element={
+                    <PrivateRoute
+                        moduleCode="page_reports"
+                        moduleName="Reports"
+                        title="Report"
+                        subtitle="BUDGET"
+                        pageId="PageReport"
+                        pageHeaderIcon={faChartLine}
+                        breadcrumb={[
+                            {
+                                name: "Report",
+                            },
+                            {
+                                name: "Budget",
+                            },
+                        ]}
+                        component={PageReportBudget}
                     />
                 }
             />

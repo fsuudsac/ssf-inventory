@@ -19,7 +19,7 @@ export const {
 export const apiUrl = (url, api = window.location.origin) => `${api}/${url}`;
 
 export const system_id = 12;
-export const permissionStatus = false;
+export const permissionStatus = true;
 
 export const appName = VITE_APP_NAME;
 export const appDescription = VITE_APP_DESCRIPTION;

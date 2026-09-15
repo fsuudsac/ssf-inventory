@@ -109,6 +109,20 @@ class User extends Authenticatable
 
     public function scopeFilter($query, $request)
     {
+        if ($request->filled('roles')) {
+            $roles = explode(',', $request->roles);
+
+            $query->whereIn('user_role_id', $roles);
+        }
+
+        if ($request->filled('status')) {
+            if ($request->status == 'Active') {
+                $query->where('status', 'Active');
+            } else if ($request->status == 'Archived') {
+                $query->where('status', '!=', 'Active');
+            }
+        }
+
         return $query;
     }
 }

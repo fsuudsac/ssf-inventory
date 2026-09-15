@@ -202,6 +202,7 @@ export default function TableProductDetail() {
                                                     icon={faTrash}
                                                 />
                                             }
+                                            danger={tableFilter.isTrash === 0}
                                             loading={
                                                 isLoadingDeleteProductDetail
                                             }

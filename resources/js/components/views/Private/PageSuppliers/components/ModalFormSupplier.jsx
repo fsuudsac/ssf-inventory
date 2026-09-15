@@ -18,8 +18,8 @@ import validateRules from "../../../../providers/validateRules";
 import FloatSelect from "../../../../providers/FloatSelect";
 import FloatInput from "../../../../providers/FloatInput";
 import FloatTextArea from "../../../../providers/FloatTextArea";
-import FloatInputMask from "../../../../providers/FloatInputMask";
 import notificationErrors from "../../../../providers/notificationErrors";
+import FloatInputPhone from "../../../../providers/FloatInputPhone";
 
 export default function ModalFormSupplier(props) {
     const { toggleModalFormSupplier, setToggleModalFormSupplier } = props;
@@ -41,10 +41,7 @@ export default function ModalFormSupplier(props) {
         false,
     );
 
-    const { mutate: mutateCompany, isLoading: isLoadingCompany } = POST(
-        `api/company`,
-        "company_create",
-    );
+    const { mutate: mutateCompany } = POST(`api/company`, "company_create");
 
     const handleAddCompany = () => {
         let data = { company: companyValue };
@@ -227,20 +224,14 @@ export default function ModalFormSupplier(props) {
                                 placeholder="Company"
                                 allowClear
                                 required
-                                options={
-                                    dataCompany && dataCompany.length > 0
-                                        ? dataCompany
-                                              .map((item) => ({
-                                                  value: item.id,
-                                                  label: item.company,
-                                              }))
-                                              .sort((a, b) =>
-                                                  a.label.localeCompare(
-                                                      b.label,
-                                                  ),
-                                              )
-                                        : []
-                                }
+                                options={dataCompany
+                                    .map((item) => ({
+                                        value: item.id,
+                                        label: item.company,
+                                    }))
+                                    .sort((a, b) =>
+                                        a.label.localeCompare(b.label),
+                                    )}
                                 dropdownRender={(menu) => (
                                     <>
                                         {menu}
@@ -334,13 +325,20 @@ export default function ModalFormSupplier(props) {
                                 validateRules.required,
                             ]}
                         >
-                            <FloatInputMask
+                            <FloatInputPhone
+                                label="Contact Number"
+                                placeholder="Contact Number"
+                                international={true}
+                                defaultCountry="PH"
+                                required
+                            />
+                            {/* <FloatInputMask
                                 label="Contact No."
                                 placeholder="Contact No."
                                 maskLabel="contact_no"
                                 maskType="(+63) 999 999 9999"
                                 required
-                            />
+                            /> */}
                         </Form.Item>
                     </Col>
 

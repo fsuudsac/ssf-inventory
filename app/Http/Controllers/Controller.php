@@ -600,29 +600,33 @@ abstract class Controller
         $fullname = Auth::user()->profile->firstname . " " . Auth::user()->profile->lastname;
         $data_historical = [];
 
-        foreach ($changes as $key => $value) {
-            if (array_key_exists($key, $original)) {
-                if (!in_array($key, ['updated_at', 'created_at', 'created_by', 'updated_by'])) {
+        $isCreating = is_null($originalValue);
 
-                    if (empty($description)) {
-                        $description = $subject . ' updated by ' . $fullname;
-                    }
+        // On creation, getChanges() returns empty — use $original (all field values) instead
+        // On update, iterate $changes so only modified fields are logged
+        $fieldsToLog = $isCreating ? $original : $changes;
 
-                    // $originalValue is null on create (no existing record), so guard against it
-                    $old_value = $originalValue ? $originalValue[$key] : null;
-                    $new_value = $value;
+        $excluded = ['updated_at', 'created_at', 'created_by', 'updated_by', 'remember_token', 'password'];
+
+        foreach ($fieldsToLog as $key => $value) {
+            if (!in_array($key, $excluded)) {
+                if ($isCreating || array_key_exists($key, $original)) {
+                    $defaultDescription = $isCreating
+                        ? $subject . ' created by ' . $fullname
+                        : $subject . ' updated by ' . $fullname;
 
                     $data_historical[] = [
                         "historicalable_type" => $model,
-                        "historicalable_id" => $createUpdate->id,
-                        "subject" => $subject,
-                        "description" => $description,
-                        "field_name" => $key,
-                        'old_value' => $old_value,
-                        'new_value' => $new_value,
-                        'action' => $action,
-                        'module' => $module,
-                        'status' => $status,
+                        "historicalable_id"   => $createUpdate->id,
+                        "subject"             => $subject,
+                        "description"         => !empty($description) ? $description : $defaultDescription,
+                        "field_name"          => $key,
+                        // old_value is null on creation; on update use the original value before the change
+                        "old_value"           => $isCreating ? null : ($originalValue ? $originalValue[$key] : null),
+                        "new_value"           => $value,
+                        "action"              => $isCreating ? "Create" : $action,
+                        "module"              => $module,
+                        "status"              => $status,
                     ];
                 }
             }
