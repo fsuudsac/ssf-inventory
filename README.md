@@ -33,7 +33,7 @@ git init
 Connect the local folder to the GitHub repository:
 
 ```bash
-git remote add origin [https://github.com/fsuudsac/ssf-inventory.git](https://github.com/fsuudsac/ssf-inventory.git)
+git remote add origin https://github.com/fsuudsac/ssf-inventory.git
 ```
 
 ### 5. Fetch the Repository
@@ -49,7 +49,7 @@ git fetch
 Switch to the `20260827_uallau_update` branch:
 
 ```bash
-git checkout -b 20260827_uallau_update origin/20260827_uallau_update
+git checkout -b 20260827_uallau_update
 ```
 
 > **Note:** Depending on your Git version and configuration, standard `git checkout` may not automatically pull the files if the branch exists only on the remote. Using `git checkout -b <branch> origin/<branch>` ensures the local tracking branch is properly created and checked out with all project files.
@@ -58,7 +58,7 @@ git checkout -b 20260827_uallau_update origin/20260827_uallau_update
 
 ## Project Installation
 
-After checking out the branch, install the project dependencies.
+After checking out the branch, install the project dependencies in your project folder.
 
 ### 7. Install PHP Dependencies
 
@@ -88,7 +88,7 @@ Run all setup commands in sequence:
 
 ```bash
 git init
-git remote add origin [https://github.com/fsuudsac/ssf-inventory.git](https://github.com/fsuudsac/ssf-inventory.git)
+git remote add origin https://github.com/fsuudsac/ssf-inventory.git
 git fetch
 git checkout -b 20260827_uallau_update origin/20260827_uallau_update
 composer install
