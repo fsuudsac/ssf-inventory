@@ -1,0 +1,192 @@
+@use "../../ui/index" as *;
+
+#PagePurchase {
+    .ant-card {
+        .ant-card-body {
+            @include atMax(375) {
+                .ant-btn {
+                    width: 100%;
+                }
+
+                .tbl-top-filter {
+                    .ant-flex {
+                        width: 100%;
+                        flex-direction: column;
+                    }
+                }
+            }
+            .ant-row {
+                margin-bottom: 20px;
+
+                .search-wrapper {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+            }
+            .ant-row {
+                .ant-col {
+                    .ant-btn {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#PagePurchaseForm,
+#PagePurchaseReturnForm {
+    > .ant-layout {
+        > .ant-layout-content {
+            > .ant-card {
+                > .ant-card-body {
+                    .card_purchase_details,
+                    .card-payment-info {
+                        .ant-card-body {
+                            table {
+                                width: 100%;
+
+                                thead {
+                                    tr {
+                                        th {
+                                            background-color: #f5f5f5;
+                                            border: 1px solid #ddd;
+                                            padding: 8px;
+                                            text-align: left;
+                                            width: 12.2%;
+
+                                            &:last-child {
+                                                width: 2.4%;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                tbody,
+                                tfoot {
+                                    tr {
+                                        td {
+                                            border: 1px solid #ddd;
+                                            padding: 8px;
+                                            text-align: left;
+
+                                            .ant-form-item {
+                                                .ant-select {
+                                                    width: 100%;
+                                                    height: 40px;
+                                                }
+
+                                                .ant-input {
+                                                    width: 100%;
+
+                                                    &.ant-input-disabled {
+                                                        color: #000;
+                                                    }
+                                                }
+
+                                                .ant-input-number {
+                                                    width: 100%;
+                                                }
+
+                                                .ant-input-number-input {
+                                                    color: #000;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                tfoot {
+                                    tr {
+                                        &:last-child {
+                                            td {
+                                                padding-top: 20px;
+                                                border-color: transparent;
+
+                                                .underline {
+                                                    div {
+                                                        width: 50%;
+                                                        &:last-child {
+                                                            border-bottom: 1px
+                                                                solid #000;
+                                                        }
+                                                    }
+
+                                                    .discount-label {
+                                                        width: 50%;
+                                                    }
+
+                                                    .ant-input-discount {
+                                                        width: 50%;
+                                                        border-bottom: 1px solid
+                                                            #000;
+                                                        border-radius: 0px;
+                                                    }
+                                                }
+                                            }
+
+                                            .footer-payment-info {
+                                                border: solid 1px #ddd !important;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.purchase_details_dropdown {
+    width: auto !important;
+    border-radius: 0px !important;
+
+    table {
+        width: 350px;
+        border-collapse: collapse;
+
+        @include atMax(575) {
+            width: 100%;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        tbody {
+            tr {
+                &:hover {
+                    background-color: #f5f5f5;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.modal-wrap-purchase-preview,
+.modal-wrap-sales-preview {
+    .ant-modal {
+        width: 60% !important;
+
+        @include atMax(991) {
+            width: 90% !important;
+        }
+
+        iframe {
+            width: 100%;
+            min-height: 80vh;
+        }
+    }
+}

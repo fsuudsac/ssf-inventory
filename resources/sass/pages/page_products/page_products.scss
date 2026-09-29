@@ -1,0 +1,264 @@
+@use "../../ui/index" as *;
+
+#PageProducts {
+    .ant-layout {
+        .ant-layout-content {
+            .ant-card {
+                .ant-card-body {
+                    @include atMax(375) {
+                        .ant-btn {
+                            width: 100%;
+                        }
+
+                        .tbl-top-filter {
+                            .ant-flex {
+                                width: 100%;
+                                flex-direction: column;
+                            }
+                        }
+                    }
+                    .ant-row {
+                        margin-bottom: 20px;
+
+                        .search-wrapper {
+                            display: flex;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+
+            .product-list-wrapper {
+                .ant-card {
+                    height: 300px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    .ant-card-body {
+                        padding: 0px;
+                        display: flex;
+                        flex-direction: column;
+
+                        .ant-image {
+                            height: 100px;
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        .ant-card-meta {
+                            margin-top: 5px;
+                            padding: 0px 10px !important;
+
+                            .ant-card-meta-detail {
+                                .ant-card-meta-title {
+                                    .product_code {
+                                        font-size: 12px;
+                                    }
+                                    .product_name {
+                                        font-size: 16px;
+                                    }
+                                    .product_price,
+                                    .product_category,
+                                    .product_brand {
+                                        font-size: 12px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .ant-card-actions {
+                        li {
+                            margin: 3px;
+
+                            span {
+                                .ant-btn {
+                                    width: 100%;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#PageProductForm {
+    .ant-layout {
+        .ant-layout-content {
+            .ant-card {
+                .ant-card-body {
+                    .ant-form {
+                        .card-product-photo {
+                            .ant-card-body {
+                                .multiple-attachment-upload {
+                                    .ant-upload {
+                                        > .ant-upload {
+                                            .ant-upload-drag-container {
+                                                .ant-upload-drag-icon {
+                                                    svg {
+                                                        color: #41a8ff;
+                                                        font-size: 32px;
+                                                    }
+
+                                                    .title {
+                                                        color: #000;
+                                                        font-size: 18px;
+                                                    }
+
+                                                    .description {
+                                                        color: #a5a5a5;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .attachment-preview {
+                                    margin-top: 20px;
+
+                                    .card-file-uploaded {
+                                        border-radius: 5px !important;
+
+                                        -webkit-box-shadow: 0px 0px 2px 0px
+                                            rgba(0, 0, 0, 0.75);
+                                        -moz-box-shadow: 0px 0px 2px 0px
+                                            rgba(0, 0, 0, 0.75);
+                                        box-shadow: 0px 0px 2px 0px
+                                            rgba(0, 0, 0, 0.75);
+
+                                        .ant-card-cover {
+                                            border-top-left-radius: 5px;
+                                            border-top-right-radius: 5px;
+
+                                            height: 150px;
+                                            overflow: hidden;
+                                            padding-top: 1px;
+                                            padding-left: 1px;
+                                            padding-right: 1px;
+
+                                            .react-player-video-wrapper {
+                                                height: 150px !important;
+                                                width: auto !important;
+                                                display: flex;
+                                                align-items: center;
+
+                                                video {
+                                                    max-width: 100%;
+                                                    height: auto;
+                                                }
+                                            }
+
+                                            .ant-image {
+                                                height: 150px;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+
+                                                .ant-image-img {
+                                                    object-fit: cover;
+                                                    height: 100%;
+                                                }
+
+                                                .ant-image-mask {
+                                                    height: 150px;
+                                                    border-top-left-radius: 5px;
+                                                    border-top-right-radius: 5px;
+                                                }
+                                            }
+                                        }
+
+                                        &.video {
+                                            .ant-card-cover {
+                                                height: 150px;
+                                            }
+                                        }
+
+                                        .ant-card-body {
+                                            padding: 15px 10px;
+
+                                            .ant-card-meta {
+                                                .ant-card-meta-detail {
+                                                    .ant-card-meta-title {
+                                                        margin-bottom: 0px;
+                                                    }
+                                                    .ant-card-meta-description {
+                                                        color: rgba(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0.85
+                                                        );
+                                                        font-size: 16px;
+
+                                                        // one line paragraph
+                                                        white-space: nowrap;
+                                                        overflow: hidden;
+                                                        text-overflow: ellipsis;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .ant-card-actions {
+                                            border-bottom-left-radius: 5px;
+                                            border-bottom-right-radius: 5px;
+
+                                            li {
+                                                color: var(--main-primary);
+
+                                                span {
+                                                    &:hover {
+                                                        color: var(
+                                                            --main-primary
+                                                        );
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.wrap-modal-product {
+    .ant-modal {
+        width: 50% !important;
+
+        .ant-modal-content {
+            .ant-modal-body {
+                .product-logo-upload {
+                    display: flex;
+                    justify-content: center;
+                    .ant-upload {
+                        width: 200px;
+                        height: 200px;
+
+                        .product-logo-upload__preview {
+                            height: 100%;
+                            width: 200px;
+
+                            img {
+                                max-width: 95%;
+                                height: 175px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

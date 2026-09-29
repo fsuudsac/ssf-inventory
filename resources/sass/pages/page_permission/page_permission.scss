@@ -1,0 +1,58 @@
+#PagePermission {
+    .module-button-wrapper {
+        .ant-space-item {
+            padding: 5px 10px;
+            border: 1px solid #e8e8e8;
+
+            &:nth-child(1) {
+                min-width: 100px;
+                border-right: 0px;
+                text-align: right;
+
+                > div {
+                    display: inline;
+                }
+
+                &::after {
+                    content: ":";
+                    color: #000000;
+                }
+            }
+            &:nth-child(2) {
+                min-width: 100px;
+            }
+        }
+    }
+
+    .form-item-module-button-wrapper {
+        .ant-space-item {
+            width: 100%;
+        }
+    }
+}
+
+.wrap-modal-form-module {
+    .ant-modal {
+        .ant-modal-content {
+            .ant-modal-body {
+                .form-item-module-button-wrapper {
+                    .ant-space-item {
+                        &:first-child {
+                            width: calc(100% - 20px);
+                        }
+                        &:last-child {
+                            width: 20px;
+                        }
+
+                        .form-list-btn-delete-wrapper {
+                            height: 47px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

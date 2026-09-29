@@ -1,0 +1,36 @@
+.ant-notification {
+    .ant-notification-notice {
+        border-radius: 0px;
+        margin-bottom: 0px;
+
+        .ant-notification-notice-content {
+            .ant-notification-notice-with-icon {
+                .ant-notification-notice-message {
+                    color: #ffffff !important;
+                }
+            }
+        }
+    }
+
+    &.ant-notification-topRight {
+        background-color: #212121 !important;
+        .ant-notification-notice-wrapper {
+            background-color: #212121 !important;
+            .ant-notification-notice {
+                background-color: transparent;
+                .ant-notification-notice-content {
+                    transition: transform 2s;
+                    .ant-notification-notice-message {
+                        color: #ffffff !important;
+                    }
+                    .ant-notification-notice-description {
+                        color: #ffffff !important;
+                    }
+                }
+                .ant-notification-notice-close {
+                    color: #ffffffb0 !important;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+FSUU PMO PROCUREMENT SYSTEM - EVIDENCE DOCUMENT
+Document: Supplier Quotation & Technical Specification
+Supplier: Silicon Valley IT Solutions & Systems
+RFQ No: RFQ-2026-0012
+Bid Amount: PHP 945,000.00
+Validity: 60 Days
+Status: Official Verified Bid Document

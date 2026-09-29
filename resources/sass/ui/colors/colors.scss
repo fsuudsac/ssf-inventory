@@ -1,0 +1,177 @@
+@use "../index" as *;
+
+.primary-color {
+    color: var(--color-primary);
+}
+.primary-bg-color {
+    background-color: var(--color-primary);
+}
+.primary-color-active {
+    color: var(--color-primary-active);
+}
+.primary-bg-color-active {
+    background-color: var(--color-primary-active);
+}
+.second-color {
+    color: var(--color-secondary);
+}
+.second-bg-color {
+    background-color: var(--color-secondary);
+}
+.second-color-active {
+    color: var(--color-secondary-active);
+}
+.second-bg-color-active {
+    background-color: var(--color-secondary-active);
+}
+
+.success-color {
+    color: var(--color-success);
+}
+.success-bg-color {
+    background-color: var(--color-success);
+}
+.success-color-active {
+    color: var(--color-success-active);
+}
+.success-bg-color-active {
+    background-color: var(--color-success-active);
+}
+.warning-color {
+    color: var(--color-warning);
+}
+.warning-bg-color {
+    background-color: var(--color-warning);
+}
+.warning-color-active {
+    color: var(--color-warning-active);
+}
+.warning-bg-color-active {
+    background-color: var(--color-warning-active);
+}
+.danger-color {
+    color: var(--color-danger);
+}
+.danger-bg-color {
+    background-color: var(--color-danger);
+}
+.danger-color-active {
+    color: var(--color-danger-active);
+}
+.danger-bg-color-active {
+    background-color: var(--color-danger-active);
+}
+.info-color {
+    color: var(--color-info);
+}
+.info-bg-color {
+    background-color: var(--color-info);
+}
+.info-color-active {
+    color: var(--color-info-active);
+}
+.info-bg-color-active {
+    background-color: var(--color-info-active);
+}
+.indigo-color {
+    color: var(--color-indigo);
+}
+.indigo-bg-color {
+    background-color: var(--color-indigo);
+}
+.indigo-color-active {
+    color: var(--color-indigo-active);
+}
+.indigo-bg-color-active {
+    background-color: var(--color-indigo-active);
+}
+.purple-color {
+    color: var(--color-purple);
+}
+.purple-bg-color {
+    background-color: var(--color-purple);
+}
+.purple-color-active {
+    color: var(--color-purple-active);
+}
+.purple-bg-color-active {
+    background-color: var(--color-purple-active);
+}
+.pink-color {
+    color: var(--color-pink);
+}
+.pink-bg-color {
+    background-color: var(--color-pink);
+}
+.pink-color-active {
+    color: var(--color-pink-active);
+}
+.pink-bg-color-active {
+    background-color: var(--color-pink-active);
+}
+.teal-color {
+    color: var(--color-teal);
+}
+.teal-bg-color {
+    background-color: var(--color-teal);
+}
+.teal-color-active {
+    color: var(--color-teal-active);
+}
+.teal-bg-color-active {
+    background-color: var(--color-teal-active);
+}
+.dark-color {
+    color: var(--color-dark);
+}
+.dark-bg-color {
+    background-color: var(--color-dark);
+}
+.dark-color-active {
+    color: var(--color-dark-active);
+}
+.dark-bg-color-active {
+    background-color: var(--color-dark-active);
+}
+.orange-color {
+    color: var(--color-orange);
+}
+.orange-bg-color {
+    background-color: var(--color-orange);
+}
+.orange-color-active {
+    color: var(--color-orange-active);
+}
+.orange-bg-color-active {
+    background-color: var(--color-orange-active);
+}
+
+.main-primary-color {
+    color: var(--main-primary);
+}
+.main-primary-bg-color {
+    background-color: var(--main-primary);
+}
+.main-second-color {
+    color: var(--main-secondary);
+}
+.main-second-bg-color {
+    background-color: var(--main-secondary);
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+.white-color {
+    color: var(--color-white);
+}
+.white-bgcolor {
+    background-color: var(--color-white);
+}
+.black-color {
+    color: var(--color-black);
+}
+.black-bgcolor {
+    background-color: var(--color-black);
+}

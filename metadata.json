@@ -1,0 +1,6 @@
+{
+  "name": "FSUU PMO INVENTORY",
+  "description": "FSUU PMO Inventory Management System - Father Saturnino Urios University",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

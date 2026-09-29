@@ -1,0 +1,189 @@
+@use "../../ui/index" as *;
+
+#PageSale {
+    .ant-card {
+        .ant-card-body {
+            @include atMax(375) {
+                .ant-btn {
+                    width: 100%;
+                }
+
+                .tbl-top-filter {
+                    .ant-flex {
+                        width: 100%;
+                        flex-direction: column;
+                    }
+                }
+            }
+            .ant-row {
+                margin-bottom: 20px;
+
+                .search-wrapper {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+            }
+            .ant-row {
+                .ant-col {
+                    .ant-btn {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#PageSaleForm,
+#PageSalesReturnForm {
+    > .ant-layout {
+        > .ant-layout-content {
+            > .ant-card {
+                > .ant-card-body {
+                    .card_sales_details,
+                    .card-payment-info {
+                        .ant-card-body {
+                            table {
+                                width: 100%;
+
+                                thead {
+                                    tr {
+                                        th {
+                                            background-color: #f5f5f5;
+                                            border: 1px solid #ddd;
+                                            padding: 8px;
+                                            text-align: left;
+                                            width: 12.2%;
+
+                                            &:last-child {
+                                                width: 2.4%;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                tbody,
+                                tfoot {
+                                    tr {
+                                        td {
+                                            border: 1px solid #ddd;
+                                            padding: 8px;
+                                            text-align: left;
+
+                                            .ant-form-item {
+                                                .ant-select {
+                                                    width: 100%;
+                                                    height: 40px;
+                                                }
+
+                                                .ant-input {
+                                                    width: 100%;
+
+                                                    &.ant-input-disabled {
+                                                        color: #000;
+                                                    }
+                                                }
+
+                                                .ant-input-number {
+                                                    width: 100%;
+                                                }
+
+                                                .ant-input-number-input {
+                                                    color: #000;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                tfoot {
+                                    tr {
+                                        &:last-child {
+                                            td {
+                                                padding-top: 20px;
+                                                border-color: transparent;
+
+                                                .underline {
+                                                    div {
+                                                        width: 50%;
+                                                        &:last-child {
+                                                            border-bottom: 1px
+                                                                solid #000;
+                                                        }
+                                                    }
+
+                                                    .discount-label {
+                                                        width: 50%;
+                                                    }
+
+                                                    .ant-input-discount {
+                                                        width: 50%;
+                                                        border-bottom: 1px solid
+                                                            #000;
+                                                        border-radius: 0px;
+                                                    }
+                                                }
+
+                                                .ant-flex {
+                                                    .ant-col {
+                                                        .warranty-table {
+                                                            background: #ebebeb;
+                                                            padding: 10px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .warranty-table {
+                                            table {
+                                                thead {
+                                                    tr {
+                                                        th {
+                                                            background-color: #f5f5f5;
+                                                            border: 1px solid
+                                                                #ddd;
+                                                            padding: 8px;
+                                                            text-align: left;
+                                                            width: 12.2%;
+
+                                                            &:last-child {
+                                                                width: 2.4%;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                tbody,
+                                                tfoot {
+                                                    tr {
+                                                        td {
+                                                            border: 1px solid
+                                                                #ddd;
+                                                            padding: 8px;
+                                                            text-align: left;
+
+                                                            .ant-form-item {
+                                                                border: 1px
+                                                                    solid #ddd;
+                                                                border-radius: 5px;
+
+                                                                .float-date-picker {
+                                                                    border: none;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

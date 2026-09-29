@@ -1,0 +1,85 @@
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { Select } from "antd";
+
+export default function FloatSelect(props) {
+    const {
+        id,
+        value,
+        label,
+        placeholder,
+        required,
+        showSearch = true,
+        size = "large",
+        className,
+        mode,
+        allowClear = true,
+        ...rest
+    } = props;
+
+    const [focus, setFocus] = useState(false);
+
+    let new_placeholder = placeholder ? placeholder : label;
+
+    let isOccupied = focus || (value && value.length !== 0);
+
+    let labelClass = isOccupied ? " float-label" : "";
+
+    let requiredMark = required ? (
+        <span className="text-red-600">*</span>
+    ) : null;
+
+    const selectProps = { ...rest };
+    if ("bordered" in selectProps) {
+        if (selectProps.bordered === false) {
+            selectProps.variant = "borderless";
+        }
+        delete selectProps.bordered;
+    }
+
+    return (
+        <div
+            id={id ?? ""}
+            className={`float-wrapper${className ? " " + className : ""}`}
+            onBlur={() => setFocus(false)}
+            onFocus={() => setFocus(true)}
+        >
+            <Select
+                value={value}
+                size={size}
+                mode={mode}
+                allowClear={allowClear}
+                showSearch={showSearch}
+                filterOption={(input, option) => {
+                    return (
+                        option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                    );
+                }}
+                {...selectProps}
+            />
+            <label className={`label ${size}${labelClass}`}>
+                {isOccupied ? label : new_placeholder} {requiredMark}
+            </label>
+        </div>
+    );
+}
+
+FloatSelect.propTypes = {
+    id: PropTypes.string,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.array,
+    ]),
+    label: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    required: PropTypes.bool,
+    popupClassName: PropTypes.string,
+    size: PropTypes.oneOf(["small", "middle", "large"]),
+    className: PropTypes.string,
+    showSearch: PropTypes.bool,
+    mode: PropTypes.string,
+    allowClear: PropTypes.bool,
+};
